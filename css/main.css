@@ -1,3 +1,63 @@
-/*Fonts*/
-font-family: 'Roboto', sans-serif;
-font-family: 'Open Sans', sans-serif;
+/* Variables */
+:root {
+    --text-grey: #969696;;
+    --text-black: #333333;
+}
+
+@font-face {
+font-family: 'GoogleSansBold';
+src: url(../assets/fonts/googleSans/GoogleSans-Bold.ttf);
+}
+@font-face {
+font-family: 'GoogleSansRegular';
+src: url(../assets/fonts/googleSans/GoogleSans-Regular.ttf);
+}
+
+
+/* Base Styles */
+html {
+  font-size: 62.5%; }
+
+html body {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  font-weight: 800;
+  font-family: 'GoogleSansBold', sans-serif;
+  color: var(--text-black);
+}
+
+/* navbar */
+.navbar-list {
+  padding: 15% 0 10% 0;
+  display: block;
+}
+.navbar-item {
+  list-style:none;
+  position: relative;
+  float: left;
+  margin-bottom: 5%;
+  height: 40px;
+}
+.navbar-link {
+  font-family: 'GoogleSansBold', 'Roboto', sans-serif;
+  color: var(--text-black);
+  margin-right: 35px;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  border: none;
+  white-space: nowrap;
+  background-color: #FFF;
+  padding-bottom: 5px;
+  border-radius: 0px;
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+  border-bottom: 5px solid #FFF;
+  transition: color .20s ease-in;
+  -moz-transition: color .20s ease-in;
+  -webkit-transition: color .20s ease-in;
+  transition: border-bottom .20s ease-in;
+  -moz-transition: border-bottom .20s ease-in;
+  -webkit-transition: border-bottom .20s ease-in;
+}
