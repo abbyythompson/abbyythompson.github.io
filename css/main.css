@@ -16,14 +16,23 @@ src: url(../assets/fonts/googleSans/GoogleSans-Regular.ttf);
 
 /* Base Styles */
 html {
-  font-size: 62.5%; }
+  font-size: 62.5%;
+}
 
 html body {
   font-size: 1.5rem;
   line-height: 1.6;
   font-weight: 800;
-  font-family: 'GoogleSansBold', sans-serif;
+  font-family: 'GoogleSansBold', 'Roboto', sans-serif;
   color: var(--text-black);
+}
+
+/* Container */
+@media (min-width: 768px){html .container { width: 1000px; }}
+
+html .container {
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 /* navbar */
@@ -60,4 +69,10 @@ html body {
   transition: border-bottom .20s ease-in;
   -moz-transition: border-bottom .20s ease-in;
   -webkit-transition: border-bottom .20s ease-in;
+}
+
+/* header */
+body h1 {
+  font-size: 4.5em;
+  font-weight: 800;
 }
