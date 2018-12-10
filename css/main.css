@@ -70,7 +70,7 @@ html .container {
   -moz-transition: border-bottom .20s ease-in;
   -webkit-transition: border-bottom .20s ease-in;
 }
-.navbar-link:active .active, .navbar-link:hover, .navbar-link:focus {
+.navbar-item .active, .navbar-link:hover, .navbar-link:focus {
     color: var(--text-black);
     letter-spacing: 0.2rem;
     border-bottom: 5px solid var(--text-black);
@@ -83,4 +83,15 @@ html .container {
 body h1 {
   font-size: 4.5em;
   font-weight: 800;
+}
+
+#descriptionBody a, #contactBody a{
+  text-shadow: -1px 0 var(--text-black), 0 1px var(--text-black), 1px 0 var(--text-black), 0 -1px var(--text-black);
+  text-decoration: none;
+  color: white;
+}
+#descriptionBody a:hover, #contactBody a:hover{
+  text-decoration: none;
+  text-shadow: none;
+  color: var(--text-black);
 }

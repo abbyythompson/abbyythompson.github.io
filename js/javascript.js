@@ -1,44 +1,44 @@
-$( document ).ready(function() {
+$(document).ready(function() {
 
-  // Get the container element
-  var descMe = document.getElementById("descMe");
+  $('#descriptionBody').fadeIn(1000);
+  $('#contactBody').css('display', 'none');
+  $('#workBody').css('display', 'none');
 
-  var descMe = document.getElementById("contact");
+  //Click Me
+  $('#description').click(function() {
+    event.preventDefault();
+    $('#contactBody').hide();
+    $('#workBody').hide();
+    $('#descriptionBody').fadeIn(1000);
 
-  navbarItems[i].addEventListener("click", function() {
-      descMe.hide();
-  }
-
-  // Get all buttons with class="btn" inside the container
-  var navbarItems = btnContainer.getElementsByClassName("navbar-link");
-
-  // Loop through the buttons and add the active class to the current/clicked button
-  for (var i = 0; i < navbar.length; i++) {
-    navbarItems[i].addEventListener("click", function() {
-
-      var current = document.getElementsByClassName("active");
-
-      // If there's no active class
-      if (current.length > 0) {
-        current[0].className = current[0].className.replace(" active", "");
-      }
-
-      // Add the active class to the current/clicked button
-      this.className += " active";
-    });
-  }
-
-  document.getElementById('active').focus();
-
-});
-
-$(document).ready(function(){
-  //page
-
-  $('#descMe').on("click",".navbar-link",function(e){
-  e.preventDefault(); // cancel click
-  var page = $(this).attr('href');
-  $('#descMe').load(page);
+    $(this).addClass('active');
+    $('#work').removeClass('active');
+    $('#contact').removeClass('active');
   });
+
+  //Click Work
+  $('#work').click(function() {
+    event.preventDefault();
+    $('#contactBody').hide();
+    $('#descriptionBody').hide();
+    $('#workBody').fadeIn(1000);
+
+    $('#description').removeClass('active');
+    $(this).addClass('active');
+    $('#contact').removeClass('active');
+  });
+
+  //Click Contact
+  $('#contact').click(function() {
+    event.preventDefault();
+    $('#descriptionBody').hide();
+    $('#workBody').hide();
+    $('#contactBody').fadeIn(1000);
+
+    $('#description').removeClass('active');
+    $('#work').removeClass('active');
+    $(this).addClass('active');
+  });
+
 
 });
