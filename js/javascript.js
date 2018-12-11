@@ -10,6 +10,8 @@ $(document).ready(function() {
   //Click Me
   $('#description').click(function() {
     event.preventDefault();
+        document.title = "index";
+
     $('#contactBody').hide();
     $('#descriptionBody').fadeIn(1000);
 
@@ -20,6 +22,8 @@ $(document).ready(function() {
   //Click Contact
   $('#contact').click(function() {
     event.preventDefault();
+    document.title = "This is the new page title.";
+
     $('#descriptionBody').hide();
     $('#contactBody').fadeIn(1000);
 
