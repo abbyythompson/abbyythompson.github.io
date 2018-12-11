@@ -7,22 +7,20 @@
     --text-green: #00ffe0;
 }
 
-
-
+/*Fonts*/
 @font-face {
-font-family: 'GoogleSansBold';
-src: url(../assets/fonts/googleSans/GoogleSans-Bold.ttf);
+  font-family: 'GoogleSansBold';
+  src: url(../assets/fonts/googleSans/GoogleSans-Bold.ttf);
 }
 @font-face {
-font-family: 'GoogleSansRegular';
-src: url(../assets/fonts/googleSans/GoogleSans-Regular.ttf);
+  font-family: 'GoogleSansRegular';
+  src: url(../assets/fonts/googleSans/GoogleSans-Regular.ttf);
 }
 
 /* Base Styles */
 html {
   font-size: 62.5%;
 }
-
 html body {
   font-size: 1.5rem;
   line-height: 1.6;
@@ -30,23 +28,23 @@ html body {
   font-family: 'GoogleSansBold', 'Roboto', sans-serif;
   color: var(--text-black);
 }
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 
 /* Container */
 @media (min-width: 768px){
   html .container { width: 700px; }}
-@media (min-width: 900px){html .container { width: 800px; }}
+@media (min-width: 900px){ html .container { width: 800px; }}
 @media (min-width: 1400px){html .container { width: 1050px; }}
 
 html .container {
   padding-right: 40px;
   padding-left: 40px;
 }
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
 
-/* navbar */
+/* Navbar */
 .navbar-list {
   padding: 12% 0 12% 0;
   display: block;
@@ -62,7 +60,7 @@ html, body {
   font-family: 'GoogleSansBold', 'Roboto', sans-serif;
   color: var(--text-black);
   margin-right: 35px;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.2rem;
@@ -89,9 +87,7 @@ html, body {
     text-decoration: none;
 }
 
-
-
-/* header */
+/* Header */
 body h1 {
   font-size: 2.8em;
   font-weight: 800;
@@ -115,10 +111,7 @@ h1 a:hover{
 .google:hover .yellow{color: #F4B400;}
 .google:hover .green{color: #0F9D58;} */
 
-
-
-
-/*work*/
+/* Work */
 .workBody{
   margin-top: 150px;
   margin-bottom: 200px;
