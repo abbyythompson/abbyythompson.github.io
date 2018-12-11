@@ -27,11 +27,14 @@ html body {
 }
 
 /* Container */
-@media (min-width: 768px){html .container { width: 1000px; }}
+@media (min-width: 768px){
+  html .container { width: 700px; }}
+@media (min-width: 900px){html .container { width: 800px; }}
+@media (min-width: 1400px){html .container { width: 1000px; }}
 
 html .container {
-  padding-right: 30px;
-  padding-left: 30px;
+  padding-right: 40px;
+  padding-left: 40px;
 }
 
 /* navbar */
@@ -81,16 +84,18 @@ html .container {
 
 /* header */
 body h1 {
-  font-size: 4.5em;
+  font-size: 2.8em;
   font-weight: 800;
 }
+@media (min-width: 768px){
+  body h1 { font-size: 4.5em; }}
 
-#descriptionBody a, #contactBody a{
+h1 a, h1 a:visited{
   text-shadow: -1px 0 var(--text-black), 0 1px var(--text-black), 1px 0 var(--text-black), 0 -1px var(--text-black);
   text-decoration: none;
   color: white;
 }
-#descriptionBody a:hover, #contactBody a:hover{
+h1 a:hover{
   text-decoration: none;
   text-shadow: none;
   color: var(--text-black);
