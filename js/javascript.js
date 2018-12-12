@@ -41,6 +41,4 @@ $(document).ready(function() {
     $('#description').removeClass('active');
     $(this).addClass('active');
   });
-
-
 });
