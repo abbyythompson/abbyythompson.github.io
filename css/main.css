@@ -106,39 +106,22 @@ h1 a:hover{
   text-shadow: none;
   color: var(--text-green);
 }
-/* .google:hover .blue{color: #4285F4;}
-.google:hover .red{color: #DB4437;}
-.google:hover .yellow{color: #F4B400;}
-.google:hover .green{color: #0F9D58;} */
 
-/* Work */
-.workBody{
-  margin-top: 150px;
-  margin-bottom: 200px;
+/* Body */
+p {
+  font-weight: 500;
 }
 
-.exampleBtn{
-  width: 90%;
-  border-radius: 10px;
-  border: 1px solid var(--text-lightest-grey);
-}
-.exampleBtn:hover{
-  box-shadow: 5px 5px 10px var(--text-green);
+.coloredFont {
+  color: var(--text-green);
 }
 
+.btn {
+  color: var(--text-black);
+  background-color: var(--text-green);
+}
 
-
-
-.parallax {
-  /* The image used */
-  background-image: url("assets/img/juice.jpg");
-
-  /* Set a specific height */
-  height: 500px;
-
-  /* Create the parallax scrolling effect */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.btn:checked{
+  color: var(--text-green);
+  border: none;
 }
