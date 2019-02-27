@@ -1,44 +1,30 @@
 $(document).ready(function() {
 
-  $('#descriptionBody').fadeIn(1000);
-  $('#contactBody').css('display', 'none');
+  // $('#workBody').fadeIn(1000);
+  // $('#contactBody').fadeIn(1000);
 
-  $('#workEx1').css('display', 'none');
-  $('#workEx2').css('display', 'none');
+  $('div.hidden').fadeIn(1000).removeClass('hidden');
 
-
+  //
   //Click Work
-  $('#description').click(function() {
-    event.preventDefault();
-
-    $('#contactBody').hide();
-    $('#descriptionBody').fadeIn(1000);
-
-    $(this).addClass('active');
-    $('#contact').removeClass('active');
-  });
-
-  //Click Contact
-  $('#contact').click(function() {
-    event.preventDefault();
-
-    $('#descriptionBody').hide();
-    $('#contactBody').fadeIn(1000);
-
-    $('#description').removeClass('active');
-    $(this).addClass('active');
-  });
-
-  //Click workEx1
-  $('#workEx1').click(function() {
-    event.preventDefault();
-
-    $('#descriptionBody').hide();
-    $('#workEx1').fadeIn(1000);
-    //Bring person up to the top of the screen.
-    // you need a
-
-    $('#description').removeClass('active');
-    $(this).addClass('active');
-  });
+  // $('#description').click(function() {
+  //   event.preventDefault();
+  //
+  //   $('#contactBody').hide();
+  //   $('#workBody').fadeIn(1000);
+  //
+  //   $(this).addClass('active');
+  //   $('#contact').removeClass('active');
+  // });
+  //
+  // //Click Contact
+  // $('#contact').click(function() {
+  //   event.preventDefault();
+  //
+  //   $('#workBody').hide();
+  //   $('#contactBody').fadeIn(1000);
+  //
+  //   $('#description').removeClass('active');
+  //   $(this).addClass('active');
+  // });
 });
