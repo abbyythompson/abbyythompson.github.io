@@ -1,44 +1,15 @@
 $(document).ready(function() {
+  $('div.hidden').fadeIn(1000).removeClass('hidden');
 
-  $('#descriptionBody').fadeIn(1000);
-  $('#contactBody').css('display', 'none');
+  $("GLMIexplanation").hide();
 
-  $('#workEx1').css('display', 'none');
-  $('#workEx2').css('display', 'none');
-
-
-  //Click Work
-  $('#description').click(function() {
-    event.preventDefault();
-
-    $('#contactBody').hide();
-    $('#descriptionBody').fadeIn(1000);
-
-    $(this).addClass('active');
-    $('#contact').removeClass('active');
+  $('#moreGLMI').click(function() {
+      $('#GLMIexplanation').fadeToggle(750);
+      $('#moreGLMIbtn').fadeToggle(0);
   });
 
-  //Click Contact
-  $('#contact').click(function() {
-    event.preventDefault();
-
-    $('#descriptionBody').hide();
-    $('#contactBody').fadeIn(1000);
-
-    $('#description').removeClass('active');
-    $(this).addClass('active');
-  });
-
-  //Click workEx1
-  $('#workEx1').click(function() {
-    event.preventDefault();
-
-    $('#descriptionBody').hide();
-    $('#workEx1').fadeIn(1000);
-    //Bring person up to the top of the screen.
-    // you need a
-
-    $('#description').removeClass('active');
-    $(this).addClass('active');
+  $('#moreGLMIbtn').click(function() {
+      $('#moreGLMIbtn').hide();
+      $('#GLMIexplanation').fadeIn(750);
   });
 });
