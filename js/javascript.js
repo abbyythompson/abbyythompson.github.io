@@ -3,13 +3,13 @@ $(document).ready(function() {
 
   $("GLMIexplanation").hide();
 
-  $("#moreGLMI").click(function(){
-    $("#GLMIexplanation").fadeIn(1000);
-    $("#moreGLMI").hide();
+  $('#moreGLMI').click(function() {
+      $('#GLMIexplanation').fadeToggle(750);
+      $('#moreGLMIbtn').fadeToggle(0);
   });
 
-  $("#lessGLMI").click(function(){
-    $("#GLMIexplanation").hide();
-    $("#moreGLMI").fadeIn(500);
+  $('#moreGLMIbtn').click(function() {
+      $('#moreGLMIbtn').hide();
+      $('#GLMIexplanation').fadeIn(750);
   });
 });
