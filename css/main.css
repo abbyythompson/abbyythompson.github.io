@@ -93,8 +93,6 @@ body h1 {
   font-weight: 800;
   line-height: 1.2em;
 }
-@media (min-width: 768px){
-  body h1 { font-size: 4.6em; }}
 
 h1 a, h1 a:visited, h1 a:focus{
   text-shadow: -1px 0 var(--text-black), 0 1px var(--text-black), 1px 0 var(--text-black), 0 -1px var(--text-black);
@@ -106,10 +104,15 @@ h1 a:hover{
   text-shadow: none;
   color: var(--text-green);
 }
+a:hover {
+  cursor: pointer;
+}
 
 /* Body */
 p {
-  font-weight: 500;
+  white-space: pre-line;
+  font-family: 'GoogleSansRegular', 'Roboto', sans-serif;
+  font-weight: 100;
 }
 
 .coloredFont {
@@ -121,7 +124,58 @@ p {
   background-color: var(--text-green);
 }
 
+.btn#moreGLMI {
+  margin-top: 10px;
+  width: 100%;
+}
+#GLMI p, #GLMIexplanation p {
+  margin-top: 25px;
+  max-width: 100%;
+}
+
+#GLMIexplanation {
+  margin-bottom: 100px;
+}
+
+h2 .explanationHeader {
+  padding-bottom: 30px;
+}
+
 .btn:checked{
   color: var(--text-green);
   border: none;
+}
+
+img.centerImg {
+  display: block;
+  margin: 20px auto 20px auto;
+  width: 100%;
+}
+
+br.break10 {
+  margin: 10px;
+}
+.section {
+  padding-bottom: 60px;
+}
+
+.italics {
+  font-style: italic;
+}
+
+@media (min-width: 768px){
+  body h1 { font-size: 4.6em; }
+  img.centerImg{
+    display: block;
+    margin: 20px auto 20px auto;
+    width: 80%!important;
+  }
+  .btn#moreGLMI {
+    margin-top: 30px;
+    width: 15%;
+  }
+  #GLMI p {
+    margin-top: 25px;
+    max-width: 80%;
+  }
 }

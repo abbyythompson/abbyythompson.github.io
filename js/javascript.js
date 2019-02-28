@@ -7,4 +7,9 @@ $(document).ready(function() {
     $("#GLMIexplanation").fadeIn(1000);
     $("#moreGLMI").hide();
   });
+
+  $("#lessGLMI").click(function(){
+    $("#GLMIexplanation").hide();
+    $("#moreGLMI").fadeIn(500);
+  });
 });
