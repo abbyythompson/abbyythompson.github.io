@@ -138,7 +138,7 @@ p {
 }
 
 h2.marginBottom {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
 }
 
 .btn:checked{
@@ -160,7 +160,7 @@ br.break10 {
 }
 
 .italics {
-  font-style: italic;
+  font-style:italic;
 }
 .highlight {
   background-color: var(--text-green);
@@ -182,7 +182,7 @@ br.break10 {
   }
   #GLMI p {
     margin-top: 25px;
-    max-width: 80%;
+    max-width: 100%;
   }
   p {
     white-space: pre-line;
@@ -195,4 +195,23 @@ br.break10 {
 
 #workBody {
   margin-bottom: 100px;
+}
+#GLMI h1 a#moreGLMI {
+  color: var(--text-black);
+  text-shadow: none;
+}
+#GLMI h1 a#moreGLMI:hover{
+  color: var(--text-green);
+}
+
+ul li {
+  list-style-type: square;
+  margin-left: 20px;
+  color: var(--text-green);
+}
+
+
+li p {
+  margin-left: 20px;
+  color: var(--text-black);
 }
