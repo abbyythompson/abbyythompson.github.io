@@ -3,8 +3,10 @@
     --text-grey: #969696;
     --text-light-grey: #cccccc;
     --text-lightest-grey: #efefef;
+    --text-lighteest-grey: #f2f2f2;
     --text-black: #333333;
     --text-green: #00ffe0;
+    --text-secondary-color: #00ffe038;
 }
 
 /*Fonts*/
@@ -48,6 +50,9 @@ html .container {
 .navbar-list {
   padding: 12% 0 12% 0;
   display: block;
+}
+#work.navbar-list {
+  padding-bottom: 9%;
 }
 .navbar-item {
   list-style:none;
@@ -121,13 +126,17 @@ p {
 
 .btn {
   color: var(--text-black);
-  /*background-color: var(--text-green);*/
+}
+
+.btn:hover {
+  box-shadow: 2px 2px 5px var(--text-lightest-grey);
 }
 
 .btn {
   margin-top: 10px;
   width: 100%;
 }
+
 #GLMI p, #GLMIexplanation p {
   margin-top: 25px;
   max-width: 100%;
@@ -139,11 +148,6 @@ p {
 
 h2.marginBottom {
   margin-bottom: 30px;
-}
-
-.btn:checked{
-  color: var(--text-green);
-  border: none;
 }
 
 img.centerImg {
@@ -176,7 +180,7 @@ br.break10 {
     margin: 50px auto 20px auto;
     width: 80%!important;
   }
-  .btn {
+  .btn#moreGLMIbtn{
     margin-top: 30px;
     width: 15%;
   }
@@ -190,6 +194,9 @@ br.break10 {
     font-weight: 100;
     font-size: 2rem;
     line-height: 3.5rem;
+  }
+  ul li {
+    margin-left: 20px!important;
   }
 }
 
@@ -206,7 +213,7 @@ br.break10 {
 
 ul li {
   list-style-type: square;
-  margin-left: 20px;
+  margin-left: 0px;
   color: var(--text-green);
 }
 
@@ -214,4 +221,35 @@ ul li {
 li p {
   margin-left: 20px;
   color: var(--text-black);
+}
+
+#outer {
+  text-align: left;
+}
+.inner {
+  display: inline-block;
+}
+
+.inner .tab {
+  border-radius: initial;
+  /* border-bottom: 5px solid #FFF; */
+  margin-right: 40px;
+  transition: background-color .20s ease-in;
+  -moz-transition: background-color .20s ease-in;
+  -webkit-transition: background-color .20s ease-in;
+  margin-top: 0px;
+  max-width: max-content;
+  padding: 3px 0px 3px 0px;
+  font-family: 'GoogleSansRegular', 'Roboto', sans-serif;
+  /* background-color: var(--text-lighteest-grey); */
+  text-decoration: underline;
+  text-decoration-style:dotted;
+  text-decoration-color: var(--text-green);
+}
+
+.inner .tab.active, .inner .tab:hover {
+  box-shadow: none;
+  /* border-bottom: 5px solid var(--text-secondary-color); */
+  text-decoration: none;
+  background-color: var(--text-green);
 }
