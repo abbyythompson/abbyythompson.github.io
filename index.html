@@ -1,71 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Basics -->
-    <title>Abby Thompson</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="Abby Thompson - Landing Page" />
-    <meta name="author" content="Abby Thompson" />
-    <!-- Mobile Specific Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Font -->
-    <!--link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet"-->
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    />
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/javascript.js"></script>
-    <!-- Icons -->
-    <link rel="icon" href="assets/img/@.png" />
-  </head>
-  <body>
-    <!--TODO Google Analytics-->
-    <div class="container">
-      <div class="section text-left">
-        <h1>
-          Abby Thompson. Product Designer, Ex-<a href="https://www.atlassian.com/" target="_blank">Atlassian</a>.
-        </h1>
-      </div>
-      <div class="centerImg">
-        <img src="assets/img/Emoji_Finger_Pointing_Down.png" />
-      </div>
-      <div class="section text-left">
-        <h1>
-          Have a look at my
-          <a href="https://abbyythompson.framer.website/" target="_blank"
-            >Portfolio</a
-          >
-          & <a href="./assets/CV-AThompson.pdf" target="_blank">CV</a>, also
-          here's my
-          <a href="https://github.com/abbyythompson" target="_blank">
-            Github
-          </a>
-          and
-          <a href="https://dribbble.com/abbyythompson" target="_blank">
-            Dribbble</a
-          >.
-        </h1>
-      </div>
-      <div class="centerImg">
-        <img src="assets/img/Emoji_Finger_Pointing_Down.png" />
-      </div>
-      <div class="section text-left">
-        <h1>
-          Reach me on
-          <a href="https://www.linkedin.com/in/abbythompson/" target="_blank">
-            LinkedIn
-          </a>
-          ,
-          <a href="mailto:abbyythompson@gmail.com" target="_blank">email</a>
-          me or <a href="https://wa.link/pfeu2g" target="_blank">WhatsApp</a>.
-        </h1>
-      </div>
-      <div class="centerImg"><img src="assets/img/Emoji_Party.png" /></div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abby Thompson — UX/UI Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Space Grotesk is a placeholder for General Grotesk — swap --font-display once you have the font files -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== SITE CONTROLS ===================== -->
+  <div class="site-controls" aria-label="Site controls">
+
+    <div class="mode-toggle" role="group" aria-label="Colour scheme">
+      <button class="mode-btn active" id="btn-light" title="Light mode" aria-pressed="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="2"  x2="12" y2="4"/>
+          <line x1="12" y1="20" x2="12" y2="22"/>
+          <line x1="4.22" y1="4.22"   x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="2"  y1="12" x2="4"  y2="12"/>
+          <line x1="20" y1="12" x2="22" y2="12"/>
+          <line x1="4.22" y1="19.78"  x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <button class="mode-btn" id="btn-dark" title="Dark mode" aria-pressed="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
     </div>
-  </body>
+
+    <button class="music-btn" id="music-toggle" aria-label="Play ambient music" title="Play ambient music">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path class="wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path class="wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="home">
+    <span class="watermark" aria-hidden="true">PORTFOLIO</span>
+    <!-- Clouds — save images/cloud.png to activate -->
+    <div class="hero-clouds" aria-hidden="true">
+      <div class="cloud cloud-1"><img src="images/cloud.png" alt="" draggable="false"></div>
+      <div class="cloud cloud-2"><img src="images/cloud.png" alt="" draggable="false"></div>
+      <div class="cloud cloud-3"><img src="images/cloud.png" alt="" draggable="false"></div>
+      <div class="cloud cloud-4"><img src="images/cloud.png" alt="" draggable="false"></div>
+      <div class="cloud cloud-5"><img src="images/cloud.png" alt="" draggable="false"></div>
+      <div class="cloud cloud-6"><img src="images/cloud.png" alt="" draggable="false"></div>
+    </div>
+    <div class="hero-inner">
+      <h1>👋🏻 I'm Abby</h1>
+      <p class="hero-tagline">I'm a designer with an engineering background</p>
+      <div class="profile-photo">
+        <img src="images/ProfilePicAbby.jpeg" alt="Abby Thompson — Product Designer">
+      </div>
+      <div class="hero-actions">
+        <a href="#work" class="btn btn-filled">My work</a>
+        <a href="#about" class="btn btn-ghost">About me</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WORK ===================== -->
+  <section class="work" id="work">
+    <!-- Pin phase: watermark + typing pill stay centered while user scrolls through -->
+    <div class="pin-wrap">
+      <div class="pin-stage">
+        <!-- stage-backdrop clips the watermark to the viewport area -->
+        <div class="stage-backdrop" aria-hidden="true">
+          <span class="watermark">MY WORK</span>
+        </div>
+        <!-- pill sits right-aligned, like a chat bubble -->
+        <div class="stage-pill-wrap">
+          <div class="floating-pill" data-text="What are you most proud of?"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case studies — hidden until typing completes -->
+    <div class="section-inner" id="work-content">
+
+      <!-- Vertice -->
+      <article class="case-study">
+        <div class="case-study-header">
+          <h2 class="case-study-name">Vertice</h2>
+          <div class="case-study-role">
+            <span>Senior Product Designer</span>
+            <em>2025–Present</em>
+          </div>
+        </div>
+        <div class="cs-card-group">
+          <div class="cs-card cs-main" data-modal="vertice">
+            <div class="mock-screen mock-dark"></div>
+            <div class="cs-overlay"><span>View case study →</span></div>
+          </div>
+          <div class="cs-side-stack">
+            <div class="cs-card cs-secondary">
+              <div class="mock-screen mock-light"></div>
+              <div class="cs-overlay"><span>Contracts table</span></div>
+            </div>
+            <div class="cs-card cs-secondary">
+              <div class="mock-screen mock-light accent"></div>
+              <div class="cs-overlay"><span>Contract details</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- CalSocial -->
+      <article class="case-study">
+        <div class="case-study-header">
+          <h2 class="case-study-name">CalSocial</h2>
+          <div class="case-study-role">
+            <span>Founding Designer</span>
+            <em>2026–Present</em>
+          </div>
+        </div>
+        <div class="case-study-card" data-href="#">
+          <div class="card-grid layout-thirds">
+            <div class="card-screen">
+              <div class="mock-screen mock-social"></div>
+            </div>
+            <div class="card-screen">
+              <div class="mock-screen mock-social"></div>
+            </div>
+            <div class="card-screen">
+              <div class="mock-screen mock-social"></div>
+            </div>
+          </div>
+          <div class="card-hover-overlay">
+            <span>View case study →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Atlassian -->
+      <article class="case-study">
+        <div class="case-study-header">
+          <h2 class="case-study-name">Atlassian</h2>
+          <div class="case-study-role">
+            <span>Product Designer</span>
+            <em>2022–2024</em>
+          </div>
+        </div>
+        <div class="cs-card-group">
+          <div class="cs-card cs-main" data-modal="atlassian">
+            <div class="mock-screen mock-light blue-tint"></div>
+            <div class="cs-overlay"><span>View case study →</span></div>
+          </div>
+          <div class="cs-side-stack">
+            <div class="cs-card cs-secondary">
+              <div class="mock-screen mock-light blue-tint"></div>
+              <div class="cs-overlay"><span>Jira board</span></div>
+            </div>
+            <div class="cs-card cs-secondary">
+              <div class="mock-screen mock-light blue-tint accent-blue"></div>
+              <div class="cs-overlay"><span>Issue view</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="about" id="about">
+    <!-- Pin phase: same pattern as work -->
+    <div class="pin-wrap">
+      <div class="pin-stage">
+        <div class="stage-backdrop" aria-hidden="true">
+          <span class="watermark">ABOUT ME</span>
+        </div>
+        <div class="stage-pill-wrap">
+          <div class="floating-pill" data-text="But why are you so great?"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About body — hidden until typing completes -->
+    <div class="section-inner about-inner" id="about-content">
+      <div class="about-body">
+        <p>I use design principles and data-driven decision making to <a href="#" class="squiggle" onclick="return false">build beautiful, accessible and responsive user experiences.</a></p>
+        <p>I have 8 years of corporate experience in tech companies ranging from start-ups all the way to big tech 🚀</p>
+        <p>Previously a <a href="#" class="squiggle" onclick="return false">software engineer</a>, I can bring a level of technical understanding and empathy working with cross-functional stakeholders.</p>
+        <p>I'm also an <a href="#" class="squiggle" onclick="return false">avid snowboarder, skier and tennis player</a> 🎿😆</p>
+        <div class="bitmoji">
+          <img src="images/ProfilePicAbby.jpeg" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SCENE DIVIDER ===================== -->
+  <!-- Replace images/mountain-scene.png with your mountain PNG when ready -->
+  <div class="scene-divider">
+    <img src="images/mountain-scene.png" alt="" aria-hidden="true">
+  </div>
+
+  <!-- ===================== CONTACT ===================== -->
+  <footer class="contact" id="contact">
+    <span class="watermark" aria-hidden="true">CONTACT</span>
+    <div class="section-inner contact-inner">
+      <ul class="contact-list">
+        <li>
+          <!-- Replace with your actual LinkedIn URL -->
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="1" y="1" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M4.5 6.5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="4.5" cy="4.5" r="0.75" fill="currentColor"/>
+              <path d="M7.5 12V9C7.5 7.9 8.4 7 9.5 7C10.6 7 11.5 7.9 11.5 9V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            See my LinkedIn
+          </a>
+        </li>
+        <li>
+          <!-- Replace with your actual email -->
+          <a href="mailto:abbythompson@gmail.com">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M1.5 4.5L8 9.5L14.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Email me abbythompson@gmail.com
+          </a>
+        </li>
+        <li>
+          <!-- Replace href with the path to your resume PDF -->
+          <a href="resume.pdf" download>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 1V10M8 10L5 7M8 10L11 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12V13C2 14.1 2.9 15 4 15H12C13.1 15 14 14.1 14 13V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Download resume
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="footer-bar">
+      <span>Abby Thompson © 2026, </span>
+      <span><a href="https://yourwebsite.com" target="_blank" rel="noopener noreferrer">Built by me ♡</a></span>
+    </div>
+  </footer>
+
+  <!-- Case study modals -->
+
+  <!-- Vertice -->
+  <div class="cs-modal" id="modal-vertice" role="dialog" aria-modal="true" aria-label="Vertice — Request to contract">
+    <button class="cs-modal-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+      </svg>
+    </button>
+    <div class="cs-modal-body">
+      <div class="cm-wrap">
+
+        <!-- Hero -->
+        <div class="cm-hero">
+          <h1 class="cm-title">Request to contract</h1>
+          <p class="cm-intro">Vertice helps companies buy and renew software at the best price, saving them millions. The platform centres around two core objects: contracts and new purchase requests.</p>
+          <p class="cm-intro">The request page supports both renewals and new software requests, making it critical to the user experience. However, the original design failed to support the primary use cases effectively. The goal was to increase SaaS platform adoption by solving these key workflows and improving CSAT.</p>
+          <p class="cm-meta">Product Designer &nbsp;·&nbsp; 2 months &nbsp;·&nbsp; 40% increase in CSAT</p>
+          <div class="cm-img cm-img-hero"></div>
+        </div>
+
+        <!-- Solution -->
+        <div class="cm-section">
+          <h2 class="cm-section-heading">✨ The solution ✨</h2>
+
+          <div class="cm-item">
+            <div class="cm-img cm-img-sm"></div>
+            <div class="cm-item-text">
+              <h3>Redesigning key pages</h3>
+              <p>Lead this initiative from week 2 after joining Vertice. Worked with Product, Engineering and Data science to understand the problem. Defined new components and patterns across the product. Interviewed dozens of internal and external stakeholders to understand the pain points and desires of the primary users.</p>
+            </div>
+          </div>
+
+          <div class="cm-item">
+            <div class="cm-item-text">
+              <h3>Designing scalable components</h3>
+              <p>Audited the existing UI to identify inconsistencies and duplication. Created a flexible component system to support multiple workflows and edge cases. Balanced speed of delivery with long-term maintainability. Documented usage guidelines to enable designers and engineers to build confidently and consistently.</p>
+            </div>
+            <div class="cm-img cm-img-sm"></div>
+          </div>
+
+          <div class="cm-item">
+            <div class="cm-img cm-img-sm"></div>
+            <div class="cm-item-text">
+              <h3>Improving communication</h3>
+              <p>Mapped stakeholder touchpoints across the end-to-end workflow. Identified breakdowns in handoffs between teams. Simplified information architecture to surface the right context at the right time. Introduced clearer status visibility and structured updates to reduce ambiguity and back-and-forth.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Impact -->
+        <div class="cm-section">
+          <h2 class="cm-section-heading">🔥 The impact 🔥</h2>
+          <div class="cm-stats">
+            <div class="cm-stat">
+              <span class="cm-stat-num">+32%</span>
+              <span class="cm-stat-label">Increase in CSAT</span>
+            </div>
+            <div class="cm-stat">
+              <span class="cm-stat-num">-27%</span>
+              <span class="cm-stat-label">Time to complete request</span>
+            </div>
+            <div class="cm-stat">
+              <span class="cm-stat-num">+41%</span>
+              <span class="cm-stat-label">Improvement in task success</span>
+            </div>
+          </div>
+          <p class="cm-body">Internal teams moved faster with clearer ownership and less back-and-forth. External users gained better visibility into their requests, reducing confusion and support tickets by 22%. The redesigned experience drove higher engagement and stronger adoption across the platform.</p>
+        </div>
+
+        <!-- Context -->
+        <div class="cm-section">
+          <h2 class="cm-section-heading">❝ The context ❞</h2>
+          <div class="cm-two-col">
+            <div class="cm-context-text">
+              <h3>Role &amp; responsibility</h3>
+              <ul>
+                <li>Took ownership of the initiative within two weeks of joining Vertice</li>
+                <li>Partnered closely with Product, Engineering, and Data to define the problem space and align on success metrics</li>
+                <li>Led discovery across internal and external users to uncover friction in key workflows</li>
+                <li>Translated insights into clear design principles, reusable patterns, and scalable components</li>
+                <li>Facilitated alignment sessions to drive prioritisation and delivery across teams</li>
+              </ul>
+              <h3>Team</h3>
+              <ul>
+                <li>Collaborated with 3 Product Managers and 3 Engineering squads</li>
+                <li>Worked alongside Customer Success and Sales to validate solutions against real customer needs</li>
+                <li>Coordinated with Data to measure impact and track adoption post-launch</li>
+              </ul>
+            </div>
+            <div class="cm-img cm-img-sm"></div>
+          </div>
+        </div>
+
+        <!-- Future -->
+        <div class="cm-section">
+          <h2 class="cm-section-heading">👾 The future 👾</h2>
+          <div class="cm-item">
+            <div class="cm-img cm-img-sm"></div>
+            <div class="cm-item-text">
+              <h3>Evolving the contract experience</h3>
+              <p>The next focus is redesigning the contract page to align with the new request experience.</p>
+              <p>Due to time constraints, some enhancements were intentionally scoped for a second phase. The contract page will extend the same patterns and components, ensuring consistency across workflows while reducing design and engineering duplication.</p>
+              <p>This phase will:</p>
+              <ul class="cm-list">
+                <li>Unify the experience across contracts and requests</li>
+                <li>Increase component reuse to improve development efficiency</li>
+                <li>Further streamline the user journey and reduce cognitive load</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Atlassian -->
+  <div class="cs-modal" id="modal-atlassian" role="dialog" aria-modal="true" aria-label="Atlassian case study">
+    <button class="cs-modal-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+      </svg>
+    </button>
+    <div class="cs-modal-body">
+      <div class="cs-modal-inner">
+        <p class="cs-modal-placeholder">Case study content coming soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
