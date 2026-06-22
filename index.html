@@ -66,8 +66,8 @@
         <img src="images/ProfilePicAbby.jpeg" alt="Abby Thompson — Product Designer">
       </div>
       <div class="hero-actions">
-        <a href="#work" class="btn btn-filled">My work</a>
-        <a href="#about" class="btn btn-ghost">About me</a>
+        <a href="#work-anchor" class="btn btn-filled">My work</a>
+        <a href="#about-anchor" class="btn btn-ghost">About me</a>
       </div>
     </div>
   </section>
@@ -82,7 +82,7 @@
           <span class="watermark">MY WORK</span>
         </div>
         <!-- pill sits right-aligned, like a chat bubble -->
-        <div class="stage-pill-wrap">
+        <div class="stage-pill-wrap" id="work-anchor">
           <div class="floating-pill" data-text="What are you most proud of?"></div>
         </div>
       </div>
@@ -102,17 +102,17 @@
         </div>
         <div class="cs-card-group">
           <div class="cs-card cs-main" data-modal="vertice">
-            <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-dark">
-            <div class="cs-overlay"><span>View case study →</span></div>
+            <img src="images/Vertice/New request.png" alt="Vertice" class="mock-screen">
+            <div class="cs-overlay"><span>Request page redesign</span></div>
           </div>
           <div class="cs-side-stack">
             <div class="cs-card cs-secondary">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-light">
-              <div class="cs-overlay"><span>Contracts table</span></div>
+              <img src="images/Vertice/add_contracts_hq.gif" alt="Vertice" class="mock-screen">
+              <div class="cs-overlay"><span>Add contracts flow</span></div>
             </div>
             <div class="cs-card cs-secondary">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-light accent">
-              <div class="cs-overlay"><span>Contract details</span></div>
+              <img src="images/Vertice/contracts_views_demo_10fps.gif" alt="Vertice" class="mock-screen">
+              <div class="cs-overlay"><span>Unified filtering</span></div>
             </div>
           </div>
         </div>
@@ -127,22 +127,24 @@
             <em>2026–Present</em>
           </div>
         </div>
-        <div class="case-study-card" data-href="#">
-          <div class="card-grid layout-thirds">
+        <a href="https://cal.social/" target="_blank" rel="noopener noreferrer" data-modal="calsocial">
+          <div class="case-study-card">
+            <div class="card-grid layout-thirds">
+              <div class="card-screen">
+                <img src="images/CalSocial/CalSocial1.png" alt="Calsocial" class="mock-screen">
+              </div>
             <div class="card-screen">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-social">
+              <img src="images/CalSocial/Calsocial2.png" alt="Calsocial" class="mock-screen">
             </div>
             <div class="card-screen">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-social">
-            </div>
-            <div class="card-screen">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-social">
+              <img src="images/CalSocial/CalSocial3.png" alt="Calsocial" class="mock-screen">
             </div>
           </div>
           <div class="card-hover-overlay">
-            <span>View case study →</span>
+            <span>Design of social calendar app</span>
           </div>
         </div>
+        </a>
       </article>
 
       <!-- Atlassian -->
@@ -156,17 +158,17 @@
         </div>
         <div class="cs-card-group">
           <div class="cs-card cs-main" data-modal="atlassian">
-            <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-light blue-tint">
-            <div class="cs-overlay"><span>View case study →</span></div>
+            <img src="images/Atlassian/Software Goals/Goals Empty State.png" alt="Atlassian" class="mock-screen">
+            <div class="cs-overlay"><span>Creating goals in Compass</span></div>
           </div>
           <div class="cs-side-stack">
             <div class="cs-card cs-secondary">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-light blue-tint">
-              <div class="cs-overlay"><span>Jira board</span></div>
+              <img src="images/Atlassian/Scorecards/AI-ScorecardCriteria.gif" alt="Atlassian" class="mock-screen">
+              <div class="cs-overlay"><span>AI scorecard criteria</span></div>
             </div>
             <div class="cs-card cs-secondary">
-              <img src="images/Vertice/New request.png" alt="New request" class="mock-screen mock-light blue-tint accent-blue">
-              <div class="cs-overlay"><span>Issue view</span></div>
+              <img src="images/Atlassian/Scorecards/Scorecard - Drawer.png" alt="Atlassian" class="mock-screen">
+              <div class="cs-overlay"><span>Scorecard drawer</span></div>
             </div>
           </div>
         </div>
@@ -183,7 +185,7 @@
         <div class="stage-backdrop" aria-hidden="true">
           <span class="watermark">ABOUT ME</span>
         </div>
-        <div class="stage-pill-wrap">
+        <div class="stage-pill-wrap" id="about-anchor">
           <div class="floating-pill" data-text="But why are you so great?"></div>
         </div>
       </div>
@@ -235,7 +237,7 @@
           </a>
         </li>
         <li>
-          <a href="CV-Abby Thompson-Product Designer.pdf" target="_blank" rel="noopener noreferrer">
+          <a href="/assets/CV-Abby Thompson-Product Designer.pdf" target="_blank" rel="noopener noreferrer">
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M8 1V10M8 10L5 7M8 10L11 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M2 12V13C2 14.1 2.9 15 4 15H12C13.1 15 14 14.1 14 13V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -364,6 +366,20 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Calsocial -->
+  <div class="cs-modal" id="modal-calsocial" role="dialog" aria-modal="true" aria-label="Calsocial case study">
+    <button class="cs-modal-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+      </svg>
+    </button>
+    <div class="cs-modal-body">
+      <div class="cs-modal-inner">
+        <p class="cs-modal-placeholder">Case study content coming soon.</p>
       </div>
     </div>
   </div>

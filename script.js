@@ -204,6 +204,7 @@ setMode(savedMode);
 // ─── Ambient soundscape (Web Audio API) ──────────────────────────────────────
 let audioCtx   = null;
 let masterGain = null;
+let audioEl    = null;
 let isPlaying  = false;
 const musicBtn = document.getElementById('music-toggle');
 
@@ -211,67 +212,17 @@ function buildSoundscape() {
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
   masterGain = audioCtx.createGain();
-  masterGain.gain.value = 0;
+  masterGain.gain.value = 1;
   masterGain.connect(audioCtx.destination);
 
-  // ── Rain / wind layer: looped white noise through a low-pass filter
-  const sr  = audioCtx.sampleRate;
-  const buf = audioCtx.createBuffer(1, sr * 4, sr);
-  const ch  = buf.getChannelData(0);
-  for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
+  const audioSrc = 'assets/Winter Morning Ambience Sound Effect _ Copyright Free Nature Sounds - (64 Kbps).mp3';
 
-  const noise = audioCtx.createBufferSource();
-  noise.buffer = buf;
-  noise.loop   = true;
+  audioEl = new Audio(audioSrc);
+  audioEl.loop = true;
+  audioEl.preload = 'auto';
 
-  const lpf = audioCtx.createBiquadFilter();
-  lpf.type            = 'lowpass';
-  lpf.frequency.value = 700;
-  lpf.Q.value         = 0.4;
-
-  const noiseGain = audioCtx.createGain();
-  noiseGain.gain.value = 0.09;
-  noise.connect(lpf);
-  lpf.connect(noiseGain);
-  noiseGain.connect(masterGain);
-  noise.start();
-
-  // ── Depth: short feedback delay adds space without explicit reverb
-  const delay    = audioCtx.createDelay(0.6);
-  delay.delayTime.value = 0.35;
-  const fbGain   = audioCtx.createGain();
-  fbGain.gain.value = 0.28;
-  delay.connect(fbGain);
-  fbGain.connect(delay);
-  delay.connect(masterGain);
-
-  // ── Ambient tones: F-major spread, each breathing via its own LFO
-  [
-    { freq: 174.6, lfoHz: 0.040, depth: 0.025 },
-    { freq: 175.3, lfoHz: 0.033, depth: 0.020 }, // slight detune → natural beating
-    { freq: 261.6, lfoHz: 0.055, depth: 0.014 },
-    { freq: 349.2, lfoHz: 0.045, depth: 0.009 },
-    { freq: 523.2, lfoHz: 0.060, depth: 0.005 },
-  ].forEach(({ freq, lfoHz, depth }) => {
-    const osc     = audioCtx.createOscillator();
-    osc.type            = 'sine';
-    osc.frequency.value = freq;
-
-    const oscGain = audioCtx.createGain();
-    oscGain.gain.value = 0;
-    osc.connect(oscGain);
-    oscGain.connect(delay);
-    oscGain.connect(masterGain);
-    osc.start();
-
-    const lfo     = audioCtx.createOscillator();
-    lfo.frequency.value = lfoHz;
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value  = depth;
-    lfo.connect(lfoGain);
-    lfoGain.connect(oscGain.gain);
-    lfo.start();
-  });
+  const source = audioCtx.createMediaElementSource(audioEl);
+  source.connect(masterGain);
 }
 
 if (musicBtn) {
@@ -280,10 +231,13 @@ if (musicBtn) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
 
     isPlaying = !isPlaying;
-    const now = audioCtx.currentTime;
-    masterGain.gain.cancelScheduledValues(now);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-    masterGain.gain.linearRampToValueAtTime(isPlaying ? 0.85 : 0, now + 2);
+    if (audioEl) {
+      if (isPlaying) {
+        audioEl.play().catch(() => {});
+      } else {
+        audioEl.pause();
+      }
+    }
 
     musicBtn.classList.toggle('playing', isPlaying);
     musicBtn.setAttribute('aria-label', isPlaying ? 'Pause ambient music' : 'Play ambient music');
