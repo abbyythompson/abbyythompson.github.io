@@ -305,6 +305,83 @@ if (tagline) {
   setTimeout(typeTagline, 300);
 }
 
+// Confetti explosion for squiggle links
+function randomBetween(min, max) { return Math.random() * (max - min) + min; }
+
+const confettiColors = [
+  'rgba(199, 249, 253, 0.93)',
+  'rgba(208, 253, 199, 0.93)',
+  'rgba(246, 130, 252, 0.93)',
+  getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim(),
+  'rgba(230, 235, 189, 0.93)',
+];
+
+function createConfettiPiece(x, y) {
+  const el = document.createElement('div');
+  el.className = 'confetti-piece';
+  const color = confettiColors[Math.floor(randomBetween(0, confettiColors.length))] || '#f3be8c';
+  el.style.background = color;
+  el.style.left = `${x}px`;
+  el.style.top = `${y}px`;
+  document.body.appendChild(el);
+  return {
+    el,
+    x,
+    y,
+    vx: randomBetween(-4.5, 4.5),
+    vy: randomBetween(-8.5, -3.5),
+    rotation: randomBetween(0, 360),
+    vr: randomBetween(-18, 18),
+    life: 0,
+    decay: randomBetween(0.03, 0.055),
+  };
+}
+
+const confettiPieces = [];
+
+function launchConfetti(x, y) {
+  const count = 20;
+  for (let i = 0; i < count; i += 1) {
+    confettiPieces.push(createConfettiPiece(x, y));
+  }
+}
+
+function updateConfetti() {
+  if (confettiPieces.length === 0) return;
+  for (let i = confettiPieces.length - 1; i >= 0; i -= 1) {
+    const piece = confettiPieces[i];
+    piece.vy += 0.18;
+    piece.vx *= 0.99;
+    piece.vy *= 0.99;
+    piece.x += piece.vx;
+    piece.y += piece.vy;
+    piece.rotation += piece.vr;
+    piece.life += piece.decay;
+
+    piece.el.style.left = `${piece.x}px`;
+    piece.el.style.top = `${piece.y}px`;
+    piece.el.style.transform = `rotate(${piece.rotation}deg)`;
+    piece.el.style.opacity = `${Math.max(0, 1 - piece.life)}`;
+
+    if (piece.life >= 1 || piece.y > window.innerHeight + 50) {
+      piece.el.remove();
+      confettiPieces.splice(i, 1);
+    }
+  }
+  requestAnimationFrame(updateConfetti);
+}
+
+const squiggles = document.querySelectorAll('.squiggle');
+if (squiggles.length > 0) {
+  squiggles.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      launchConfetti(e.clientX, e.clientY);
+      if (confettiPieces.length === 20) requestAnimationFrame(updateConfetti);
+    });
+  });
+}
+
 // Case study card navigation
 document.querySelectorAll('.case-study-card').forEach(card => {
   card.addEventListener('click', () => {
