@@ -963,7 +963,7 @@ img.mock-screen {
 .scene-divider img {
   width: 100%;
   display: block;
-  min-height: 320px;
+  min-height: 50px;
   background: var(--color-surface);
 }
 
