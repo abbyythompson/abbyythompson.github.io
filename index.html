@@ -1,401 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abby Thompson — UX/UI Product Designer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="icon" type="image/png" href="/images/Abby Icon.png">
-  <!-- Space Grotesk is a placeholder for General Grotesk — swap --font-display once you have the font files -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abby Thompson, Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-  <!-- ===================== SITE CONTROLS ===================== -->
-  <div class="site-controls" aria-label="Site controls">
-
-    <div class="mode-toggle" role="group" aria-label="Colour scheme">
-      <button class="mode-btn active" id="btn-light" title="Light mode" aria-pressed="true">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"/>
-          <line x1="12" y1="2"  x2="12" y2="4"/>
-          <line x1="12" y1="20" x2="12" y2="22"/>
-          <line x1="4.22" y1="4.22"   x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="2"  y1="12" x2="4"  y2="12"/>
-          <line x1="20" y1="12" x2="22" y2="12"/>
-          <line x1="4.22" y1="19.78"  x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
-        </svg>
-      </button>
-      <button class="mode-btn" id="btn-dark" title="Dark mode" aria-pressed="false">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
-    </div>
-
-    <button class="music-btn" id="music-toggle" aria-label="Play ambient music" title="Play ambient music">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path class="wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-        <path class="wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-      </svg>
-    </button>
-
-  </div>
-
-  <!-- ===================== HERO ===================== -->
-  <section class="hero" id="home">
-    <span class="watermark" aria-hidden="true">PORTFOLIO</span>
-    <!-- Clouds — save images/cloud.png to activate -->
-    <div class="hero-clouds" aria-hidden="true">
-      <div class="cloud cloud-1"><img src="images/cloud.png" alt="" draggable="false"></div>
-      <div class="cloud cloud-2"><img src="images/cloud.png" alt="" draggable="false"></div>
-      <div class="cloud cloud-3"><img src="images/cloud.png" alt="" draggable="false"></div>
-      <div class="cloud cloud-4"><img src="images/cloud.png" alt="" draggable="false"></div>
-      <div class="cloud cloud-5"><img src="images/cloud.png" alt="" draggable="false"></div>
-      <div class="cloud cloud-6"><img src="images/cloud.png" alt="" draggable="false"></div>
-    </div>
-    <div class="hero-inner">
-      <h1>👋🏻 I'm Abby</h1>
-      <p class="hero-tagline">I'm a designer with an engineering background</p>
-      <div class="profile-photo">
-        <img src="images/ProfilePicAbby.jpeg" alt="Abby Thompson — Product Designer">
+  <!-- ===== HERO (dark) ===== -->
+  <section class="hero">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="topbar-name">Abby Thompson</div>
+        <div class="topbar-meta">
+          <span class="meta-item"><i data-lucide="clock" class="meta-icon"></i><span id="local-time">4:55:34 PM</span></span>
+          <span class="dot">&middot;</span>
+          <span class="meta-item"><i data-lucide="map-pin" class="meta-icon"></i>London</span>
+          <span class="dot">&middot;</span>
+          <span class="meta-item"><i data-lucide="sun" class="meta-icon" id="weather-icon"></i><span id="weather-text">24&deg; Sunny</span></span>
+        </div>
+        <a href="#contact" class="btn-pill">Contact me</a>
       </div>
-      <div class="hero-actions">
-        <a href="#work-anchor" class="btn btn-filled">My work</a>
-        <a href="#about-anchor" class="btn btn-ghost">About me</a>
-      </div>
-    </div>
+    </header>
+
+    <h1 class="hero-title">
+      I design <em id="blank-a">products</em> with <em id="blank-b">systems thinking</em>
+    </h1>
+
+    <a href="#experience" class="scroll-cue" aria-label="Scroll to experience section">
+      <i data-lucide="chevron-down" class="scroll-cue-icon"></i>
+    </a>
+
   </section>
 
-  <!-- ===================== WORK ===================== -->
-  <section class="work" id="work">
-    <!-- Pin phase: watermark + typing pill stay centered while user scrolls through -->
-    <div class="pin-wrap">
-      <div class="pin-stage">
-        <!-- stage-backdrop clips the watermark to the viewport area -->
-        <div class="stage-backdrop" aria-hidden="true">
-          <span class="watermark">MY WORK</span>
-        </div>
-        <!-- pill sits right-aligned, like a chat bubble -->
-        <div class="stage-pill-wrap" id="work-anchor">
-          <div class="floating-pill" data-text="What are you most proud of?"></div>
-        </div>
-      </div>
-    </div>
+  <!-- ===== EXPERIENCE (light) ===== -->
+  <section class="experience" id="experience">
 
-    <!-- Case studies — hidden until typing completes -->
-    <div class="section-inner" id="work-content">
+    <div class="exp-grid">
 
-      <!-- Vertice -->
-      <article class="case-study">
-        <div class="case-study-header">
-          <h2 class="case-study-name">Vertice</h2>
-          <div class="case-study-role">
-            <span>Senior Product Designer</span>
-            <em>2025–Present</em>
-          </div>
+      <article class="exp-card card-purple">
+        <div class="exp-head">
+          <span class="exp-logo"><img src="images/logos/vertice.png" alt="Vertice" class="exp-logo-img"></span>
+          <a href="#case-study-vertice" class="exp-link js-case-study-trigger" data-case-study="vertice">View case study <i data-lucide="arrow-right" class="inline-icon"></i></a>
         </div>
-        <div class="cs-card-group">
-          <div class="cs-card cs-main" data-modal="vertice">
-            <img src="images/Vertice/New request.png" alt="Vertice" class="mock-screen">
-            <div class="cs-overlay"><span>Request page redesign</span></div>
-          </div>
-          <div class="cs-side-stack">
-            <div class="cs-card cs-secondary">
-              <img src="images/Vertice/add_contracts_hq.gif" alt="Vertice" class="mock-screen">
-              <div class="cs-overlay"><span>Add contracts flow</span></div>
-            </div>
-            <div class="cs-card cs-secondary">
-              <img src="images/Vertice/contracts_views_demo_10fps.gif" alt="Vertice" class="mock-screen">
-              <div class="cs-overlay"><span>Unified filtering</span></div>
-            </div>
-          </div>
+        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> Joined August 2025</p>
+        <ul>
+          <li>Rebuilt the request page around real user research, prioritising what negotiators actually need to see and cutting approval time</li>
+          <li>Shipped a fresher, easier-to-use UI that helped power a record sales quarter, with customers consistently telling sales and solutions it's a step above competitor tools</li>
+        </ul>
+        <div class="exp-mock" aria-hidden="true">
+          <img src="images/Vertice/expcardImage_vertice.png" alt="" loading="lazy">
         </div>
       </article>
 
-      <!-- CalSocial -->
-      <article class="case-study">
-        <div class="case-study-header">
-          <h2 class="case-study-name">CalSocial</h2>
-          <div class="case-study-role">
-            <span>Founding Designer</span>
-            <em>2026–Present</em>
-          </div>
+      <article class="exp-card card-lime">
+        <div class="exp-head">
+          <span class="exp-logo"><img src="images/logos/atlassian.png" alt="Atlassian" class="exp-logo-img"></span>
+          <a href="#case-study-atlassian" class="exp-link js-case-study-trigger" data-case-study="atlassian">View case study <i data-lucide="arrow-right" class="inline-icon"></i></a>
         </div>
-        <a href="https://cal.social/" target="_blank" rel="noopener noreferrer" data-modal="calsocial">
-          <div class="case-study-card">
-            <div class="card-grid layout-thirds">
-              <div class="card-screen">
-                <img src="images/CalSocial/CalSocial1.png" alt="Calsocial" class="mock-screen">
-              </div>
-            <div class="card-screen">
-              <img src="images/CalSocial/Calsocial2.png" alt="Calsocial" class="mock-screen">
-            </div>
-            <div class="card-screen">
-              <img src="images/CalSocial/CalSocial3.png" alt="Calsocial" class="mock-screen">
-            </div>
-          </div>
-          <div class="card-hover-overlay">
-            <span>Design of social calendar app</span>
-          </div>
+        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> Joined May 2022</p>
+        <ul>
+          <li>Led the goal-tracking initiative in Compass, from concept to shipped feature</li>
+          <li>Owned the Health section of the product end-to-end - scorecards and all</li>
+        </ul>
+        <div class="exp-mock" aria-hidden="true">
+          <img src="images/Atlassian/expcardImage_atlassian.png" alt="" loading="lazy">
         </div>
-        </a>
       </article>
 
-      <!-- Atlassian -->
-      <article class="case-study">
-        <div class="case-study-header">
-          <h2 class="case-study-name">Atlassian</h2>
-          <div class="case-study-role">
-            <span>Product Designer</span>
-            <em>2022–2024</em>
-          </div>
+      <article class="exp-card card-salmon">
+        <div class="exp-head">
+          <span class="exp-logo">calsocial</span>
+          <a href="https://cal.social/" class="exp-link" target="_blank" rel="noopener noreferrer">View app <i data-lucide="arrow-right" class="inline-icon"></i></a>
         </div>
-        <div class="cs-card-group">
-          <div class="cs-card cs-main" data-modal="atlassian">
-            <img src="images/Atlassian/Software Goals/Goals Empty State.png" alt="Atlassian" class="mock-screen">
-            <div class="cs-overlay"><span>Creating goals in Compass</span></div>
-          </div>
-          <div class="cs-side-stack">
-            <div class="cs-card cs-secondary">
-              <img src="images/Atlassian/Scorecards/AI-ScorecardCriteria.gif" alt="Atlassian" class="mock-screen">
-              <div class="cs-overlay"><span>AI scorecard criteria</span></div>
-            </div>
-            <div class="cs-card cs-secondary">
-              <img src="images/Atlassian/Scorecards/Scorecard - Drawer.png" alt="Atlassian" class="mock-screen">
-              <div class="cs-overlay"><span>Scorecard drawer</span></div>
-            </div>
-          </div>
+        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i>Part time Founding Designer in June 2026</p>
+        <ul>
+          <li>A friends-first social calendar that pulls event planning out of chaotic group chats</li>
+          <li>Leading a full visual and UX refresh to boost early adoption and retention</li>
+        </ul>
+        <div class="exp-mock" aria-hidden="true">
+          <img src="images/jasper/expcardImage_calsocial.png" alt="" loading="lazy">
+        </div>
+      </article>
+
+      <article class="exp-card card-skyblue">
+        <div class="exp-head">
+          <span class="exp-logo"><img src="images/logos/Jasper.png" alt="Jasper" class="exp-logo-img"></span>
+        </div>
+        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i>Joined November 2020</p>
+        <ul>
+          <li>Designed and developed the customer, admin, and marketing experiences</li>
+          <li>Built the platform wholesale CRE investors use instead of spreadsheets</li>
+        </ul>
+        <div class="exp-mock" aria-hidden="true">
+          <img src="images/jasper/expcardImage_jasper.png" alt="" loading="lazy">
+        </div>
+      </article>
+
+      <article class="exp-card card-yellow">
+        <div class="exp-head">
+          <span class="exp-logo exp-logo-kitesurf">Kitesurf club</span>
+        </div>
+        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> Club president in 2017</p>
+        <ul>
+          <li>Designed and built the club's site from scratch; sign-ups, kite-spot maps, the works</li>
+          <li>Membership grew 35% (153 &rarr; 207) the year after launch</li>
+        </ul>
+        <div class="exp-mock" aria-hidden="true">
+          <img src="images/Google/expcardImage_kite.png" alt="" loading="lazy">
+        </div>
+      </article>
+
+      <article class="exp-card card-mint">
+        <div class="exp-head">
+          <span class="exp-logo"><img src="images/logos/Google.png" alt="Google" class="exp-logo-img"></span>
+        </div>
+        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> Interned 2017</p>
+        <ul>
+          <li>Built an Android widget for sharing live location in Google Maps</li>
+        </ul>
+        <div class="exp-mock" aria-hidden="true">
+          <img src="images/Google/expcardImage_google.png" alt="" loading="lazy">
         </div>
       </article>
 
     </div>
+
+    <div class="wave wave-top" aria-hidden="true"></div>
   </section>
 
-  <!-- ===================== ABOUT ===================== -->
-  <section class="about" id="about">
-    <!-- Pin phase: same pattern as work -->
-    <div class="pin-wrap">
-      <div class="pin-stage">
-        <div class="stage-backdrop" aria-hidden="true">
-          <span class="watermark">ABOUT ME</span>
-        </div>
-        <div class="stage-pill-wrap" id="about-anchor">
-          <div class="floating-pill" data-text="But why are you so great?"></div>
-        </div>
-      </div>
+  <!-- ===== FOOTER (dark) ===== -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/abbythompson/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">Download resume</a>
+      <a href="mailto:abbyythompson@gmail.com">abbyythompson@gmail.com</a>
     </div>
-
-    <!-- About body — hidden until typing completes -->
-    <div class="section-inner about-inner" id="about-content">
-      <div class="about-body">
-        <p>I use design principles and data-driven decision making to <a href="#" class="squiggle" onclick="return false">build beautiful, accessible and responsive user experiences.</a></p>
-        <p>I have 8 years of corporate experience in tech companies ranging from start-ups all the way to big tech 🚀</p>
-        <p>Previously a <a href="#" class="squiggle" onclick="return false">software engineer</a>, I can bring a level of technical understanding and empathy working with cross-functional stakeholders.</p>
-        <p>I'm also an <a href="#" class="squiggle" onclick="return false">avid snowboarder, skier and tennis player</a> 🎿😆</p>
-        <div class="bitmoji">
-          <img src="images/ProfilePicAbby.jpeg" alt="">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== SCENE DIVIDER ===================== -->
-  <div class="scene-divider">
-    <img src="images/grass2.png" alt="" aria-hidden="true">
-  </div>
-
-  <!-- ===================== CONTACT ===================== -->
-  <footer class="contact" id="contact">
-    <span class="watermark" aria-hidden="true">CONTACT</span>
-    <div class="section-inner contact-inner">
-      <ul class="contact-list">
-        <li>
-          <a href="https://www.linkedin.com/in/abbythompson/" target="_blank" rel="noopener noreferrer">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="1" y="1" width="14" height="14" rx="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <path d="M4.5 6.5V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="4.5" cy="4.5" r="0.75" fill="currentColor"/>
-              <path d="M7.5 12V9C7.5 7.9 8.4 7 9.5 7C10.6 7 11.5 7.9 11.5 9V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            See my LinkedIn
-          </a>
-        </li>
-        <li>
-          <a href="mailto:abbyythompson@gmail.com">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <path d="M1.5 4.5L8 9.5L14.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            Email me at abbythompson@gmail.com
-          </a>
-        </li>
-        <li>
-          <a href="/assets/CV-Abby Thompson-Product Designer.pdf" target="_blank" rel="noopener noreferrer">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M8 1V10M8 10L5 7M8 10L11 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M2 12V13C2 14.1 2.9 15 4 15H12C13.1 15 14 14.1 14 13V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            Download resume
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="footer-bar">
-      <span>Abby Thompson © 2026</span>
-      <span><a href="https://github.com/abbyythompson/abbyythompson.github.io" target="_blank" rel="noopener noreferrer">Built by me ♡</a></span>
-    </div>
+    <div class="footer-name">Abby Thompson</div>
   </footer>
 
-  <!-- Case study modals -->
-
-  <!-- Vertice -->
-  <div class="cs-modal" id="modal-vertice" role="dialog" aria-modal="true" aria-label="Vertice — Request to contract">
-    <button class="cs-modal-close" aria-label="Close">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-      </svg>
-    </button>
-    <div class="cs-modal-body">
-      <div class="cm-wrap">
-
-        <!-- Hero -->
-        <div class="cm-hero">
-          <h1 class="cm-title">Request to contract</h1>
-          <p class="cm-intro">Vertice helps companies buy and renew software at the best price, saving them millions. The platform centres around two core objects: contracts and new purchase requests.</p>
-          <p class="cm-intro">The request page supports both renewals and new software requests, making it critical to the user experience. However, the original design failed to support the primary use cases effectively. The goal was to increase SaaS platform adoption by solving these key workflows and improving CSAT.</p>
-          <p class="cm-meta">Product Designer &nbsp;·&nbsp; 2 months &nbsp;·&nbsp; 40% increase in CSAT</p>
-          <div class="cm-img cm-img-hero"></div>
-        </div>
-
-        <!-- Solution -->
-        <div class="cm-section">
-          <h2 class="cm-section-heading">✨ The solution ✨</h2>
-
-          <div class="cm-item">
-            <div class="cm-img cm-img-sm"></div>
-            <div class="cm-item-text">
-              <h3>Redesigning key pages</h3>
-              <p>Lead this initiative from week 2 after joining Vertice. Worked with Product, Engineering and Data science to understand the problem. Defined new components and patterns across the product. Interviewed dozens of internal and external stakeholders to understand the pain points and desires of the primary users.</p>
-            </div>
-          </div>
-
-          <div class="cm-item">
-            <div class="cm-item-text">
-              <h3>Designing scalable components</h3>
-              <p>Audited the existing UI to identify inconsistencies and duplication. Created a flexible component system to support multiple workflows and edge cases. Balanced speed of delivery with long-term maintainability. Documented usage guidelines to enable designers and engineers to build confidently and consistently.</p>
-            </div>
-            <div class="cm-img cm-img-sm"></div>
-          </div>
-
-          <div class="cm-item">
-            <div class="cm-img cm-img-sm"></div>
-            <div class="cm-item-text">
-              <h3>Improving communication</h3>
-              <p>Mapped stakeholder touchpoints across the end-to-end workflow. Identified breakdowns in handoffs between teams. Simplified information architecture to surface the right context at the right time. Introduced clearer status visibility and structured updates to reduce ambiguity and back-and-forth.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Impact -->
-        <div class="cm-section">
-          <h2 class="cm-section-heading">🔥 The impact 🔥</h2>
-          <div class="cm-stats">
-            <div class="cm-stat">
-              <span class="cm-stat-num">+32%</span>
-              <span class="cm-stat-label">Increase in CSAT</span>
-            </div>
-            <div class="cm-stat">
-              <span class="cm-stat-num">-27%</span>
-              <span class="cm-stat-label">Time to complete request</span>
-            </div>
-            <div class="cm-stat">
-              <span class="cm-stat-num">+41%</span>
-              <span class="cm-stat-label">Improvement in task success</span>
-            </div>
-          </div>
-          <p class="cm-body">Internal teams moved faster with clearer ownership and less back-and-forth. External users gained better visibility into their requests, reducing confusion and support tickets by 22%. The redesigned experience drove higher engagement and stronger adoption across the platform.</p>
-        </div>
-
-        <!-- Context -->
-        <div class="cm-section">
-          <h2 class="cm-section-heading">❝ The context ❞</h2>
-          <div class="cm-two-col">
-            <div class="cm-context-text">
-              <h3>Role &amp; responsibility</h3>
-              <ul>
-                <li>Took ownership of the initiative within two weeks of joining Vertice</li>
-                <li>Partnered closely with Product, Engineering, and Data to define the problem space and align on success metrics</li>
-                <li>Led discovery across internal and external users to uncover friction in key workflows</li>
-                <li>Translated insights into clear design principles, reusable patterns, and scalable components</li>
-                <li>Facilitated alignment sessions to drive prioritisation and delivery across teams</li>
-              </ul>
-              <h3>Team</h3>
-              <ul>
-                <li>Collaborated with 3 Product Managers and 3 Engineering squads</li>
-                <li>Worked alongside Customer Success and Sales to validate solutions against real customer needs</li>
-                <li>Coordinated with Data to measure impact and track adoption post-launch</li>
-              </ul>
-            </div>
-            <div class="cm-img cm-img-sm"></div>
-          </div>
-        </div>
-
-        <!-- Future -->
-        <div class="cm-section">
-          <h2 class="cm-section-heading">👾 The future 👾</h2>
-          <div class="cm-item">
-            <div class="cm-img cm-img-sm"></div>
-            <div class="cm-item-text">
-              <h3>Evolving the contract experience</h3>
-              <p>The next focus is redesigning the contract page to align with the new request experience.</p>
-              <p>Due to time constraints, some enhancements were intentionally scoped for a second phase. The contract page will extend the same patterns and components, ensuring consistency across workflows while reducing design and engineering duplication.</p>
-              <p>This phase will:</p>
-              <ul class="cm-list">
-                <li>Unify the experience across contracts and requests</li>
-                <li>Increase component reuse to improve development efficiency</li>
-                <li>Further streamline the user journey and reduce cognitive load</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-      </div>
+  <!-- ===== CASE STUDY MODAL ===== -->
+  <div class="cs-modal" id="cs-modal" aria-hidden="true">
+    <div class="cs-modal-backdrop" data-cs-close></div>
+    <div class="cs-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title">
+      <button type="button" class="cs-modal-close" data-cs-close aria-label="Close case study">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="cs-modal-content" id="cs-modal-content"></div>
     </div>
   </div>
 
-  <!-- Calsocial -->
-  <div class="cs-modal" id="modal-calsocial" role="dialog" aria-modal="true" aria-label="Calsocial case study">
-    <button class="cs-modal-close" aria-label="Close">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-      </svg>
-    </button>
-    <div class="cs-modal-body">
-      <div class="cs-modal-inner">
-        <p class="cs-modal-placeholder">Case study content coming soon.</p>
+  <!-- ===== CASE STUDY CONTENT (cloned into modal by slug) ===== -->
+  <template id="case-study-atlassian">
+    <div class="cs cs-theme-lime">
+      <div class="cs-hero">
+        <img src="images/Atlassian/Software Goals/GoalPromo.png" alt="Software Goals overview in Atlassian Compass" loading="lazy">
       </div>
-    </div>
-  </div>
 
-  <!-- Atlassian -->
-  <div class="cs-modal" id="modal-atlassian" role="dialog" aria-modal="true" aria-label="Atlassian case study">
-    <button class="cs-modal-close" aria-label="Close">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-        <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-      </svg>
-    </button>
-    <div class="cs-modal-body">
-      <div class="cs-modal-inner">
-        <p class="cs-modal-placeholder">Case study content coming soon.</p>
+      <div class="cs-body">
+        <p class="cs-eyebrow">Atlassian &middot; Compass</p>
+        <h2 class="cs-title" id="cs-modal-title">Software Goals</h2>
+        <p class="cs-meta">Product Designer &middot; PM, EM &amp; 12 engineers</p>
+
+        <p class="cs-lead">I led design on Software Goals, a new framework inside Compass for defining and tracking engineering-health improvement work. It grew to 276 engaged teams with a 57.9% awareness-to-engagement conversion rate, and became the internal proof point for a feature Atlassian later took to customers.</p>
+
+        <section class="cs-section">
+          <h3>Context</h3>
+          <p>Compass is Atlassian's catalog for every software component in the company: every microservice, every library, tracked in one place. Our Engineering Health team used it to try to lift the quality of that software across the org, but had no systematic way to define, track, or report on that work.</p>
+        </section>
+
+        <section class="cs-section">
+          <h3>The problem</h3>
+          <ul class="cs-list">
+            <li>No standard way for teams to define, track, or report on engineering improvement work</li>
+            <li>No consolidated view for leadership or non-technical PMs, just ad-hoc reporting</li>
+            <li>Manual data collection that made it hard to drive improvements at scale</li>
+          </ul>
+          <p class="cs-note">External Compass customers had described the same problem. Solving it internally meant we were also prototyping a future customer-facing feature.</p>
+        </section>
+
+        <!-- BEST GUESS, confirm/edit before this ships -->
+        <section class="cs-section">
+          <h3>Constraints</h3>
+          <ul class="cs-list">
+            <li>Designing for two audiences at once: engineers who'd live in this daily, and leadership who'd only ever see a summary</li>
+            <li>No mandate to force adoption: 12 teams already had their own workarounds, so the feature had to earn trust rather than just exist</li>
+            <li>An internal experiment with external stakes: decisions here were likely to become the template for a customer-facing feature later</li>
+          </ul>
+        </section>
+
+        <section class="cs-section">
+          <h3>Process</h3>
+          <p>Before any UI, I mapped how the two team types (teams who own a goal and teams who contribute to one) actually experienced the current manual process, and worked with engineering to define what a "Goal" needed to be as a data object so progress could sync cleanly across Compass and Atlassian Home.</p>
+          <div class="cs-process-grid">
+            <figure>
+              <img src="images/Atlassian/Software Goals/Driver team existing user journey.png" alt="Driver team existing user journey map" loading="lazy">
+              <figcaption>Driver vs. receiving team journeys: where the manual process broke down for each</figcaption>
+            </figure>
+            <figure>
+              <img src="images/Atlassian/Software Goals/Object Model.png" alt="Software Goals object model" loading="lazy">
+              <figcaption>Modeling "Goal" as an object so progress could sync across Compass, Home, and reporting</figcaption>
+            </figure>
+            <figure>
+              <img src="images/Atlassian/Scorecards/WorkShopEngineering.png" alt="Working session with the engineering team" loading="lazy">
+              <figcaption>Working sessions with engineering: designing the data model and the interface together, not in sequence</figcaption>
+            </figure>
+          </div>
+          <!-- BEST GUESS, confirm/edit before this ships -->
+          <p class="cs-note">An early version of the flow only let a team pass or fail a goal outright. In working sessions it became clear teams needed a way to flag legitimate blockers instead of failing silently. That became the exemption workflow in the shipped version.</p>
+        </section>
+
+        <section class="cs-section">
+          <h3>The solution</h3>
+          <ul class="cs-list">
+            <li><strong>Centralised goal definition &amp; visibility.</strong> The Engineering Health team could define and publish standardised goals in Compass, with key metrics tracked automatically. For stakeholders who didn't live in Compass, progress summaries surfaced in Atlassian Home.</li>
+            <li><strong>Team-level tracking &amp; accountability.</strong> Teams could monitor their own progress, understand their status, and request an exemption with justification when a goal genuinely didn't apply, balancing accountability with room for real context.</li>
+          </ul>
+        </section>
+
+        <section class="cs-section cs-section-impact">
+          <h3>Impact</h3>
+          <div class="cs-stats">
+            <div class="cs-stat"><span class="cs-stat-num">276</span><span class="cs-stat-label">teams engaged</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">57.9%</span><span class="cs-stat-label">awareness &rarr; engagement conversion</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">2.5x</span><span class="cs-stat-label">lift in Health Details views</span></div>
+          </div>
+          <p>That uptake validated Software Goals as a real solution for operationalising software health internally, paving the way for its external rollout.</p>
+        </section>
+
+        <!-- BEST GUESS, confirm/edit before this ships -->
+        <section class="cs-section">
+          <h3>What I'd do differently</h3>
+          <p>I'd instrument team-level engagement from day one rather than leaning on leadership-facing view counts. The 2.5x lift told us leadership was paying attention, but it took longer than it should have to see which teams were quietly disengaged versus genuinely blocked.</p>
+        </section>
+
+        <div class="cs-cta">
+          <p>Want the full story: rollout sequencing, who we had to convince, what broke along the way?</p>
+          <a href="#contact" class="btn-pill cs-cta-btn" data-cs-close>Get in touch for the full presentation</a>
+        </div>
       </div>
     </div>
-  </div>
+  </template>
+
+  <template id="case-study-vertice">
+    <div class="cs cs-theme-purple">
+      <div class="cs-hero">
+        <img src="images/Vertice/HeroRequest.png" alt="The redesigned Vertice request page" loading="lazy">
+      </div>
+
+      <div class="cs-body">
+        <p class="cs-eyebrow">Vertice</p>
+        <h2 class="cs-title" id="cs-modal-title">Redesigning the Request Experience</h2>
+        <p class="cs-meta">Product Designer &middot; 2 months &middot; 3 PMs &amp; 3 engineering squads</p>
+
+        <p class="cs-lead">Vertice helps companies buy and renew software at the best price, saving them millions. The platform centres on two core objects, contracts and new purchase requests, and the request page carries both renewals and new software requests through the workflow. I led its redesign, lifting CSAT by 32% and cutting time to complete a request by 27%.</p>
+
+        <section class="cs-section">
+          <h3>Context</h3>
+          <p>The request page is critical to the Vertice experience: it supports both renewals and brand-new software requests. But the original design failed to support either use case effectively, putting SaaS platform adoption and CSAT at risk.</p>
+        </section>
+
+        <section class="cs-section">
+          <h3>Role &amp; team</h3>
+          <ul class="cs-list">
+            <li>Took ownership of the initiative within two weeks of joining Vertice</li>
+            <li>Partnered closely with Product, Engineering, and Data to define the problem space and align on success metrics</li>
+            <li>Led discovery across internal and external users to uncover friction in key workflows</li>
+            <li>Collaborated with 3 Product Managers and 3 engineering squads, plus Customer Success, Sales, and Data to validate solutions and measure impact</li>
+          </ul>
+        </section>
+
+        <section class="cs-section">
+          <h3>Process</h3>
+
+          <h4>Redesigning key pages</h4>
+          <p>I led this initiative from week two after joining, working with Product, Engineering, and Data Science to understand the problem. I interviewed dozens of internal and external stakeholders to understand the pain points and desires of the primary users, then defined new components and patterns across the product.</p>
+          <figure class="cs-process-demo">
+            <img src="images/Vertice/Req - Tabs.gif" alt="The redesigned request page, showing tasks and the communication panel" loading="lazy">
+            <figcaption>Intermidiary stage of the page design: tasks, offers, and stakeholder communication in one view</figcaption>
+          </figure>
+
+          <h4>Designing scalable components</h4>
+          <p>I audited the existing UI to identify inconsistencies and duplication, then built a flexible component system to support multiple workflows and edge cases, balancing speed of delivery against long-term maintainability. Usage guidelines let designers and engineers build confidently and consistently from there.</p>
+
+          <h4>Improving communication</h4>
+          <p>I mapped stakeholder touchpoints across the end-to-end workflow, identified where handoffs between teams were breaking down, and simplified the information architecture to surface the right context at the right time. Clearer status visibility and structured updates cut down on ambiguity and back-and-forth.</p>
+        </section>
+
+        <section class="cs-section cs-section-impact">
+          <h3>Impact</h3>
+          <div class="cs-stats">
+            <div class="cs-stat"><span class="cs-stat-num">32%</span><span class="cs-stat-label">increase in CSAT</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">-27%</span><span class="cs-stat-label">time to complete a request</span></div>
+            <div class="cs-stat"><span class="cs-stat-num">41%</span><span class="cs-stat-label">improvement in task completion</span></div>
+          </div>
+          <p>Internal teams moved faster with clearer ownership and less back-and-forth. External users gained better visibility into their requests, reducing confusion and cutting support tickets. The redesigned experience drove higher engagement and stronger adoption across the platform.</p>
+        </section>
+
+        <section class="cs-section">
+          <h3>What's next</h3>
+          <p>The next focus is redesigning the contract page to align with the new request experience. Due to time constraints, some enhancements were intentionally scoped for a second phase. The contract page will extend the same patterns and components, keeping workflows consistent while cutting design and engineering duplication. This phase will:</p>
+          <ul class="cs-list">
+            <li>Unify the experience across contracts and requests</li>
+            <li>Increase component reuse to improve development efficiency</li>
+            <li>Further streamline the user journey and reduce cognitive load</li>
+          </ul>
+        </section>
+
+        <div class="cs-cta">
+          <p>Want the full walkthrough: the component system, the stakeholder interviews, what's coming for contracts?</p>
+          <a href="#contact" class="btn-pill cs-cta-btn" data-cs-close>Get in touch for the full presentation</a>
+        </div>
+      </div>
+    </div>
+  </template>
 
   <script src="script.js"></script>
 </body>

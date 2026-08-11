@@ -2,3 +2,7 @@ node_modules
 dist
 .DS_Store
 *.local
+
+# Private / non-web assets
+images/Vertice/Vertice Probation Period Review.pdf
+.claude/settings.local.json
