@@ -338,9 +338,18 @@ ul{ list-style: none; }
   margin: 0 auto;
 }
 
-/* Clear glass rather than frosted: a light blur and a thin tint, so whatever blob
-   is passing behind the card comes through it. The lit top edge and the corner
-   sheen are what keep it reading as a pane instead of a hole */
+/* Clear glass rather than frosted: one flat tint, so whatever blob is passing
+   behind the card is what varies across it. Nothing is painted on top of that
+   tint; the lit top edge and the hairline border are what keep it reading as a
+   pane instead of a hole.
+
+   Deliberately no backdrop-filter. What sits behind these cards is the glow
+   field: blobs already blurred by 110px and drifting every frame. A 9px
+   backdrop blur over an already-blurred, already-moving backdrop adds nothing
+   the eye can see, but it is the most expensive thing that can be asked of a
+   scroll: six card-sized regions plus their pills, each re-sampling and
+   re-blurring a backdrop that can never be cached because it is animating.
+   The tint carries the glass on its own */
 .exp-card{
   color: #fff;
   border-radius: 28px;
@@ -350,12 +359,7 @@ ul{ list-style: none; }
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(150deg, rgba(255,255,255,.11), rgba(255,255,255,.03) 40%, rgba(255,255,255,0) 68%),
-    radial-gradient(120% 80% at 10% 0%, rgba(var(--card-sheen), .16), transparent 62%),
-    rgba(var(--card-tint), .26);
-  backdrop-filter: blur(9px) saturate(150%);
-  -webkit-backdrop-filter: blur(9px) saturate(150%);
+  background: rgba(var(--card-tint), .34);
   border: 1px solid rgba(255,255,255,.14);
   box-shadow:
     0 24px 60px rgba(0,0,0,.45),
@@ -395,11 +399,11 @@ ul{ list-style: none; }
   filter: brightness(0) invert(1);
 }
 
+/* Same reasoning as the card: the pill sits on the card's own flat tint, so a
+   backdrop blur here was blurring a solid colour */
 .exp-link{
   color: #fff;
-  background: rgba(255,255,255,.16);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background: rgba(255,255,255,.18);
   border: 1px solid rgba(255,255,255,.32);
   box-shadow: 0 1px 6px rgba(0,0,0,0.18);
   padding: 7px 14px;
@@ -447,14 +451,13 @@ ul{ list-style: none; }
   aspect-ratio: 1800 / 1260;
 }
 
-/* --card-tint is the deep colour the glass is dyed with, --card-sheen the light
-   version of the same hue that catches the highlight in the top corner */
-.card-purple{ --card-tint: 71,43,120;  --card-sheen: 198,168,239; }
-.card-lime{   --card-tint: 63,82,24;   --card-sheen: 205,234,124; }
-.card-salmon{ --card-tint: 120,44,36;  --card-sheen: 243,164,156; }
-.card-skyblue{--card-tint: 29,74,91;   --card-sheen: 169,220,236; }
-.card-yellow{ --card-tint: 100,84,26;  --card-sheen: 238,225,139; }
-.card-mint{   --card-tint: 31,90,47;   --card-sheen: 166,231,176; }
+/* --card-tint is the deep colour the glass is dyed with, the card's only fill */
+.card-purple{ --card-tint: 71,43,120; }
+.card-lime{   --card-tint: 63,82,24; }
+.card-salmon{ --card-tint: 120,44,36; }
+.card-skyblue{--card-tint: 29,74,91; }
+.card-yellow{ --card-tint: 100,84,26; }
+.card-mint{   --card-tint: 31,90,47; }
 
 
 /* ---------------- FOOTER ---------------- */
@@ -579,7 +582,7 @@ ul{ list-style: none; }
   position: relative;
   z-index: 1;
   background: var(--cream);
-  width: min(calc(100% - 48px), 900px);
+  width: min(calc(100% - 48px), 1320px);
   max-height: calc(100vh - 80px);
   margin: 40px auto;
   border-radius: 28px;
@@ -632,6 +635,8 @@ ul{ list-style: none; }
 
 .cs-body{
   padding: 36px 64px 56px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .cs-eyebrow{

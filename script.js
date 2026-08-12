@@ -293,12 +293,19 @@ Icons.render();
    slowly on purpose: a full 41 second drift covers 55px, so at 60fps the
    rendered position is unchanged for most frames. Running at 30fps and
    skipping writes that quantise to the same string keeps a full-viewport
-   blurred layer from repainting for no visible gain. */
+   blurred layer from repainting for no visible gain.
+
+   The transform is translate only. A blob is a 110px blur over a viewport-sized
+   element, and the compositor can reuse that blurred texture while the element
+   is merely being moved, but not while it is being scaled: a scale invalidates
+   the raster, so the blur is recomputed every frame for every blob on screen.
+   The breathing is opacity instead, which the compositor applies to the texture
+   it already has, and reads the same at this size. */
 (function () {
   const els = Array.from(document.querySelectorAll('.glow-field .glow'));
   if (!els.length || REDUCED_MOTION) return;
 
-  const BREATH = 0.045; // scale amplitude of the ambient breathing
+  const BREATH = 0.06; // opacity amplitude of the ambient breathing, as a fraction of --o
   const FPS = 30;
 
   // The field runs the length of the document, so sleeping is per blob: only the
@@ -318,7 +325,11 @@ Icons.render();
       rateY: TAU / (57 + (i % 7) * 9),
       rateBreath: TAU / (17 + (i % 4) * 5), // seconds per breath
       phase: i * 2.1,
+      // The composition's per-blob strength, set on --top/--x/--w/--o in the
+      // markup. The breath rides on top of it rather than replacing it
+      baseOpacity: parseFloat(el.style.getPropertyValue('--o')) || 0.75,
       transform: '',
+      opacity: '',
     };
     awake.set(el, blob);
     return blob;
@@ -337,12 +348,17 @@ Icons.render();
         const y = Math.cos(t * blob.rateY + blob.phase) * blob.driftY;
         const breath = 1 + Math.sin(t * blob.rateBreath + blob.phase) * BREATH;
 
-        const transform =
-          `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${breath.toFixed(3)})`;
-        if (transform === blob.transform) continue;
+        const transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+        if (transform !== blob.transform) {
+          blob.transform = transform;
+          blob.el.style.transform = transform;
+        }
 
-        blob.transform = transform;
-        blob.el.style.transform = transform;
+        const opacity = (blob.baseOpacity * breath).toFixed(3);
+        if (opacity !== blob.opacity) {
+          blob.opacity = opacity;
+          blob.el.style.opacity = opacity;
+        }
       }
     },
   };
@@ -364,7 +380,7 @@ Icons.render();
           blob.awake = entry.isIntersecting;
           // Promote only what is moving: a dozen blurred, viewport-sized layers
           // held on the compositor at once is a lot of texture for no gain
-          blob.el.style.willChange = blob.awake ? 'transform' : 'auto';
+          blob.el.style.willChange = blob.awake ? 'transform, opacity' : 'auto';
         });
         sync();
       },
