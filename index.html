@@ -6,39 +6,79 @@
 <title>Abby Thompson, Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<!-- The blobs are the first thing painted, so the browser is told to fetch them
+     alongside the stylesheet rather than after it has parsed the CSS -->
+<link rel="preload" as="image" href="assets/blob-purple.png">
+<link rel="preload" as="image" href="assets/blob-green.png">
+<!-- Icons are a local 19-icon subset of Lucide, not the 2021-icon CDN bundle.
+     Both deferred, so neither blocks the first paint; defer keeps them in order,
+     so the icon data is always defined before script.js runs -->
+<script src="icons.js" defer></script>
+<script src="script.js" defer></script>
 </head>
 <body>
 
-  <!-- ===== HERO (dark) ===== -->
-  <section class="hero">
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="topbar-name">Abby Thompson</div>
-        <div class="topbar-meta">
-          <span class="meta-item"><i data-lucide="clock" class="meta-icon"></i><span id="local-time">4:55:34 PM</span></span>
-          <span class="dot">&middot;</span>
-          <span class="meta-item"><i data-lucide="map-pin" class="meta-icon"></i>London</span>
-          <span class="dot">&middot;</span>
-          <span class="meta-item"><i data-lucide="sun" class="meta-icon" id="weather-icon"></i><span id="weather-text">24&deg; Sunny</span></span>
-        </div>
-        <a href="#contact" class="btn-pill">Contact me</a>
+  <!-- ===== PAGE BACKGROUND =====
+       One glow field for the whole document rather than one per section. The
+       sections are transparent, so the blobs run continuously behind all of them
+       and no blob is ever cut in half at a section boundary -->
+  <div class="page-bg" aria-hidden="true">
+    <div class="glow-field page-glow">
+      <span class="glow glow--purple glow--left"  style="--top:-4%; --x:-18%; --w:64vw; --o:.95" data-drift-x="55" data-drift-y="20"></span>
+      <span class="glow glow--purple glow--right" style="--top:4%;  --x:-20%; --w:56vw; --o:.85" data-drift-x="16" data-drift-y="70"></span>
+      <span class="glow glow--green  glow--right" style="--top:13%; --x:-14%; --w:44vw; --o:.70" data-drift-x="34" data-drift-y="44"></span>
+      <span class="glow glow--green  glow--left"  style="--top:21%; --x:-15%; --w:52vw; --o:.80" data-drift-x="42" data-drift-y="30"></span>
+      <span class="glow glow--purple glow--right" style="--top:29%; --x:-18%; --w:58vw; --o:.90" data-drift-x="20" data-drift-y="62"></span>
+      <span class="glow glow--purple glow--left"  style="--top:38%; --x:-18%; --w:56vw; --o:.78" data-drift-x="50" data-drift-y="24"></span>
+      <span class="glow glow--green  glow--right" style="--top:46%; --x:-15%; --w:48vw; --o:.75" data-drift-x="26" data-drift-y="56"></span>
+      <span class="glow glow--green  glow--left"  style="--top:55%; --x:-14%; --w:46vw; --o:.68" data-drift-x="38" data-drift-y="36"></span>
+      <span class="glow glow--purple glow--right" style="--top:62%; --x:-19%; --w:60vw; --o:.92" data-drift-x="18" data-drift-y="66"></span>
+      <span class="glow glow--purple glow--left"  style="--top:71%; --x:-17%; --w:54vw; --o:.85" data-drift-x="46" data-drift-y="28"></span>
+      <span class="glow glow--green  glow--right" style="--top:79%; --x:-14%; --w:46vw; --o:.72" data-drift-x="30" data-drift-y="50"></span>
+      <span class="glow glow--purple glow--left"  style="--top:87%; --x:-18%; --w:58vw; --o:.95" data-drift-x="52" data-drift-y="22"></span>
+      <span class="glow glow--green  glow--right" style="--top:94%; --x:-16%; --w:52vw; --o:.78" data-drift-x="22" data-drift-y="58"></span>
+    </div>
+    <!-- Fine grain over the whole page, softens the gradient banding. Fixed, so one
+         viewport-sized tile covers a document of any length -->
+    <div class="page-grain"></div>
+  </div>
+
+  <!-- ===== NAV =====
+       Lives outside the hero: the hero is its own stacking context, so a topbar
+       nested inside it gets painted under the later sections on scroll -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-name">Abby Thompson</div>
+      <div class="topbar-meta">
+        <span class="meta-item"><i data-lucide="clock" class="meta-icon"></i><span id="local-time">4:55:34 PM</span></span>
+        <span class="dot">&middot;</span>
+        <span class="meta-item"><i data-lucide="map-pin" class="meta-icon"></i>London</span>
+        <span class="dot">&middot;</span>
+        <span class="meta-item"><i data-lucide="sun" class="meta-icon" id="weather-icon"></i><span id="weather-text">24&deg; Sunny</span></span>
       </div>
-    </header>
+      <a href="#contact" class="btn-pill">Contact me</a>
+    </div>
+  </header>
+
+  <!-- ===== HERO =====
+       The cursor-following green light is disabled for now: dropping the
+       data-cursor-glow attribute is all it takes, the layer is only built for
+       sections that carry it -->
+  <section class="hero">
 
     <h1 class="hero-title">
       I design <em id="blank-a">products</em> with <em id="blank-b">systems thinking</em>
     </h1>
 
     <a href="#experience" class="scroll-cue" aria-label="Scroll to experience section">
-      <i data-lucide="chevron-down" class="scroll-cue-icon"></i>
+      <i data-lucide="arrow-down" class="scroll-cue-icon"></i>
     </a>
 
   </section>
 
-  <!-- ===== EXPERIENCE (light) ===== -->
+  <!-- ===== EXPERIENCE ===== -->
   <section class="experience" id="experience">
 
     <div class="exp-grid">
@@ -54,7 +94,7 @@
           <li>Shipped a fresher, easier-to-use UI that helped power a record sales quarter, with customers consistently telling sales and solutions it's a step above competitor tools</li>
         </ul>
         <div class="exp-mock" aria-hidden="true">
-          <img src="images/Vertice/expcardImage_vertice.png" alt="" loading="lazy">
+          <img src="images/Vertice/expcardImage_vertice.png" alt="" loading="lazy" decoding="async">
         </div>
       </article>
 
@@ -69,7 +109,7 @@
           <li>Owned the Health section of the product end-to-end - scorecards and all</li>
         </ul>
         <div class="exp-mock" aria-hidden="true">
-          <img src="images/Atlassian/expcardImage_atlassian.png" alt="" loading="lazy">
+          <img src="images/Atlassian/expcardImage_atlassian.png" alt="" loading="lazy" decoding="async">
         </div>
       </article>
 
@@ -84,7 +124,7 @@
           <li>Leading a full visual and UX refresh to boost early adoption and retention</li>
         </ul>
         <div class="exp-mock" aria-hidden="true">
-          <img src="images/jasper/expcardImage_calsocial.png" alt="" loading="lazy">
+          <img src="images/jasper/expcardImage_calsocial.png" alt="" loading="lazy" decoding="async">
         </div>
       </article>
 
@@ -98,7 +138,7 @@
           <li>Built the platform wholesale CRE investors use instead of spreadsheets</li>
         </ul>
         <div class="exp-mock" aria-hidden="true">
-          <img src="images/jasper/expcardImage_jasper.png" alt="" loading="lazy">
+          <img src="images/jasper/expcardImage_jasper.png" alt="" loading="lazy" decoding="async">
         </div>
       </article>
 
@@ -112,7 +152,7 @@
           <li>Membership grew 35% (153 &rarr; 207) the year after launch</li>
         </ul>
         <div class="exp-mock" aria-hidden="true">
-          <img src="images/Google/expcardImage_kite.png" alt="" loading="lazy">
+          <img src="images/Google/expcardImage_kite.png" alt="" loading="lazy" decoding="async">
         </div>
       </article>
 
@@ -125,23 +165,46 @@
           <li>Built an Android widget for sharing live location in Google Maps</li>
         </ul>
         <div class="exp-mock" aria-hidden="true">
-          <img src="images/Google/expcardImage_google.png" alt="" loading="lazy">
+          <img src="images/Google/expcardImage_google.png" alt="" loading="lazy" decoding="async">
         </div>
       </article>
 
     </div>
-
-    <div class="wave wave-top" aria-hidden="true"></div>
   </section>
 
-  <!-- ===== FOOTER (dark) ===== -->
+  <!-- ===== FOOTER ===== -->
   <footer class="site-footer" id="contact">
-    <div class="footer-links">
-      <a href="https://www.linkedin.com/in/abbythompson/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="#" target="_blank" rel="noopener noreferrer">Download resume</a>
-      <a href="mailto:abbyythompson@gmail.com">abbyythompson@gmail.com</a>
+
+    <div class="footer-inner">
+      <div class="footer-intro">
+        <p>For the past 10 years I've been designing and developing world class experiences. I have a knack for fast paced, technically constrained designing. I hone in on consistency and live by systems that expedite decision processes and lead to experiences the user wants to live in.</p>
+        <p class="footer-open">I'm open to opportunities</p>
+      </div>
+
+      <div class="footer-links">
+        <a class="footer-link" href="https://www.linkedin.com/in/abbythompson/" target="_blank" rel="noopener noreferrer">
+          <!-- Inlined rather than data-lucide: brand marks are not guaranteed to stay in the CDN set -->
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45z"></path>
+          </svg>
+          LinkedIn
+        </a>
+        <a class="footer-link" href="mailto:abbyythompson@gmail.com">
+          <i data-lucide="mail" class="footer-icon"></i>
+          abbyythompson@gmail.com
+        </a>
+        <a class="footer-link" href="assets/CV-Abby%20Thompson-Product%20Designer.pdf" download="Abby Thompson - Product Designer CV.pdf" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="download" class="footer-icon"></i>
+          Download resume
+        </a>
+      </div>
+
+      <div class="footer-bottom">
+        <a class="footer-credit" href="https://github.com/abbyythompson/abbyythompson.github.io" target="_blank" rel="noopener noreferrer">
+          Made with <i data-lucide="heart" class="footer-icon"></i> &amp; AI
+        </a>
+      </div>
     </div>
-    <div class="footer-name">Abby Thompson</div>
   </footer>
 
   <!-- ===== CASE STUDY MODAL ===== -->
@@ -159,7 +222,7 @@
   <template id="case-study-atlassian">
     <div class="cs cs-theme-lime">
       <div class="cs-hero">
-        <img src="images/Atlassian/Software Goals/GoalPromo.png" alt="Software Goals overview in Atlassian Compass" loading="lazy">
+        <img src="images/Atlassian/Software Goals/GoalPromo.png" alt="Software Goals overview in Atlassian Compass" loading="lazy" decoding="async">
       </div>
 
       <div class="cs-body">
@@ -199,15 +262,15 @@
           <p>Before any UI, I mapped how the two team types (teams who own a goal and teams who contribute to one) actually experienced the current manual process, and worked with engineering to define what a "Goal" needed to be as a data object so progress could sync cleanly across Compass and Atlassian Home.</p>
           <div class="cs-process-grid">
             <figure>
-              <img src="images/Atlassian/Software Goals/Driver team existing user journey.png" alt="Driver team existing user journey map" loading="lazy">
+              <img src="images/Atlassian/Software Goals/Driver team existing user journey.png" alt="Driver team existing user journey map" loading="lazy" decoding="async">
               <figcaption>Driver vs. receiving team journeys: where the manual process broke down for each</figcaption>
             </figure>
             <figure>
-              <img src="images/Atlassian/Software Goals/Object Model.png" alt="Software Goals object model" loading="lazy">
+              <img src="images/Atlassian/Software Goals/Object Model.png" alt="Software Goals object model" loading="lazy" decoding="async">
               <figcaption>Modeling "Goal" as an object so progress could sync across Compass, Home, and reporting</figcaption>
             </figure>
             <figure>
-              <img src="images/Atlassian/Scorecards/WorkShopEngineering.png" alt="Working session with the engineering team" loading="lazy">
+              <img src="images/Atlassian/Scorecards/WorkShopEngineering.png" alt="Working session with the engineering team" loading="lazy" decoding="async">
               <figcaption>Working sessions with engineering: designing the data model and the interface together, not in sequence</figcaption>
             </figure>
           </div>
@@ -250,7 +313,7 @@
   <template id="case-study-vertice">
     <div class="cs cs-theme-purple">
       <div class="cs-hero">
-        <img src="images/Vertice/HeroRequest.png" alt="The redesigned Vertice request page" loading="lazy">
+        <img src="images/Vertice/HeroRequest.png" alt="The redesigned Vertice request page" loading="lazy" decoding="async">
       </div>
 
       <div class="cs-body">
@@ -281,7 +344,7 @@
           <h4>Redesigning key pages</h4>
           <p>I led this initiative from week two after joining, working with Product, Engineering, and Data Science to understand the problem. I interviewed dozens of internal and external stakeholders to understand the pain points and desires of the primary users, then defined new components and patterns across the product.</p>
           <figure class="cs-process-demo">
-            <img src="images/Vertice/Req - Tabs.gif" alt="The redesigned request page, showing tasks and the communication panel" loading="lazy">
+            <img src="images/Vertice/Req - Tabs.gif" alt="The redesigned request page, showing tasks and the communication panel" loading="lazy" decoding="async">
             <figcaption>Intermidiary stage of the page design: tasks, offers, and stakeholder communication in one view</figcaption>
           </figure>
 
@@ -320,6 +383,5 @@
     </div>
   </template>
 
-  <script src="script.js"></script>
 </body>
 </html>

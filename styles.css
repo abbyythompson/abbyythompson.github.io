@@ -17,11 +17,20 @@
   --yellow: #eee18b;
   --mint: #a6e7b0;
 
+  /* deep versions of the card colours, used for the experience cards
+     so the white text and logos have enough contrast */
+  --lime-deep: #3f5218;
+  --purple-deep: #472b78;
+  --salmon-deep: #782c24;
+  --sky-deep: #1d4a5b;
+  --yellow-deep: #64541a;
+  --mint-deep: #1f5a2f;
+
   --ink: #101010;
   --muted: #b9b9b9;
 
   --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
 
   --gutter: 128px;
   --container: 1360px;
@@ -29,11 +38,18 @@
 
 *{ box-sizing: border-box; margin:0; padding:0; }
 
-html{ scroll-behavior: smooth; }
+html{
+  scroll-behavior: smooth;
+  /* black behind the page so the overscroll bounce never flashes white above the hero */
+  background: var(--black);
+}
 
 body{
+  position: relative; /* the page-wide glow field measures itself against this */
   font-family: var(--font-body);
-  background: var(--cream);
+  /* the page is one continuous black surface: the sections are transparent and
+     the glow field behind them is what changes as you scroll */
+  background: var(--black);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
@@ -65,21 +81,147 @@ ul{ list-style: none; }
   margin-right: 2px;
 }
 
-.tri-icon{
-  width: 11px;
-  height: 11px;
-  fill: currentColor;
-  stroke: none;
+/* ---------------- PAGE BACKGROUND ---------------- */
+
+/* Spans the whole document, behind every section. Clips its own overflow so the
+   blobs can hang off both edges without widening the page */
+.page-bg{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-/* ---------------- HERO ---------------- */
+/* Every section sits above the background and paints nothing of its own, so the
+   glow reads as one continuous field from the hero to the footer */
+.hero,
+.experience,
+.site-footer{
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color: #fff;
+}
 
 .hero{
-  position: relative;
-  background: var(--black);
-  color: #fff;
-  padding: 400px var(--gutter) 400px;
+  /* padding tracks the viewport so short windows keep the headline in the fold */
+  padding: clamp(140px, 26vh, 400px) var(--gutter);
+  /* always fill the fold, so a tall window never leaves the headline stranded */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* --- Colour wash --- */
+
+.glow-field{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Placement is per blob, in the markup: --top down the document, --x how far past
+   the edge it hangs, --w its size, --o its strength. Keeping it there rather than
+   in a class per blob means the whole composition reads top to bottom in one place */
+.glow{
+  position: absolute;
+  aspect-ratio: 1;
+  top: var(--top);
+  width: calc(var(--w) * var(--glow-scale, 1));
+  opacity: var(--o, .75);
+  background-repeat: no-repeat;
+  background-size: contain;
+  /* brightness lifts the blobs off the black, blur keeps them as atmosphere */
+  --glow-blur: 110px;
+  filter: blur(var(--glow-blur)) brightness(1.9) saturate(1.2);
+  mix-blend-mode: screen;
+  /* no will-change at rest: there are a dozen of these down the page and only the
+     two or three level with the viewport are moving. The script promotes those */
+}
+
+/* The blobs hug the edges the content leaves empty, so their drift slides them
+   along an edge rather than out into the middle of the composition */
+.glow--left{ left: calc(var(--x) * var(--glow-scale, 1)); }
+.glow--right{ right: calc(var(--x) * var(--glow-scale, 1)); }
+
+.glow--purple{ background-image: url('assets/blob-purple.png'); }
+
+/* The green is already a light colour, so pushing brightness the way the purple
+   needs would only wash it out to white. It gets saturation instead */
+.glow--green{
+  background-image: url('assets/blob-green.png');
+  filter: blur(var(--glow-blur)) brightness(1.25) saturate(1.8);
+}
+
+/* --- Cursor glow, currently disabled ---
+   A green light that followed the pointer down the page. Nothing in the markup
+   carries data-cursor-glow any more, so none of this is built; it is kept whole
+   so the effect can be switched back on by putting the attribute back on a
+   section. Each host got its own copy of the layer, injected in JS: one shared
+   position, clipped to that section and painted between the section's background
+   and its content, so it never washed over text or cards */
+
+.cursor-glow{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
+  pointer-events: none;
+  /* the orbs are repositioned every frame, so scope the invalidation to this
+     layer instead of letting it walk back out into the section */
+  contain: layout paint;
+}
+
+.cursor-orb{
+  position: absolute;
+  top: 0;
+  left: 0;
+  aspect-ratio: 1;
+  --orb-w: 58vw;
+  --orb-blur: 100px;
+  width: var(--orb-w);
+  background: url('assets/blob-green.png') no-repeat center / contain;
+  /* the green is already light, so it needs saturation rather than brightness */
+  filter: blur(var(--orb-blur)) brightness(1.1) saturate(1.9);
+  mix-blend-mode: screen;
+  opacity: 0; /* grows in from nothing at the cursor, driven per frame */
+  will-change: transform, opacity;
+}
+
+/* Screen blending disappears against white, so over light sections the orb
+   tints the paper instead of lighting it */
+[data-cursor-glow="light"] .cursor-orb{
+  mix-blend-mode: multiply;
+  filter: blur(var(--orb-blur)) saturate(1.15);
+}
+
+/* Trail copies, cloned in JS. Smaller and softer in proportion, so they taper
+   rather than smudge, and their layers stay cheap */
+.cursor-orb--ghost{
+  --orb-w: calc(58vw * var(--ghost-size));
+  --orb-blur: calc(100px * var(--ghost-size));
+}
+
+/* Fine grain over the whole page, softens the gradient banding. Fixed rather than
+   absolute: one viewport-sized tile covers a document of any length */
+.page-grain{
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.075;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce){
+  .glow{ transform: none !important; }
+  /* nothing animates these, so do not hold a promoted layer for a blurred,
+     viewport-sized element that will never move */
+  .cursor-orb{ will-change: auto; }
 }
 
 .topbar{
@@ -90,10 +232,10 @@ ul{ list-style: none; }
   width: 100%;
   padding: 18px 0;
   border-radius: 0;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: radial-gradient(ellipse 80% 140% at 50% 50%, rgba(255,255,255,0.14), rgba(10,10,10,0.5) 75%);
-  transition: background .5s ease, color .4s ease, box-shadow .4s ease;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  /* barely-there veil: enough to hold the text off the artwork, not a solid bar */
+  background: radial-gradient(ellipse 80% 140% at 50% 50%, rgba(255,255,255,0.05), rgba(10,10,10,0.24) 75%);
 }
 
 .topbar-inner{
@@ -105,19 +247,14 @@ ul{ list-style: none; }
   margin: 0 auto;
 }
 
-.topbar.topbar--light{
-  background: radial-gradient(ellipse 80% 140% at 50% 50%, rgba(180,230,150,0.4), rgba(253,253,251,0.82) 75%);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-}
-
+/* The page runs dark end to end, so there is no light variant of the bar to
+   swap to and nothing left in JS that would add .topbar--light */
 .topbar-name{
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.15rem;
-  color: var(--accent);
-  transition: color .4s ease;
+  color: #fff;
 }
-.topbar--light .topbar-name{ color: var(--ink); }
 
 .topbar-meta{
   display: flex;
@@ -125,9 +262,7 @@ ul{ list-style: none; }
   align-items: center;
   font-size: 0.8rem;
   color: var(--muted);
-  transition: color .4s ease;
 }
-.topbar--light .topbar-meta{ color: #6b6b6b; }
 
 .topbar-meta .dot{ opacity: 0.5; }
 
@@ -142,9 +277,10 @@ ul{ list-style: none; }
   transition: transform .2s ease, opacity .2s ease, background .4s ease, color .4s ease;
 }
 .btn-pill:hover{ transform: translateY(-2px); opacity: 0.9; }
-.topbar--light .btn-pill{ background: var(--ink); color: #fff; }
 
 .hero-title{
+  position: relative;
+  z-index: 2;
   text-align: center;
   font-family: var(--font-body);
   font-weight: 500;
@@ -167,6 +303,7 @@ ul{ list-style: none; }
 
 .scroll-cue{
   position: absolute;
+  z-index: 2;
   left: 50%;
   bottom: 56px;
   display: inline-flex;
@@ -190,8 +327,6 @@ ul{ list-style: none; }
 /* ---------------- EXPERIENCE ---------------- */
 
 .experience{
-  position: relative;
-  background: var(--cream);
   padding: 140px 0 200px;
 }
 
@@ -203,7 +338,11 @@ ul{ list-style: none; }
   margin: 0 auto;
 }
 
+/* Clear glass rather than frosted: a light blur and a thin tint, so whatever blob
+   is passing behind the card comes through it. The lit top edge and the corner
+   sheen are what keep it reading as a pane instead of a hole */
 .exp-card{
+  color: #fff;
   border-radius: 28px;
   padding: 32px;
   height: 590px;
@@ -211,6 +350,17 @@ ul{ list-style: none; }
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  background:
+    linear-gradient(150deg, rgba(255,255,255,.11), rgba(255,255,255,.03) 40%, rgba(255,255,255,0) 68%),
+    radial-gradient(120% 80% at 10% 0%, rgba(var(--card-sheen), .16), transparent 62%),
+    rgba(var(--card-tint), .26);
+  backdrop-filter: blur(9px) saturate(150%);
+  -webkit-backdrop-filter: blur(9px) saturate(150%);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.24),
+    inset 0 -1px 0 rgba(255,255,255,.05);
 }
 
 .exp-head{
@@ -224,7 +374,7 @@ ul{ list-style: none; }
 .exp-logo{
   font-weight: 700;
   font-size: 28px;
-  color: #111;
+  color: #fff;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -241,14 +391,17 @@ ul{ list-style: none; }
   max-width: 200px;
   object-fit: contain;
   display: block;
+  /* the logo files are dark artwork, so flatten them to pure white */
+  filter: brightness(0) invert(1);
 }
 
 .exp-link{
-  background: rgba(255,255,255,.32);
+  color: #fff;
+  background: rgba(255,255,255,.16);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.5);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,.32);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.18);
   padding: 7px 14px;
   border-radius: 999px;
   font-size: 0.75rem;
@@ -294,46 +447,105 @@ ul{ list-style: none; }
   aspect-ratio: 1800 / 1260;
 }
 
-.card-purple{ background: var(--purple); }
-.card-lime{ background: var(--lime); }
-.card-salmon{ background: var(--salmon); }
-.card-skyblue{ background: var(--sky); }
-.card-yellow{ background: var(--yellow); }
-.card-mint{ background: var(--mint); }
+/* --card-tint is the deep colour the glass is dyed with, --card-sheen the light
+   version of the same hue that catches the highlight in the top corner */
+.card-purple{ --card-tint: 71,43,120;  --card-sheen: 198,168,239; }
+.card-lime{   --card-tint: 63,82,24;   --card-sheen: 205,234,124; }
+.card-salmon{ --card-tint: 120,44,36;  --card-sheen: 243,164,156; }
+.card-skyblue{--card-tint: 29,74,91;   --card-sheen: 169,220,236; }
+.card-yellow{ --card-tint: 100,84,26;  --card-sheen: 238,225,139; }
+.card-mint{   --card-tint: 31,90,47;   --card-sheen: 166,231,176; }
 
 
 /* ---------------- FOOTER ---------------- */
 
 .site-footer{
-  background: var(--black);
-  color: #fff;
-  padding: 200px 0 150px;
+  padding: 160px 0 56px;
+  /* tall enough for the credit to sit well below the links, as in the composition */
+  min-height: 72vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-inner{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: min(calc(100% - var(--gutter) * 2), var(--container));
+  margin: 0 auto;
+}
+
+.footer-intro{
+  max-width: 620px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  opacity: 0.9;
+  margin-bottom: 88px;
+}
+.footer-open{
+  margin-top: 26px;
 }
 
 .footer-links{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 4px;
   font-size: 0.9rem;
-  width: min(calc(100% - var(--gutter) * 2), var(--container));
-  margin: 0 auto 64px;
 }
-.footer-links a{
+
+/* The pills read as links at rest and only take on a surface under the pointer,
+   so the row of them stays quiet against the empty footer */
+.footer-link,
+.footer-credit{
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  opacity: 0.85;
-  transition: opacity .2s ease;
+  gap: 10px;
+  padding: 9px 16px;
+  /* pulled back by the padding, so the icons still line up with the page gutter */
+  margin-left: -16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #fff;
+  opacity: 0.8;
+  transition: opacity .2s ease, transform .2s ease, background .2s ease, border-color .2s ease;
 }
-.footer-links a:hover{ opacity: 1; }
+.footer-link:hover,
+.footer-link:focus-visible,
+.footer-credit:hover,
+.footer-credit:focus-visible{
+  opacity: 1;
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.16);
+  outline: none;
+}
 
-.footer-name{
+.footer-icon{
+  width: 17px;
+  height: 17px;
+}
+
+.footer-bottom{
+  display: flex;
+  justify-content: flex-end;
+  /* pinned to the bottom of the footer whatever the links above it do */
+  margin-top: auto;
+  padding-top: 96px;
+}
+
+.footer-credit{
+  gap: 6px;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(2.4rem, 8vw, 4.5rem);
-  color: var(--accent);
-  width: min(calc(100% - var(--gutter) * 2), var(--container));
-  margin: 0 auto;
+  font-size: 0.95rem;
+  opacity: 0.65;
+  margin-left: 0;
+  margin-right: -16px; /* mirrors the left pills: text meets the gutter */
+}
+.footer-credit .footer-icon{
+  width: 15px;
+  height: 15px;
 }
 
 /* ---------------- CASE STUDY MODAL ---------------- */
@@ -615,15 +827,23 @@ body.cs-modal-open{
 
 @media (max-width: 720px){
   :root{ --gutter: 56px; }
-  .hero{ padding: 172px var(--gutter) 90px; }
+  .hero{ padding: clamp(96px, 18vh, 172px) var(--gutter) clamp(64px, 11vh, 90px); }
   .topbar{ padding: 14px 0; }
   .topbar-inner{ flex-wrap: wrap; gap: 8px; }
   .topbar-meta{ order: 3; width: 100%; justify-content: center; }
   .hero-title{ margin-bottom: 56px; }
-  .stats{ gap: 44px; }
+  /* narrower viewport, so the blobs need to be wider and less blurred to still
+     read. One scale factor drives every blob's width and edge offset together,
+     so the composition keeps its proportions */
+  .page-bg{ --glow-scale: 1.9; }
+  .glow{ --glow-blur: 70px; }
+  .cursor-orb{ --orb-w: 100vw; --orb-blur: 70px; }
+  .cursor-orb--ghost{ --orb-w: calc(100vw * var(--ghost-size)); --orb-blur: calc(70px * var(--ghost-size)); }
   .experience{ padding: 70px 0 100px; }
   .exp-grid{ grid-template-columns: 1fr; }
-  .site-footer{ padding: 48px 0 32px; }
+  .site-footer{ padding: 72px 0 28px; min-height: 0; }
+  .footer-intro{ margin-bottom: 56px; }
+  .footer-bottom{ padding-top: 56px; }
 }
 
 /* Reduced motion */
