@@ -4,384 +4,226 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abby Thompson, Product Designer</title>
+<meta name="description" content="Product designer with an engineering background. 10 years designing and developing world class experiences.">
+
+<!-- Favicons built from the brand portrait, flattened onto the page background so
+     the black line art stays legible on a dark browser chrome -->
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="images/abby/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/abby/favicon-16.png">
+<link rel="apple-touch-icon" href="images/abby/apple-touch-icon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="styles.css">
-<!-- The blobs are the first thing painted, so the browser is told to fetch them
-     alongside the stylesheet rather than after it has parsed the CSS -->
-<link rel="preload" as="image" href="assets/blob-purple.png">
+<!-- The blobs are the first thing painted, so they are fetched alongside the
+     stylesheet rather than after the browser has finished parsing it -->
+<link rel="preload" as="image" href="assets/blob-pink.png">
 <link rel="preload" as="image" href="assets/blob-green.png">
-<!-- Icons are a local 19-icon subset of Lucide, not the 2021-icon CDN bundle.
-     Both deferred, so neither blocks the first paint; defer keeps them in order,
-     so the icon data is always defined before script.js runs -->
-<script src="icons.js" defer></script>
+
+<!-- Set before the first paint so the load animations can start from their
+     hidden state. Without JS the class never lands and the page renders in its
+     finished state rather than blank. -->
+<script>document.documentElement.classList.add('js');</script>
+
 <script src="script.js" defer></script>
 </head>
 <body>
 
-  <!-- ===== PAGE BACKGROUND =====
-       One glow field for the whole document rather than one per section. The
-       sections are transparent, so the blobs run continuously behind all of them
-       and no blob is ever cut in half at a section boundary -->
+  <!-- ===== BACKGROUND =====
+       One off-white field with static colour washes. The blobs are absolutely
+       positioned down the whole document so they scroll with the content as part
+       of the composition; nothing here animates. -->
   <div class="page-bg" aria-hidden="true">
-    <div class="glow-field page-glow">
-      <span class="glow glow--purple glow--left"  style="--top:-4%; --x:-18%; --w:64vw; --o:.95" data-drift-x="55" data-drift-y="20"></span>
-      <span class="glow glow--purple glow--right" style="--top:4%;  --x:-20%; --w:56vw; --o:.85" data-drift-x="16" data-drift-y="70"></span>
-      <span class="glow glow--green  glow--right" style="--top:13%; --x:-14%; --w:44vw; --o:.70" data-drift-x="34" data-drift-y="44"></span>
-      <span class="glow glow--green  glow--left"  style="--top:21%; --x:-15%; --w:52vw; --o:.80" data-drift-x="42" data-drift-y="30"></span>
-      <span class="glow glow--purple glow--right" style="--top:29%; --x:-18%; --w:58vw; --o:.90" data-drift-x="20" data-drift-y="62"></span>
-      <span class="glow glow--purple glow--left"  style="--top:38%; --x:-18%; --w:56vw; --o:.78" data-drift-x="50" data-drift-y="24"></span>
-      <span class="glow glow--green  glow--right" style="--top:46%; --x:-15%; --w:48vw; --o:.75" data-drift-x="26" data-drift-y="56"></span>
-      <span class="glow glow--green  glow--left"  style="--top:55%; --x:-14%; --w:46vw; --o:.68" data-drift-x="38" data-drift-y="36"></span>
-      <span class="glow glow--purple glow--right" style="--top:62%; --x:-19%; --w:60vw; --o:.92" data-drift-x="18" data-drift-y="66"></span>
-      <span class="glow glow--purple glow--left"  style="--top:71%; --x:-17%; --w:54vw; --o:.85" data-drift-x="46" data-drift-y="28"></span>
-      <span class="glow glow--green  glow--right" style="--top:79%; --x:-14%; --w:46vw; --o:.72" data-drift-x="30" data-drift-y="50"></span>
-      <span class="glow glow--purple glow--left"  style="--top:87%; --x:-18%; --w:58vw; --o:.95" data-drift-x="52" data-drift-y="22"></span>
-      <span class="glow glow--green  glow--right" style="--top:94%; --x:-16%; --w:52vw; --o:.78" data-drift-x="22" data-drift-y="58"></span>
-    </div>
-    <!-- Fine grain over the whole page, softens the gradient banding. Fixed, so one
-         viewport-sized tile covers a document of any length -->
-    <div class="page-grain"></div>
+    <span class="blob blob--pink"   style="--top:-6%;  --x:-16%; --w:56vw; --o:.11"></span>
+    <span class="blob blob--green"  style="--top:6%;   --x:-14%; --w:48vw; --o:.10" data-side="right"></span>
+    <span class="blob blob--pink"   style="--top:28%;  --x:-18%; --w:52vw; --o:.09" data-side="right"></span>
+    <span class="blob blob--green"  style="--top:42%;  --x:-15%; --w:46vw; --o:.10"></span>
+    <span class="blob blob--pink"   style="--top:62%;  --x:-16%; --w:54vw; --o:.10"></span>
+    <span class="blob blob--green"  style="--top:78%;  --x:-14%; --w:44vw; --o:.09" data-side="right"></span>
+    <span class="blob blob--pink"   style="--top:92%;  --x:-17%; --w:50vw; --o:.10" data-side="right"></span>
   </div>
 
-  <!-- ===== NAV =====
-       Lives outside the hero: the hero is its own stacking context, so a topbar
-       nested inside it gets painted under the later sections on scroll -->
-  <header class="topbar">
+  <!-- ===== HEADER =====
+       No background at the top of the page; the glass panel fades in on scroll
+       via .is-scrolled, set in script.js -->
+  <header class="topbar" id="topbar">
     <div class="topbar-inner">
-      <div class="topbar-name">Abby Thompson</div>
-      <div class="topbar-meta">
-        <span class="meta-item"><i data-lucide="clock" class="meta-icon"></i><span id="local-time">4:55:34 PM</span></span>
-        <span class="dot">&middot;</span>
-        <span class="meta-item"><i data-lucide="map-pin" class="meta-icon"></i>London</span>
-        <span class="dot">&middot;</span>
-        <span class="meta-item"><i data-lucide="sun" class="meta-icon" id="weather-icon"></i><span id="weather-text">24&deg; Sunny</span></span>
-      </div>
-      <a href="#contact" class="btn-pill">Contact me</a>
+
+      <a class="brand" href="#top">
+        <!-- Spaces in these filenames must stay percent-encoded; a raw space
+             breaks srcset parsing and the 2x/3x images are silently ignored. -->
+        <img class="brand-mark" src="images/abby/AbbyPortrait-Notion-transparent%202.png"
+             srcset="images/abby/AbbyPortrait-Notion-transparent%202.png 1x,
+                     images/abby/AbbyPortrait-Notion-transparent%202@2x.png 2x,
+                     images/abby/AbbyPortrait-Notion-transparent%202@3x.png 3x"
+             width="24" height="24" alt="">
+        <span class="brand-name">Abby Thompson</span>
+      </a>
+
+      <nav class="topbar-actions">
+        <a class="icon-btn" href="mailto:abbyythompson@gmail.com" aria-label="Email Abby">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+        </a>
+        <a class="icon-btn" href="assets/CV-Abby%20Thompson-Product%20Designer.pdf"
+           download="Abby Thompson - Product Designer CV.pdf" aria-label="Download resume">
+          <!-- The arrow is its own group so it can nudge down into the tray on
+               hover while the tray itself stays put -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><g class="dl-arrow"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/></g><path d="M4 16.5v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        </a>
+      </nav>
+
     </div>
   </header>
 
-  <!-- ===== HERO =====
-       The cursor-following green light is disabled for now: dropping the
-       data-cursor-glow attribute is all it takes, the layer is only built for
-       sections that carry it -->
-  <section class="hero">
+  <main id="top">
 
-    <h1 class="hero-title">
-      I design <em id="blank-a">products</em> with <em id="blank-b">systems thinking</em>
-    </h1>
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <!-- Same portrait as the brand mark, drawn at 64px. No srcset here: the x
+           descriptors are read against the rendered size, so at 64px the browser
+           picked the 48px file to fill 128 device pixels and it came out soft.
+           The @3x file is the largest export there is, so it is used outright.
+           Spaces in the filename stay percent-encoded. -->
+      <img class="hero-portrait" src="images/abby/AbbyPortrait-Notion-transparent%202@3x.png"
+           width="64" height="64" alt="Illustrated portrait of Abby Thompson">
 
-    <a href="#experience" class="scroll-cue" aria-label="Scroll to experience section">
-      <i data-lucide="arrow-down" class="scroll-cue-icon"></i>
-    </a>
+      <h1 class="hero-title">
+        I'm Abby, a <strong>product designer</strong> with an engineering background.
+      </h1>
 
-  </section>
+      <p class="hero-intro">
+        For the past 10 years I've been designing and developing world class
+        experiences. I have a knack for face paced technically constrained
+        designing. I hone in on consistency and live by systems that expedite
+        decision processes and lead to experiences the user want to live in.
+      </p>
+    </section>
 
-  <!-- ===== EXPERIENCE ===== -->
-  <section class="experience" id="experience">
+    <!-- ===== CASE STUDIES ===== -->
+    <section class="work" id="work">
+      <h2 class="section-label">Recent work</h2>
 
-    <div class="exp-grid">
+      <div class="card-grid">
 
-      <article class="exp-card card-purple">
-        <div class="exp-head">
-          <span class="exp-logo"><img src="images/logos/vertice.png" alt="Vertice" class="exp-logo-img"></span>
-          <a href="#case-study-vertice" class="exp-link js-case-study-trigger" data-case-study="vertice">View case study <i data-lucide="arrow-right" class="inline-icon"></i></a>
-        </div>
-        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> 2026</p>
-        <ul>
-          <li>Rebuilt the request page around real user research, prioritising what negotiators actually need to see and cutting approval time</li>
-          <li>Shipped a fresher, easier-to-use UI that helped power a record sales quarter, with customers consistently telling sales and solutions it's a step above competitor tools</li>
-        </ul>
-        <div class="exp-mock" aria-hidden="true">
-          <img src="images/Vertice/expcardImage_vertice.webp" alt="" width="1400" height="980" loading="lazy" decoding="async">
-        </div>
-      </article>
+        <!-- The logo is the card's resting identity and stays put. Everything
+             else lives in .card-panel, which is invisible until the pointer is
+             on the card or the link inside it takes focus. The panel is only
+             ever faded, never removed, so the copy is still in the accessibility
+             tree for a screen reader that has no pointer to hover with.
 
-      <article class="exp-card card-lime">
-        <div class="exp-head">
-          <span class="exp-logo"><img src="images/logos/atlassian.png" alt="Atlassian" class="exp-logo-img"></span>
-          <a href="#case-study-atlassian" class="exp-link js-case-study-trigger" data-case-study="atlassian">View case study <i data-lucide="arrow-right" class="inline-icon"></i></a>
-        </div>
-        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> 2024</p>
-        <ul>
-          <li>Led the goal-tracking initiative in Compass, from concept to shipped feature</li>
-          <li>Owned the Health section of the product end-to-end - scorecards and all</li>
-        </ul>
-        <div class="exp-mock" aria-hidden="true">
-          <img src="images/Atlassian/expcardImage_atlassian.webp" alt="" width="1400" height="980" loading="lazy" decoding="async">
-        </div>
-      </article>
+             The title is the link, and its ::after is stretched over the whole
+             panel, so the entire card is the hit area while the accessible name
+             stays on the words of the title itself. That is why there is no
+             separate "read case study" row: the heading is already the thing
+             being clicked. -->
+        <article class="card card--wide">
+          <img class="card-logo card-logo--vertice" src="images/logos/vertice.png" alt="Vertice"
+               width="551" height="165" loading="lazy" decoding="async">
+          <!-- Not one flat export but the composition rebuilt from the pieces it
+               was made of: the request page as the ground, and the four cards
+               that sit over it as their own transparent layers. Each layer is a
+               span holding an img so the two motions never fight over the same
+               transform: the span carries the one-time arrival, the img inside
+               it carries the drift that runs forever.
 
-      <article class="exp-card card-salmon">
-        <div class="exp-head">
-          <span class="exp-logo">calsocial</span>
-          <a href="https://cal.social/" class="exp-link" target="_blank" rel="noopener noreferrer">View app <i data-lucide="arrow-right" class="inline-icon"></i></a>
-        </div>
-        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> 2026</p>
-        <ul>
-          <li>A friends-first social calendar that pulls event planning out of chaotic group chats</li>
-          <li>Leading a full visual and UX refresh to boost early adoption and retention</li>
-        </ul>
-        <div class="exp-mock" aria-hidden="true">
-          <img src="images/jasper/expcardImage_calsocial.webp" alt="" width="1400" height="980" loading="lazy" decoding="async">
-        </div>
-      </article>
+               The stack is one picture to a screen reader, so the label is on
+               the wrapper and every layer inside it is decorative. -->
+          <div class="card-media">
+            <div class="rq-stack" role="img"
+                 aria-label="The redesigned Vertice request page, with its task, offer, contact and comment cards floating above it">
+              <span class="rq-layer rq-layer--base">
+                <img src="images/Vertice/req-base.webp" alt=""
+                     width="1440" height="940" loading="lazy" decoding="async">
+              </span>
+              <span class="rq-layer rq-layer--tasks">
+                <img src="images/Vertice/req-tasks.webp" alt=""
+                     width="596" height="384" loading="lazy" decoding="async">
+              </span>
+              <span class="rq-layer rq-layer--offer">
+                <img src="images/Vertice/req-offer.webp" alt=""
+                     width="596" height="164" loading="lazy" decoding="async">
+              </span>
+              <span class="rq-layer rq-layer--contacts">
+                <img src="images/Vertice/req-contacts.webp" alt=""
+                     width="354" height="182" loading="lazy" decoding="async">
+              </span>
+              <span class="rq-layer rq-layer--comments">
+                <img src="images/Vertice/req-comments.webp" alt=""
+                     width="504" height="518" loading="lazy" decoding="async">
+              </span>
+            </div>
+          </div>
+          <div class="card-panel">
+            <div class="card-panel-top">
+              <h3 class="card-title"><a href="work/vertice.html">Redesigning the Request Experience</a></h3>
+              <p class="card-line">
+                Rebuilt the request page around real user research. CSAT up 32%,
+                time to complete down 27%.
+              </p>
+            </div>
+            <p class="card-meta">
+              <span class="card-role">Product Designer</span>
+              <span class="card-year">2026</span>
+            </p>
+          </div>
+        </article>
 
-      <article class="exp-card card-skyblue">
-        <div class="exp-head">
-          <span class="exp-logo"><img src="images/logos/Jasper.png" alt="Jasper" class="exp-logo-img"></span>
-        </div>
-        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> 2020</p>
-        <ul>
-          <li>Designed and developed the customer, admin, and marketing experiences</li>
-          <li>Built the platform wholesale CRE investors use instead of spreadsheets</li>
-        </ul>
-        <div class="exp-mock" aria-hidden="true">
-          <img src="images/jasper/expcardImage_jasper.webp" alt="" width="1400" height="980" loading="lazy" decoding="async">
-        </div>
-      </article>
+        <!-- No wordmark file for this one, so the name is set in the page's own
+             type at the size the other logos are drawn at -->
+        <article class="card">
+          <p class="card-logo card-logo--text">calsocial</p>
+          <div class="card-media">
+            <img src="images/jasper/expcardImage_calsocial.webp" alt="The calsocial app on two phones"
+                 width="1400" height="980" loading="lazy" decoding="async">
+          </div>
+          <div class="card-panel">
+            <div class="card-panel-top">
+              <h3 class="card-title"><a href="https://cal.social/">A friends-first social calendar</a></h3>
+              <p class="card-line">
+                Leading a full visual and UX refresh to pull event planning out
+                of chaotic group chats.
+              </p>
+            </div>
+            <p class="card-meta">
+              <span class="card-role">Founding Designer</span>
+              <span class="card-year">2026</span>
+            </p>
+          </div>
+        </article>
 
-      <article class="exp-card card-yellow">
-        <div class="exp-head">
-          <span class="exp-logo exp-logo-kitesurf">Kitesurf club</span>
-        </div>
-        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> 2017</p>
-        <ul>
-          <li>Designed and built the club's site from scratch; sign-ups, kite-spot maps, the works</li>
-          <li>Membership grew 35% (153 &rarr; 207) the year after launch</li>
-        </ul>
-        <div class="exp-mock" aria-hidden="true">
-          <img src="images/Google/expcardImage_kite.webp" alt="" width="1400" height="980" loading="lazy" decoding="async">
-        </div>
-      </article>
+        <article class="card">
+          <img class="card-logo card-logo--atlassian" src="images/logos/atlassian.png" alt="Atlassian"
+               width="994" height="126" loading="lazy" decoding="async">
+          <div class="card-media">
+            <img src="images/Atlassian/expcardImage_atlassian.webp" alt="Software Goals in Atlassian Compass"
+                 width="1400" height="980" loading="lazy" decoding="async">
+          </div>
+          <div class="card-panel">
+            <div class="card-panel-top">
+              <h3 class="card-title"><a href="work/atlassian.html">Software Goals</a></h3>
+              <p class="card-line">
+                Led goal tracking in Compass from concept to ship, and owned
+                Health end to end.
+              </p>
+            </div>
+            <p class="card-meta">
+              <span class="card-role">Product Designer</span>
+              <span class="card-year">2024</span>
+            </p>
+          </div>
+        </article>
 
-      <article class="exp-card card-mint">
-        <div class="exp-head">
-          <span class="exp-logo"><img src="images/logos/Google.png" alt="Google" class="exp-logo-img"></span>
-        </div>
-        <p class="exp-date"><i data-lucide="calendar-days" class="inline-icon"></i> 2017</p>
-        <ul>
-          <li>Built an Android widget for sharing live location in Google Maps</li>
-        </ul>
-        <div class="exp-mock" aria-hidden="true">
-          <img src="images/Google/expcardImage_google.webp" alt="" width="1400" height="980" loading="lazy" decoding="async">
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="site-footer" id="contact">
-
-    <div class="footer-inner">
-      <div class="footer-intro">
-        <p>For the past 10 years I've been designing and developing world class experiences. I have a knack for fast paced, technically constrained designing. I hone in on consistency and live by systems that expedite decision processes and lead to experiences the user wants to live in.</p>
-        <p class="footer-open">I'm open to opportunities</p>
       </div>
+    </section>
 
-      <div class="footer-links">
-        <a class="footer-link" href="https://www.linkedin.com/in/abbythompson/" target="_blank" rel="noopener noreferrer">
-          <!-- Inlined rather than data-lucide: brand marks are not guaranteed to stay in the CDN set -->
-          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45z"></path>
-          </svg>
-          LinkedIn
-        </a>
-        <a class="footer-link" href="mailto:abbyythompson@gmail.com">
-          <i data-lucide="mail" class="footer-icon"></i>
-          abbyythompson@gmail.com
-        </a>
-        <a class="footer-link" href="assets/CV-Abby%20Thompson-Product%20Designer.pdf" download="Abby Thompson - Product Designer CV.pdf" target="_blank" rel="noopener noreferrer">
-          <i data-lucide="download" class="footer-icon"></i>
-          Download resume
-        </a>
-      </div>
+  </main>
 
-      <div class="footer-bottom">
-        <a class="footer-credit" href="https://github.com/abbyythompson/abbyythompson.github.io" target="_blank" rel="noopener noreferrer">
-          Made with <i data-lucide="heart" class="footer-icon"></i> &amp; AI
-        </a>
-      </div>
-    </div>
+  <footer class="site-footer">
+    <p>Made by me</p>
   </footer>
-
-  <!-- ===== CASE STUDY MODAL ===== -->
-  <div class="cs-modal" id="cs-modal" aria-hidden="true">
-    <div class="cs-modal-backdrop" data-cs-close></div>
-    <div class="cs-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title">
-      <button type="button" class="cs-modal-close" data-cs-close aria-label="Close case study">
-        <i data-lucide="x"></i>
-      </button>
-      <div class="cs-modal-content" id="cs-modal-content"></div>
-    </div>
-  </div>
-
-  <!-- ===== CASE STUDY CONTENT (cloned into modal by slug) ===== -->
-  <template id="case-study-atlassian">
-    <div class="cs cs-theme-lime">
-      <div class="cs-hero">
-        <img src="images/Atlassian/Software Goals/GoalPromo.png" alt="Software Goals overview in Atlassian Compass" loading="lazy" decoding="async">
-      </div>
-
-      <div class="cs-body">
-        <p class="cs-eyebrow">Atlassian &middot; Compass</p>
-        <h2 class="cs-title" id="cs-modal-title">Software Goals</h2>
-        <p class="cs-meta">Product Designer &middot; PM, EM &amp; 12 engineers</p>
-
-        <p class="cs-lead">I led design on Software Goals, a new framework inside Compass for defining and tracking engineering-health improvement work. It grew to 276 engaged teams with a 57.9% awareness-to-engagement conversion rate, and became the internal proof point for a feature Atlassian later took to customers.</p>
-
-        <section class="cs-section">
-          <h3>Context</h3>
-          <p>Compass is Atlassian's catalog for every software component in the company: every microservice, every library, tracked in one place. Our Engineering Health team used it to try to lift the quality of that software across the org, but had no systematic way to define, track, or report on that work.</p>
-        </section>
-
-        <section class="cs-section">
-          <h3>The problem</h3>
-          <ul class="cs-list">
-            <li>No standard way for teams to define, track, or report on engineering improvement work</li>
-            <li>No consolidated view for leadership or non-technical PMs, just ad-hoc reporting</li>
-            <li>Manual data collection that made it hard to drive improvements at scale</li>
-          </ul>
-          <p class="cs-note">External Compass customers had described the same problem. Solving it internally meant we were also prototyping a future customer-facing feature.</p>
-        </section>
-
-        <!-- BEST GUESS, confirm/edit before this ships -->
-        <section class="cs-section">
-          <h3>Constraints</h3>
-          <ul class="cs-list">
-            <li>Designing for two audiences at once: engineers who'd live in this daily, and leadership who'd only ever see a summary</li>
-            <li>No mandate to force adoption: 12 teams already had their own workarounds, so the feature had to earn trust rather than just exist</li>
-            <li>An internal experiment with external stakes: decisions here were likely to become the template for a customer-facing feature later</li>
-          </ul>
-        </section>
-
-        <section class="cs-section">
-          <h3>Process</h3>
-          <p>Before any UI, I mapped how the two team types (teams who own a goal and teams who contribute to one) actually experienced the current manual process, and worked with engineering to define what a "Goal" needed to be as a data object so progress could sync cleanly across Compass and Atlassian Home.</p>
-          <div class="cs-process-grid">
-            <figure>
-              <img src="images/Atlassian/Software Goals/Driver team existing user journey.png" alt="Driver team existing user journey map" loading="lazy" decoding="async">
-              <figcaption>Driver vs. receiving team journeys: where the manual process broke down for each</figcaption>
-            </figure>
-            <figure>
-              <img src="images/Atlassian/Software Goals/Object Model.png" alt="Software Goals object model" loading="lazy" decoding="async">
-              <figcaption>Modeling "Goal" as an object so progress could sync across Compass, Home, and reporting</figcaption>
-            </figure>
-            <figure>
-              <img src="images/Atlassian/Scorecards/WorkShopEngineering.png" alt="Working session with the engineering team" loading="lazy" decoding="async">
-              <figcaption>Working sessions with engineering: designing the data model and the interface together, not in sequence</figcaption>
-            </figure>
-          </div>
-          <!-- BEST GUESS, confirm/edit before this ships -->
-          <p class="cs-note">An early version of the flow only let a team pass or fail a goal outright. In working sessions it became clear teams needed a way to flag legitimate blockers instead of failing silently. That became the exemption workflow in the shipped version.</p>
-        </section>
-
-        <section class="cs-section">
-          <h3>The solution</h3>
-          <ul class="cs-list">
-            <li><strong>Centralised goal definition &amp; visibility.</strong> The Engineering Health team could define and publish standardised goals in Compass, with key metrics tracked automatically. For stakeholders who didn't live in Compass, progress summaries surfaced in Atlassian Home.</li>
-            <li><strong>Team-level tracking &amp; accountability.</strong> Teams could monitor their own progress, understand their status, and request an exemption with justification when a goal genuinely didn't apply, balancing accountability with room for real context.</li>
-          </ul>
-        </section>
-
-        <section class="cs-section cs-section-impact">
-          <h3>Impact</h3>
-          <div class="cs-stats">
-            <div class="cs-stat"><span class="cs-stat-num">276</span><span class="cs-stat-label">teams engaged</span></div>
-            <div class="cs-stat"><span class="cs-stat-num">57.9%</span><span class="cs-stat-label">awareness &rarr; engagement conversion</span></div>
-            <div class="cs-stat"><span class="cs-stat-num">2.5x</span><span class="cs-stat-label">lift in Health Details views</span></div>
-          </div>
-          <p>That uptake validated Software Goals as a real solution for operationalising software health internally, paving the way for its external rollout.</p>
-        </section>
-
-        <!-- BEST GUESS, confirm/edit before this ships -->
-        <section class="cs-section">
-          <h3>What I'd do differently</h3>
-          <p>I'd instrument team-level engagement from day one rather than leaning on leadership-facing view counts. The 2.5x lift told us leadership was paying attention, but it took longer than it should have to see which teams were quietly disengaged versus genuinely blocked.</p>
-        </section>
-
-        <div class="cs-cta">
-          <p>Want the full story: rollout sequencing, who we had to convince, what broke along the way?</p>
-          <a href="#contact" class="btn-pill cs-cta-btn" data-cs-close>Get in touch for the full presentation</a>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <template id="case-study-vertice">
-    <div class="cs cs-theme-purple">
-      <div class="cs-hero">
-        <img src="images/Vertice/HeroRequest.png" alt="The redesigned Vertice request page" loading="lazy" decoding="async">
-      </div>
-
-      <div class="cs-body">
-        <p class="cs-eyebrow">Vertice</p>
-        <h2 class="cs-title" id="cs-modal-title">Redesigning the Request Experience</h2>
-        <p class="cs-meta">Product Designer &middot; 2 months &middot; 3 PMs &amp; 3 engineering squads</p>
-
-        <p class="cs-lead">Vertice helps companies buy and renew software at the best price, saving them millions. The platform centres on two core objects, contracts and new purchase requests, and the request page carries both renewals and new software requests through the workflow. I led its redesign, lifting CSAT by 32% and cutting time to complete a request by 27%.</p>
-
-        <section class="cs-section">
-          <h3>Context</h3>
-          <p>The request page is critical to the Vertice experience: it supports both renewals and brand-new software requests. But the original design failed to support either use case effectively, putting SaaS platform adoption and CSAT at risk.</p>
-        </section>
-
-        <section class="cs-section">
-          <h3>Role &amp; team</h3>
-          <ul class="cs-list">
-            <li>Took ownership of the initiative within two weeks of joining Vertice</li>
-            <li>Partnered closely with Product, Engineering, and Data to define the problem space and align on success metrics</li>
-            <li>Led discovery across internal and external users to uncover friction in key workflows</li>
-            <li>Collaborated with 3 Product Managers and 3 engineering squads, plus Customer Success, Sales, and Data to validate solutions and measure impact</li>
-          </ul>
-        </section>
-
-        <section class="cs-section">
-          <h3>Process</h3>
-
-          <h4>Redesigning key pages</h4>
-          <p>I led this initiative from week two after joining, working with Product, Engineering, and Data Science to understand the problem. I interviewed dozens of internal and external stakeholders to understand the pain points and desires of the primary users, then defined new components and patterns across the product.</p>
-          <figure class="cs-process-demo">
-            <img src="images/Vertice/Req - Tabs.gif" alt="The redesigned request page, showing tasks and the communication panel" loading="lazy" decoding="async">
-            <figcaption>Intermidiary stage of the page design: tasks, offers, and stakeholder communication in one view</figcaption>
-          </figure>
-
-          <h4>Designing scalable components</h4>
-          <p>I audited the existing UI to identify inconsistencies and duplication, then built a flexible component system to support multiple workflows and edge cases, balancing speed of delivery against long-term maintainability. Usage guidelines let designers and engineers build confidently and consistently from there.</p>
-
-          <h4>Improving communication</h4>
-          <p>I mapped stakeholder touchpoints across the end-to-end workflow, identified where handoffs between teams were breaking down, and simplified the information architecture to surface the right context at the right time. Clearer status visibility and structured updates cut down on ambiguity and back-and-forth.</p>
-        </section>
-
-        <section class="cs-section cs-section-impact">
-          <h3>Impact</h3>
-          <div class="cs-stats">
-            <div class="cs-stat"><span class="cs-stat-num">32%</span><span class="cs-stat-label">increase in CSAT</span></div>
-            <div class="cs-stat"><span class="cs-stat-num">-27%</span><span class="cs-stat-label">time to complete a request</span></div>
-            <div class="cs-stat"><span class="cs-stat-num">41%</span><span class="cs-stat-label">improvement in task completion</span></div>
-          </div>
-          <p>Internal teams moved faster with clearer ownership and less back-and-forth. External users gained better visibility into their requests, reducing confusion and cutting support tickets. The redesigned experience drove higher engagement and stronger adoption across the platform.</p>
-        </section>
-
-        <section class="cs-section">
-          <h3>What's next</h3>
-          <p>The next focus is redesigning the contract page to align with the new request experience. Due to time constraints, some enhancements were intentionally scoped for a second phase. The contract page will extend the same patterns and components, keeping workflows consistent while cutting design and engineering duplication. This phase will:</p>
-          <ul class="cs-list">
-            <li>Unify the experience across contracts and requests</li>
-            <li>Increase component reuse to improve development efficiency</li>
-            <li>Further streamline the user journey and reduce cognitive load</li>
-          </ul>
-        </section>
-
-        <div class="cs-cta">
-          <p>Want the full walkthrough: the component system, the stakeholder interviews, what's coming for contracts?</p>
-          <a href="#contact" class="btn-pill cs-cta-btn" data-cs-close>Get in touch for the full presentation</a>
-        </div>
-      </div>
-    </div>
-  </template>
 
 </body>
 </html>

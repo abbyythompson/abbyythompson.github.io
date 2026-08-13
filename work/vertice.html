@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redesigning the request experience · Abby Thompson</title>
+<meta name="description" content="Rebuilding the Vertice request page around real user research. CSAT up 32%, time to complete down 27%.">
+
+<link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/abby/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../images/abby/favicon-16.png">
+<link rel="apple-touch-icon" href="../images/abby/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../styles.css">
+<link rel="preload" as="image" href="../assets/blob-pink.png">
+<link rel="preload" as="image" href="../assets/blob-green.png">
+<!-- The hero is the first thing under the title, so it is fetched with the
+     stylesheet rather than after the parser has reached it -->
+<link rel="preload" as="image" href="../images/Vertice-RequestImg/request-page.webp">
+
+<script>document.documentElement.classList.add('js');</script>
+
+<script src="../script.js" defer></script>
+</head>
+<body class="case-page">
+
+  <!-- ===== BACKGROUND =====
+       The same washes as the home page, spread down whatever length this
+       document turns out to be -->
+  <div class="page-bg" aria-hidden="true">
+    <span class="blob blob--pink"   style="--top:-6%;  --x:-16%; --w:56vw; --o:.11"></span>
+    <span class="blob blob--green"  style="--top:6%;   --x:-14%; --w:48vw; --o:.10" data-side="right"></span>
+    <span class="blob blob--pink"   style="--top:28%;  --x:-18%; --w:52vw; --o:.09" data-side="right"></span>
+    <span class="blob blob--green"  style="--top:42%;  --x:-15%; --w:46vw; --o:.10"></span>
+    <span class="blob blob--pink"   style="--top:62%;  --x:-16%; --w:54vw; --o:.10"></span>
+    <span class="blob blob--green"  style="--top:78%;  --x:-14%; --w:44vw; --o:.09" data-side="right"></span>
+    <span class="blob blob--pink"   style="--top:92%;  --x:-17%; --w:50vw; --o:.10" data-side="right"></span>
+  </div>
+
+  <!-- ===== HEADER =====
+       Identical to the home page's, with the brand now pointing back to it -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+
+      <a class="brand" href="../index.html">
+        <img class="brand-mark" src="../images/abby/AbbyPortrait-Notion-transparent%202.png"
+             srcset="../images/abby/AbbyPortrait-Notion-transparent%202.png 1x,
+                     ../images/abby/AbbyPortrait-Notion-transparent%202@2x.png 2x,
+                     ../images/abby/AbbyPortrait-Notion-transparent%202@3x.png 3x"
+             width="24" height="24" alt="">
+        <span class="brand-name">Abby Thompson</span>
+      </a>
+
+      <nav class="topbar-actions">
+        <a class="icon-btn" href="mailto:abbyythompson@gmail.com" aria-label="Email Abby">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+        </a>
+        <a class="icon-btn" href="../assets/CV-Abby%20Thompson-Product%20Designer.pdf"
+           download="Abby Thompson - Product Designer CV.pdf" aria-label="Download resume">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><g class="dl-arrow"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/></g><path d="M4 16.5v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        </a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+    <article class="case">
+
+      <!-- ===== MASTHEAD =====
+           Title, then the one line the card on the home page shows on hover,
+           then the credentials. The three controls sit on the title's line:
+           the two arrows step between the studies, the × closes back to the
+           work. Escape does the same as the ×, wired up in script.js. -->
+      <header class="case-head">
+
+        <div class="case-head-top">
+          <h1 class="case-title">Redesigning the request experience</h1>
+
+          <nav class="case-nav" aria-label="Case studies">
+            <a class="icon-btn" data-dir="prev" href="atlassian.html" aria-label="Previous case study: Software Goals">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12h-15"/><path d="m10.5 5.5-6.5 6.5 6.5 6.5"/></svg>
+            </a>
+            <a class="icon-btn" data-case-close href="../index.html#work" aria-label="Close and return to all work">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.5 6.5 11 11"/><path d="m17.5 6.5-11 11"/></svg>
+            </a>
+            <a class="icon-btn" data-dir="next" href="atlassian.html" aria-label="Next case study: Software Goals">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12h15"/><path d="m13.5 5.5 6.5 6.5-6.5 6.5"/></svg>
+            </a>
+          </nav>
+        </div>
+
+        <p class="case-deck">
+          Rebuilt the request page around real user research. CSAT up 32%, time
+          to complete down 27%.
+        </p>
+
+        <p class="case-meta">
+          <span class="case-role">Product Designer</span>
+          <span class="case-fact">Vertice</span>
+          <span class="case-fact">2026</span>
+          <span class="case-fact">2 months</span>
+        </p>
+      </header>
+
+      <!-- A band of the page rather than the whole of it: the study starts
+           mid-screen, the way the work did -->
+      <figure class="case-hero cs-frame glass">
+        <img src="../images/Vertice-RequestImg/request-page.webp"
+             alt="The redesigned Vertice request page, showing active tasks, the latest offer and the comments panel"
+             width="1440" height="940" fetchpriority="high" decoding="async">
+      </figure>
+
+
+      <section class="cs-section reveal">
+        <h2 class="cs-label">Overview</h2>
+        <div class="cs-body">
+          <p>
+            Vertice helps companies buy and renew software at the best price,
+            saving them millions. The platform centres on two core objects,
+            contracts and new purchase requests, and the request page carries
+            both renewals and new software requests through the workflow. I led
+            its redesign, lifting CSAT by 32% and cutting time to complete a
+            request by 27%.
+          </p>
+        </div>
+      </section>
+
+
+      <section class="cs-section reveal">
+        <h2 class="cs-label">Context</h2>
+        <div class="cs-body">
+          <p>
+            The request page is critical to the Vertice experience: it supports
+            both renewals and brand-new software requests. But the original
+            design failed to support either use case effectively, putting SaaS
+            platform adoption and CSAT at risk.
+          </p>
+        </div>
+      </section>
+
+      <!-- Before and after, one on top of the other, cut apart by a line the
+           reader drags. The range input is the control: it gives the drag,
+           the click-to-jump and the arrow keys for nothing, and everything
+           visible over it is decoration with pointer-events off. -->
+      <figure class="cs-figure reveal">
+        <div class="cs-compare cs-frame glass" data-compare>
+          <div class="cs-compare-media">
+
+            <img class="cs-compare-base"
+                 src="../images/Vertice-RequestImg/before.webp"
+                 alt="The original request page: a large workflow canvas fills the screen, with active tasks and comments pushed below the fold"
+                 width="1467" height="1024" loading="lazy" decoding="async">
+
+            <input class="cs-compare-range" type="range" min="0" max="100"
+                   value="50" step="0.1" aria-label="Drag to compare the original request page with the redesign">
+
+            <div class="cs-compare-top">
+              <img src="../images/Vertice-RequestImg/after.webp"
+                   alt="The redesigned request page: active tasks, the most recent offer and comments all in view at once"
+                   width="1467" height="1024" loading="lazy" decoding="async">
+            </div>
+
+            <span class="cs-compare-line" aria-hidden="true">
+              <span class="cs-compare-grip">
+                <svg viewBox="0 0 24 24"><path d="m10 8-4 4 4 4"/><path d="m14 8 4 4-4 4"/></svg>
+              </span>
+            </span>
+
+            <span class="cs-compare-tag cs-compare-tag--before" aria-hidden="true">Before</span>
+            <span class="cs-compare-tag cs-compare-tag--after" aria-hidden="true">After</span>
+
+          </div>
+        </div>
+        <figcaption>
+          Drag the handle: the original page led with the workflow canvas and
+          buried the work, the redesign puts the tasks, the offer and the
+          conversation in one view
+        </figcaption>
+      </figure>
+
+
+      <section class="cs-section reveal">
+        <h2 class="cs-label">Role &amp; team</h2>
+        <div class="cs-body">
+          <ul class="cs-list">
+            <li>Took ownership of the initiative within two weeks of joining Vertice</li>
+            <li>
+              Partnered closely with Product, Engineering, and Data to define the
+              problem space and align on success metrics
+            </li>
+            <li>
+              Led discovery across internal and external users to uncover friction
+              in key workflows
+            </li>
+            <li>
+              Collaborated with 3 Product Managers and 3 engineering squads, plus
+              Customer Success, Sales, and Data to validate solutions and measure
+              impact
+            </li>
+          </ul>
+        </div>
+      </section>
+
+
+      <section class="cs-section reveal">
+        <h2 class="cs-label">Process</h2>
+        <div class="cs-body">
+          <h3>Redesigning key pages</h3>
+          <p>
+            I led this initiative from week two after joining, working with
+            Product, Engineering, and Data Science to understand the problem. I
+            interviewed dozens of internal and external stakeholders to
+            understand the pain points and desires of the primary users, then
+            defined new components and patterns across the product.
+          </p>
+        </div>
+      </section>
+
+      <section class="cs-section cs-section--continued reveal">
+        <div class="cs-body">
+          <h3>Designing scalable components</h3>
+          <p>
+            I audited the existing UI to identify inconsistencies and
+            duplication, then built a flexible component system to support
+            multiple workflows and edge cases, balancing speed of delivery
+            against long-term maintainability. Usage guidelines let designers and
+            engineers build confidently and consistently from there.
+          </p>
+          <p>
+            Every decision started from what the user was trying to get done,
+            then had to survive what was technically feasible in the time we
+            had. Where the ideal pattern was not buildable, I looked for the
+            version that kept the user's goal intact and could still ship. Much
+            of what came out of it was reusable beyond this page: the widget
+            component pulled every existing offer and contract card onto a
+            common visual identity, so the same building blocks now serve the
+            request page and the rest of the platform.
+          </p>
+        </div>
+      </section>
+
+      <!-- Four boards, one frame. Native scroll snapping does the moving, so
+           the track still works if the script never runs; the arrows, the dots
+           and the caption underneath are the parts JS adds. All four were
+           captured at the same size, so the slide box is simply their shape. -->
+      <figure class="cs-figure cs-carousel reveal" data-carousel
+              style="--slide-ratio: 10 / 7">
+
+        <div class="cs-frame glass">
+          <ul class="cs-carousel-track" data-carousel-track>
+            <li class="cs-slide"
+                data-caption="Task cards worked through against the workflow behind them: what is active, what is overdue, and what the reader is meant to do next">
+              <img src="../images/Vertice-RequestImg/task-card-design.webp"
+                   alt="A board of task card explorations, each variant shown against the workflow it belongs to"
+                   width="1000" height="700" loading="lazy" decoding="async">
+            </li>
+            <li class="cs-slide"
+                data-caption="Header, breadcrumb and tab patterns defined once, then checked against every kind of request the page carries: a new process, a generic request, one with a vendor, and a renewal">
+              <img src="../images/Vertice-RequestImg/differing-requests.webp"
+                   alt="Header, breadcrumb and tab patterns drawn out for a new process, a generic request, a request with a vendor and a renewal"
+                   width="1000" height="700" loading="lazy" decoding="async">
+            </li>
+            <li class="cs-slide"
+                data-caption="Comments tried as an overlay and as a resizable panel, at both screen sizes and both comment volumes, before committing to one">
+              <img src="../images/Vertice-RequestImg/comments-section.webp"
+                   alt="Comments tested as an overlay and as a panel, at two screen sizes and two comment volumes"
+                   width="1000" height="700" loading="lazy" decoding="async">
+            </li>
+            <li class="cs-slide"
+                data-caption="Every offer and contract widget in the product, pulled onto one identity: shared rules for headings, borders, collapsed states and previews">
+              <img src="../images/Vertice-RequestImg/widgets-aligned.webp"
+                   alt="Every offer and contract widget in the product, lined up and pulled onto one set of rules"
+                   width="1000" height="700" loading="lazy" decoding="async">
+            </li>
+          </ul>
+        </div>
+
+        <div class="cs-carousel-foot">
+          <!-- One caption that changes rather than four stacked under the
+               track, so the figure keeps a single height as it moves -->
+          <figcaption data-carousel-caption aria-live="polite">
+            Task cards worked through against the workflow behind them: what is
+            active, what is overdue, and what the reader is meant to do next
+          </figcaption>
+
+          <div class="cs-carousel-controls">
+            <button class="cs-carousel-btn cs-carousel-btn--prev" type="button"
+                    data-carousel-prev aria-label="Previous design decision">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12h-15"/><path d="m10.5 5.5-6.5 6.5 6.5 6.5"/></svg>
+            </button>
+            <div class="cs-carousel-dots" data-carousel-dots></div>
+            <button class="cs-carousel-btn cs-carousel-btn--next" type="button"
+                    data-carousel-next aria-label="Next design decision">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12h15"/><path d="m13.5 5.5 6.5 6.5-6.5 6.5"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </figure>
+
+      <section class="cs-section cs-section--continued reveal">
+        <div class="cs-body">
+          <h3>Improving communication</h3>
+          <p>
+            I mapped stakeholder touchpoints across the end-to-end workflow,
+            identified where handoffs between teams were breaking down, and
+            simplified the information architecture to surface the right context
+            at the right time. Clearer status visibility and structured updates
+            cut down on ambiguity and back-and-forth.
+          </p>
+
+          <h3>Shipping in milestones</h3>
+          <p>
+            We were time constrained and the redesign had to reach users in
+            pieces rather than all at once, so I broke it into milestones. The
+            first was the page header and the layout, the frame everything else
+            sits in. Agreeing the structure early meant engineering could start
+            building while the individual components were still being designed,
+            and each one then dropped into a page that already held its shape.
+          </p>
+        </div>
+      </section>
+
+      <figure class="cs-figure cs-figure--mid reveal">
+        <div class="cs-frame glass">
+          <img src="../images/Vertice-RequestImg/layout-first.webp"
+               alt="The new page header and layout in place, with the existing components still sitting in their slots as placeholders"
+               width="1467" height="1024" loading="lazy" decoding="async">
+        </div>
+        <figcaption>
+          Milestone one: the header, the tabs and the layout settled first, with
+          the existing components left in their slots until their turn came
+        </figcaption>
+      </figure>
+
+
+      <section class="cs-section cs-section--wide reveal">
+        <h2 class="cs-label">Impact</h2>
+        <div class="cs-body">
+
+          <div class="cs-stats glass">
+            <p class="cs-stat">
+              <span class="cs-stat-num">32%</span>
+              <span class="cs-stat-label">increase in CSAT</span>
+            </p>
+            <p class="cs-stat">
+              <span class="cs-stat-num">-27%</span>
+              <span class="cs-stat-label">time to complete a request</span>
+            </p>
+            <p class="cs-stat">
+              <span class="cs-stat-num">41%</span>
+              <span class="cs-stat-label">improvement in task completion</span>
+            </p>
+          </div>
+
+          <p>
+            Internal teams moved faster with clearer ownership and less
+            back-and-forth. External users gained better visibility into their
+            requests, reducing confusion and cutting support tickets. The
+            redesigned experience drove higher engagement and stronger adoption
+            across the platform.
+          </p>
+        </div>
+      </section>
+
+
+      <section class="cs-section reveal">
+        <h2 class="cs-label">What's next</h2>
+        <div class="cs-body">
+          <p>
+            The next focus is redesigning the contract page to align with the new
+            request experience. Due to time constraints, some enhancements were
+            intentionally scoped for a second phase. The contract page will
+            extend the same patterns and components, keeping workflows consistent
+            while cutting design and engineering duplication. This phase will:
+          </p>
+          <ul class="cs-list">
+            <li>Unify the experience across contracts and requests</li>
+            <li>Increase component reuse to improve development efficiency</li>
+            <li>Further streamline the user journey and reduce cognitive load</li>
+          </ul>
+        </div>
+      </section>
+
+
+      <section class="cs-cta glass reveal">
+        <p>
+          Want the full walkthrough: the component system, the stakeholder
+          interviews, what's coming for contracts?
+        </p>
+        <a class="btn" href="mailto:abbyythompson@gmail.com?subject=Vertice%20case%20study">
+          Get in touch for the full presentation
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12h15"/><path d="m13.5 5.5 6.5 6.5-6.5 6.5"/></svg>
+        </a>
+      </section>
+
+      <a class="cs-next glass reveal" href="atlassian.html">
+        <span>
+          <span class="cs-next-label">Next case study</span>
+          <span class="cs-next-title">Software Goals</span>
+        </span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12h15"/><path d="m13.5 5.5 6.5 6.5-6.5 6.5"/></svg>
+      </a>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Made by me</p>
+  </footer>
+
+</body>
+</html>
