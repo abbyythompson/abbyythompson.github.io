@@ -101,7 +101,12 @@
         </p>
       </header>
 
-      <figure class="case-hero cs-frame glass" style="--hero-pos: 50% 50%">
+      <!-- Wider than the shot at desktop, so only the height is cropped and the x
+           does nothing. Below 620px the frame turns narrower than the page and
+           starts cutting the sides: pinned left, the calsocial mark stays whole
+           and the crop falls on the far end of the nav instead of slicing the
+           logo down the middle. -->
+      <figure class="case-hero cs-frame glass" style="--hero-pos: 0% 50%">
         <img src="../images/calsocial/web-home.webp"
              alt="The cal.social home page: the line Invited? go, the calsocial mark, and event cards fanning out across the screen"
              width="1324" height="871" fetchpriority="high" decoding="async">
