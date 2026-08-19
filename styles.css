@@ -926,13 +926,6 @@ main,
   margin-inline: auto;
 }
 
-/* A single phone shown on its own, held to about the width one is read at */
-.cs-figure--phone .cs-frame,
-.cs-figure--phone figcaption{
-  max-width: 300px;
-  margin-inline: auto;
-}
-
 .cs-figure figcaption{
   margin: 16px 2px 0;
   max-width: 64ch;
@@ -944,11 +937,15 @@ main,
 
 
 /* --- Two up ---
-   A pair of phone screens read against each other, where the point is the
-   difference between them rather than either one on its own. Each shot keeps
-   its own frame and its own label. Capped narrow because these are phones: at
-   full page width they would be blown up well past the size they were shot
-   at. */
+   Two shots read against each other, where the point is the difference between
+   them rather than either one on its own. Each keeps its own frame and its own
+   label.
+
+   The default is a pair of phones: equal columns, capped narrow, because at
+   full page width a phone is blown up well past the size it was shot at. Set
+   --pair-crop when they were captured to different shapes and both should be
+   cut to one. Use --matched below instead when the shapes differ for real, a
+   page beside a phone. */
 
 .cs-pair{
   --pair-gap: clamp(14px, 2.4vw, 28px);
@@ -972,7 +969,7 @@ main,
    shape and both are fitted from the top. What is being compared is the top of
    the screen; whatever runs off the bottom was going to run off anyway. */
 .cs-pair img{
-  aspect-ratio: var(--pair-ratio, auto);
+  aspect-ratio: var(--pair-crop, auto);
   object-fit: cover;
   object-position: 50% 0;
 }
@@ -995,6 +992,7 @@ main,
   display: flex;
   justify-content: center;
   container-type: inline-size;
+  max-width: none;
 }
 
 .cs-pair--matched .cs-pair-item{ min-width: 0; }
