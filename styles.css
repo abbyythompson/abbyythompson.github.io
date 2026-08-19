@@ -926,6 +926,13 @@ main,
   margin-inline: auto;
 }
 
+/* A single phone shown on its own, held to about the width one is read at */
+.cs-figure--phone .cs-frame,
+.cs-figure--phone figcaption{
+  max-width: 300px;
+  margin-inline: auto;
+}
+
 .cs-figure figcaption{
   margin: 16px 2px 0;
   max-width: 64ch;
@@ -933,6 +940,74 @@ main,
   line-height: 1.5;
   letter-spacing: -.005em;
   color: var(--ink-muted);
+}
+
+
+/* --- Two up ---
+   A pair of phone screens read against each other, where the point is the
+   difference between them rather than either one on its own. Each shot keeps
+   its own frame and its own label. Capped narrow because these are phones: at
+   full page width they would be blown up well past the size they were shot
+   at. */
+
+.cs-pair{
+  --pair-gap: clamp(14px, 2.4vw, 28px);
+  display: grid;
+  grid-template-columns: var(--pair-cols, repeat(2, minmax(0, 1fr)));
+  gap: var(--pair-gap);
+  max-width: var(--pair-max, 620px);
+  margin-inline: auto;
+}
+
+/* Column, so the label can be pushed to the foot of whichever item is taller.
+   Two shots of different shapes never land at exactly the same height, and a
+   label sitting a few pixels off its neighbour reads as a mistake. */
+.cs-pair-item{
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The two shots were never captured to the same crop, so the pair is cut to one
+   shape and both are fitted from the top. What is being compared is the top of
+   the screen; whatever runs off the bottom was going to run off anyway. */
+.cs-pair img{
+  aspect-ratio: var(--pair-ratio, auto);
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.cs-pair-label{
+  margin: auto 2px 0;
+  padding-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -.005em;
+  color: var(--ink-muted);
+}
+
+/* Two shots of genuinely different shapes, a page and a phone. Sizing them by
+   column share only ever gets their heights close, because the frame's padding
+   is a fixed inset that costs the narrow one proportionally more. So the row
+   becomes flex, both pictures are drawn at one height, and each frame takes
+   whatever width that leaves it. */
+.cs-pair--matched{
+  display: flex;
+  justify-content: center;
+  container-type: inline-size;
+}
+
+.cs-pair--matched .cs-pair-item{ min-width: 0; }
+
+/* One height for both, worked back from the row's own width: what is left of it
+   after the two frames' padding and the gap between them, divided by the two
+   shapes added together. The row fills its column and the pictures come out
+   level, at any width, without the padding throwing the taller one off.
+   --pair-ratios is the sum of the shots' width over height. */
+.cs-pair--matched img{
+  width: auto;
+  max-width: 100%;
+  height: calc((100cqw - 4 * var(--frame-pad) - var(--pair-gap)) / var(--pair-ratios, 2));
 }
 
 
@@ -1639,6 +1714,18 @@ main,
   /* narrower viewport, so the washes need to be wider to still read */
   .blob{ width: calc(var(--w) * 1.9); }
 }
+
+/* Below this the two phones are too narrow to read anything in, so the
+   comparison is made by scrolling rather than side by side */
+@media (max-width: 520px){
+  .cs-pair{ grid-template-columns: 1fr; max-width: 320px; }
+
+  /* Stacked, there is no pair left to match: each shot goes back to filling
+     the column at its own height */
+  .cs-pair--matched{ flex-direction: column; align-items: center; }
+  .cs-pair--matched img{ width: 100%; height: auto; }
+}
+
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior: auto; }
