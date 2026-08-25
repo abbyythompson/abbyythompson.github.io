@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abby Thompson, Product Designer</title>
-<meta name="description" content="Product designer with an engineering background. 10 years designing and developing world class experiences.">
+<meta name="description" content="London based product designer with an engineering background. A decade designing and building experiences for start ups through to the biggest companies on the planet.">
 
-<!-- Favicons built from the brand portrait, flattened onto the page background so
-     the black line art stays legible on a dark browser chrome -->
 <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="images/abby/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="images/abby/favicon-16.png">
@@ -15,215 +13,227 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
-<!-- The blobs are the first thing painted, so they are fetched alongside the
-     stylesheet rather than after the browser has finished parsing it -->
-<link rel="preload" as="image" href="assets/blob-pink.png">
-<link rel="preload" as="image" href="assets/blob-green.png">
-
-<!-- Set before the first paint so the load animations can start from their
-     hidden state. Without JS the class never lands and the page renders in its
-     finished state rather than blank. -->
-<script>document.documentElement.classList.add('js');</script>
-
-<script src="script.js" defer></script>
 </head>
 <body>
 
-  <!-- ===== BACKGROUND =====
-       One off-white field with static colour washes. The blobs are absolutely
-       positioned down the whole document so they scroll with the content as part
-       of the composition; nothing here animates. -->
-  <div class="page-bg" aria-hidden="true">
-    <span class="blob blob--pink"   style="--top:-6%;  --x:-16%; --w:56vw; --o:.11"></span>
-    <span class="blob blob--green"  style="--top:6%;   --x:-14%; --w:48vw; --o:.10" data-side="right"></span>
-    <span class="blob blob--pink"   style="--top:28%;  --x:-18%; --w:52vw; --o:.09" data-side="right"></span>
-    <span class="blob blob--green"  style="--top:42%;  --x:-15%; --w:46vw; --o:.10"></span>
-    <span class="blob blob--pink"   style="--top:62%;  --x:-16%; --w:54vw; --o:.10"></span>
-    <span class="blob blob--green"  style="--top:78%;  --x:-14%; --w:44vw; --o:.09" data-side="right"></span>
-    <span class="blob blob--pink"   style="--top:92%;  --x:-17%; --w:50vw; --o:.10" data-side="right"></span>
-  </div>
+<main class="page">
 
-  <!-- ===== HEADER =====
-       No background at the top of the page; the glass panel fades in on scroll
-       via .is-scrolled, set in script.js -->
-  <header class="topbar" id="topbar">
-    <div class="topbar-inner">
+  <!-- Intro -->
+  <header class="intro">
+    <img class="avatar" src="images/abby/abby-snowboarding.webp" width="111" height="111" alt="Abby Thompson">
 
-      <a class="brand" href="#top">
-        <!-- Spaces in these filenames must stay percent-encoded; a raw space
-             breaks srcset parsing and the 2x/3x images are silently ignored. -->
-        <img class="brand-mark" src="images/abby/AbbyPortrait-Notion-transparent%202.png"
-             srcset="images/abby/AbbyPortrait-Notion-transparent%202.png 1x,
-                     images/abby/AbbyPortrait-Notion-transparent%202@2x.png 2x,
-                     images/abby/AbbyPortrait-Notion-transparent%202@3x.png 3x"
-             width="24" height="24" alt="">
-        <span class="brand-name">Abby Thompson</span>
+    <h1 class="name">Abby Thompson</h1>
+    <p class="muted role">Product Designer w/ Eng background</p>
+
+    <div class="bio">
+      <p>London based Product Designer who has spent the best part of a decade designing and building experiences for start ups through to the biggest companies on the planet 🌏</p>
+      <p>I work closely with PMs and Engineering teams to build the best possible solution in complex and technically tricky problem spaces 🔭</p>
+      <p>Open to Senior Product Designer roles</p>
+    </div>
+
+    <div class="contact">
+      <button class="pill pill--copy" type="button">
+        <span class="swap"><span class="swap-a">Email me</span><span class="swap-b">Copied</span></span>
+        <span class="icons">
+          <svg class="ic ic-copy" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <svg class="ic ic-check" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path pathLength="1" d="M20 6 9 17l-5-5"/></svg>
+        </span>
+      </button>
+      <a class="pill" href="https://www.linkedin.com/in/abbythompson/" target="_blank" rel="noopener noreferrer">
+        Message me
+        <svg class="ic" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
       </a>
-
-      <nav class="topbar-actions">
-        <a class="icon-btn" href="mailto:abbyythompson@gmail.com" aria-label="Email Abby">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
-        </a>
-        <a class="icon-btn" href="assets/CV-Abby%20Thompson-Product%20Designer.pdf"
-           download="Abby Thompson - Product Designer CV.pdf" aria-label="Download resume">
-          <!-- The arrow is its own group so it can nudge down into the tray on
-               hover while the tray itself stays put -->
-          <svg viewBox="0 0 24 24" aria-hidden="true"><g class="dl-arrow"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/></g><path d="M4 16.5v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
-        </a>
-      </nav>
-
     </div>
   </header>
 
-  <main id="top">
+  <!-- Work -->
+  <section class="section">
+    <h2 class="section-title">Work</h2>
+    <div class="rows">
 
-    <!-- ===== HERO ===== -->
-    <section class="hero">
-      <!-- Same portrait as the brand mark, drawn at 64px. No srcset here: the x
-           descriptors are read against the rendered size, so at 64px the browser
-           picked the 48px file to fill 128 device pixels and it came out soft.
-           The @3x file is the largest export there is, so it is used outright.
-           Spaces in the filename stay percent-encoded. -->
-      <img class="hero-portrait" src="images/abby/AbbyPortrait-Notion-transparent%202@3x.png"
-           width="64" height="64" alt="Illustrated portrait of Abby Thompson">
-
-      <h1 class="hero-title">
-        I'm Abby, a <strong>product designer</strong> with an engineering background.
-      </h1>
-
-      <p class="hero-intro">
-        For the past 10 years I've been designing and developing world class
-        experiences. I have a knack for face paced technically constrained
-        designing. I hone in on consistency and live by systems that expedite
-        decision processes and lead to experiences the user want to live in.
-      </p>
-    </section>
-
-    <!-- ===== CASE STUDIES ===== -->
-    <section class="work" id="work">
-      <h2 class="section-label">Recent work</h2>
-
-      <div class="card-grid">
-
-        <!-- The logo is the card's resting identity and stays put. Everything
-             else lives in .card-panel, which is invisible until the pointer is
-             on the card or the link inside it takes focus. The panel is only
-             ever faded, never removed, so the copy is still in the accessibility
-             tree for a screen reader that has no pointer to hover with.
-
-             The title is the link, and its ::after is stretched over the whole
-             panel, so the entire card is the hit area while the accessible name
-             stays on the words of the title itself. That is why there is no
-             separate "read case study" row: the heading is already the thing
-             being clicked. -->
-        <article class="card card--wide">
-          <img class="card-logo card-logo--vertice" src="images/logos/vertice.png" alt="Vertice"
-               width="551" height="165" loading="lazy" decoding="async">
-          <!-- Not one flat export but the composition rebuilt from the pieces it
-               was made of: the request page as the ground, and the four cards
-               that sit over it as their own transparent layers. Each layer is a
-               span holding an img so the two motions never fight over the same
-               transform: the span carries the one-time arrival, the img inside
-               it carries the drift that runs forever.
-
-               The stack is one picture to a screen reader, so the label is on
-               the wrapper and every layer inside it is decorative. -->
-          <div class="card-media">
-            <div class="rq-stack" role="img"
-                 aria-label="The redesigned Vertice request page, with its task, offer, contact and comment cards floating above it">
-              <span class="rq-layer rq-layer--base">
-                <img src="images/Vertice/req-base.webp" alt=""
-                     width="1440" height="940" loading="lazy" decoding="async">
-              </span>
-              <span class="rq-layer rq-layer--tasks">
-                <img src="images/Vertice/req-tasks.webp" alt=""
-                     width="596" height="384" loading="lazy" decoding="async">
-              </span>
-              <span class="rq-layer rq-layer--offer">
-                <img src="images/Vertice/req-offer.webp" alt=""
-                     width="596" height="164" loading="lazy" decoding="async">
-              </span>
-              <span class="rq-layer rq-layer--contacts">
-                <img src="images/Vertice/req-contacts.webp" alt=""
-                     width="354" height="182" loading="lazy" decoding="async">
-              </span>
-              <span class="rq-layer rq-layer--comments">
-                <img src="images/Vertice/req-comments.webp" alt=""
-                     width="504" height="518" loading="lazy" decoding="async">
-              </span>
-            </div>
-          </div>
-          <div class="card-panel">
-            <div class="card-panel-top">
-              <h3 class="card-title"><a href="work/vertice.html">Redesigning the Request Experience</a></h3>
-              <p class="card-line">
-                Rebuilt the request page around real user research. CSAT up 32%,
-                time to complete down 27%.
-              </p>
-            </div>
-            <p class="card-meta">
-              <span class="card-role">Product Designer</span>
-              <span class="card-year">2026</span>
-            </p>
-          </div>
-        </article>
-
-        <!-- No wordmark file for this one, so the name is set in the page's own
-             type at the size the other logos are drawn at -->
-        <article class="card">
-          <p class="card-logo card-logo--text">calsocial</p>
-          <div class="card-media">
-            <img src="images/expcardImage_calsocial.webp" alt="The calsocial app on two phones"
-                 width="1400" height="980" loading="lazy" decoding="async">
-          </div>
-          <div class="card-panel">
-            <div class="card-panel-top">
-              <h3 class="card-title"><a href="work/calsocial.html">A friends-first social calendar</a></h3>
-              <p class="card-line">
-                Leading a full visual and UX refresh to pull event planning out
-                of chaotic group chats.
-              </p>
-            </div>
-            <p class="card-meta">
-              <span class="card-role">Founding Designer</span>
-              <span class="card-year">2026</span>
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <img class="card-logo card-logo--atlassian" src="images/logos/atlassian.png" alt="Atlassian"
-               width="994" height="126" loading="lazy" decoding="async">
-          <div class="card-media">
-            <img src="images/Atlassian/expcardImage_atlassian.webp" alt="Software Goals in Atlassian Compass"
-                 width="1400" height="980" loading="lazy" decoding="async">
-          </div>
-          <div class="card-panel">
-            <div class="card-panel-top">
-              <h3 class="card-title"><a href="work/atlassian.html">Software Goals</a></h3>
-              <p class="card-line">
-                Led goal tracking in Compass from concept to ship, and owned
-                Health end to end.
-              </p>
-            </div>
-            <p class="card-meta">
-              <span class="card-role">Product Designer</span>
-              <span class="card-year">2024</span>
-            </p>
-          </div>
-        </article>
-
+      <div class="row">
+        <p class="muted when">2025 &ndash; Now</p>
+        <div class="entry">
+          <p><span class="u">Vertice<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></span></p>
+          <p>Reimagining the procurement experience</p>
+          <div class="shot"></div>
+        </div>
       </div>
-    </section>
 
-  </main>
+      <div class="row">
+        <p class="muted when">2026 &ndash; Now</p>
+        <div class="entry">
+          <p><span class="u">CalSocial<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></span></p>
+          <p>Designing you & your friend&rsquo;s social calendar</p>
+          <div class="shot"></div>
+        </div>
+      </div>
 
-  <footer class="site-footer">
-    <p>Made by me</p>
-  </footer>
+      <div class="row">
+        <p class="muted when">2021 &ndash; 2022</p>
+        <div class="entry">
+          <p><span class="u">Atlassian<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></span></p>
+          <p>Improving your team&rsquo;s software health</p>
+          <div class="shot"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section">
+    <h2 class="section-title">Experience</h2>
+    <div class="rows">
+
+      <div class="row">
+        <p class="muted when">2025 &ndash; 2026</p>
+        <div class="entry">
+          <p>Product Designer @ <a class="u" href="https://www.vertice.one" target="_blank" rel="noopener noreferrer">Vertice<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>London, United Kingdom 🇬🇧</p>
+        </div>
+      </div>
+
+      <div class="row row--muted">
+        <p class="muted when">2024 &ndash; 2026</p>
+        <div class="entry">
+          <p>NZSIA 2 Ski Instructor @ <a class="u" href="https://www.hakubasnowsports.com" target="_blank" rel="noopener noreferrer">Hakuba Snowsports<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>Hakuba, Japan 🇯🇵</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="muted when">2022 &ndash; 2024</p>
+        <div class="entry">
+          <p>Product Designer @ <a class="u" href="https://www.atlassian.com" target="_blank" rel="noopener noreferrer">Atlassian<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>Remote, APAC 🌏</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="muted when">2020 &ndash; 2022</p>
+        <div class="entry">
+          <p>Software Engineer / Product Designer @ <a class="u" href="https://www.jasper.io" target="_blank" rel="noopener noreferrer">Jasper<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>Auckland, New Zealand 🇳🇿</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="muted when">2019 &ndash; 2020</p>
+        <div class="entry">
+          <p>Software Engineer @ <a class="u" href="https://www.myob.com" target="_blank" rel="noopener noreferrer">MYOB<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>Auckland, New Zealand 🇳🇿</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="muted when">2017 &ndash; 2018</p>
+        <div class="entry">
+          <p>UX Design / Software Engineering Intern @ <a class="u" href="https://www.macquarie.com" target="_blank" rel="noopener noreferrer">Macquarie<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>Sydney, Australia 🦘</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="muted when">2016 &ndash; 2017</p>
+        <div class="entry">
+          <p>Software Engineering Intern @ <a class="u" href="https://www.google.com" target="_blank" rel="noopener noreferrer">Google<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p>
+          <p>Sydney, Australia 🦘</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="section">
+    <h2 class="section-title">Education</h2>
+    <div class="rows">
+
+      <div class="row">
+        <p class="muted when">2021 &ndash; 2022</p>
+        <div class="entry">
+          <p>UX Design Professional Diploma</p>
+          <p>UX Design Institute 👩🏼‍🎓</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="muted when">2014 &ndash; 2018</p>
+        <div class="entry">
+          <p>Bachelor of Software Engineering (Hons)</p>
+          <p>University of Auckland 👩🏼‍🎓</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Hand-drawn divider between the CV half and the personal half -->
+  <div class="divider" aria-hidden="true">
+    <svg width="79" height="17" viewBox="0 0 78.9668 16.9009" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible"><path d="M1.00742 8.27024C0.928589 8.27024 1.47156 7.24293 2.94953 5.40033C6.07595 1.5026 23.525 2.50538 34.3383 3.64567C39.0409 4.14158 40.7968 9.28371 41.4194 11.5181C41.7197 12.5955 41.3555 13.6864 40.779 14.4405C40.2024 15.1946 39.2628 15.6117 38.2759 15.8017C37.2891 15.9917 36.2834 15.9422 35.5135 15.3648C34.7437 14.7875 34.2402 13.6839 34.0718 12.5445C33.9033 11.4051 34.0851 10.2634 34.4928 9.25817C36.9518 3.19566 58.2479 4.70355 74.3514 4.71678C76.9496 4.53507 77.8663 4.07863 77.959 3.41311C78.0517 2.7476 77.2927 1.88685 76.5106 1.00001" stroke="#CCCCCC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <!-- A bit of me -->
+  <section class="section">
+    <h2 class="section-title">A bit of me</h2>
+    <div class="rows">
+
+      <div class="card-row">
+        <img class="card-photo" src="images/me/newzealand.webp" width="80" height="80" alt="A cove on the New Zealand coast">
+        <div class="card-body">
+          <p>Born and raised in Auckland, New Zealand 🇳🇿 I&rsquo;m a bit of a globe trotter, working remotely in New Zealand 🥝, Japan 🇯🇵 and internships in Sydney 🦘 I&rsquo;ve now moved to London, taking part in the iconic kiwi migration, to enjoy the opportunity London brings and to explore Europe on my holidays 🏝️ ⛷️</p>
+        </div>
+      </div>
+
+      <div class="card-row">
+        <img class="card-photo" src="images/me/snowboard.webp" width="80" height="80" alt="Abby snowboarding in deep powder">
+        <div class="card-body">
+          <p>Skiing and snowboarding is my passion in life ⛷️🏂 I love being on snow, relaxing in an onsen or just admiring a valley of mountains. I spent two seasons working in Hakuba as a ski instructor to have a break from the computer screen. Teaching was super rewarding and I strive to bring what I&rsquo;ve learned back into my role as a designer 👩‍🏫</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- And some nice words -->
+  <section class="section">
+    <h2 class="section-title">And some nice words</h2>
+    <div class="rows">
+
+      <div class="card-row">
+        <img class="card-photo" src="images/people/laith.webp" width="80" height="80" alt="Laith Wallace">
+        <blockquote class="card-body">
+          <p>&ldquo;Her willingness to get stuck in and take ownership of projects is highly commendable. She quickly adapted to our ways of working and has become a reliable collaborator with product management and engineering.&rdquo;</p>
+          <p class="muted">Laith Wallace, Head of Design @ Vertice 🎨</p>
+        </blockquote>
+      </div>
+
+      <div class="card-row">
+        <img class="card-photo" src="images/people/yubing.webp" width="80" height="80" alt="Yubing Zhang">
+        <blockquote class="card-body">
+          <p>&ldquo;Abby is a highly skilled and collaborative product designer. She consistently demonstrates a strong understanding of user needs and effectively partners with cross-functional teams to deliver thoughtful and well-executed designs.&rdquo;</p>
+          <p class="muted">Yubing Zhang, Staff Product Designer @ TikTok 🌉</p>
+        </blockquote>
+      </div>
+
+      <div class="card-row">
+        <img class="card-photo" src="images/people/shu.webp" width="80" height="80" alt="Shu Sahay">
+        <blockquote class="card-body">
+          <p>&ldquo;She&rsquo;s proficient in Figma and research prototyping, effectively translated user insights into actionable designs for both their own work and the wider team. An amazing team player and overall exceptional UX/UI product designer.&rdquo;</p>
+          <p class="muted">Shubhank Sahay, Senior Product Designer @ Datadog 🗽</p>
+        </blockquote>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js" defer></script>
 
 </body>
 </html>

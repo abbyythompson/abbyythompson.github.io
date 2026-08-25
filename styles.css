@@ -1,1788 +1,473 @@
-/* ===========================================================================
-   Abby Thompson, portfolio
-   Two typefaces: Instrument Serif for display, Space Grotesk for everything
-   else. One off-white page with static colour washes and glass cards.
-   =========================================================================== */
+/* Abby Thompson — portfolio
+   One column, Inter 14, black on white with #777 for anything secondary.
+   Spacing follows the Figma: 8 inside an entry, 16 between the date and its
+   entry, 40 between rows, 32 under a section title, 80 between sections. */
 
-:root{
-  /* Surface */
-  --bg:          #f1efe9;
-  --glass-edge:  rgba(255, 255, 255, .92);
+:root {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #777;
 
-  /* Ink. The serif sits lighter than the body copy on purpose */
-  --ink:         #33382f;
-  --ink-muted:   #6a6f61;
+  --text: 14px;
+  --leading: 20px;
 
-  /* Rhythm */
-  /* One measure for every page, so the topbar, the home page and the case
-     studies all sit their content on the same two edges. It is deliberately
-     generous: the empty margin is what makes the page feel composed rather
-     than filled, and it is where the colour washes get to show.
+  /* Spacing scale, straight from the design */
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-36: 36px;
+  --space-40: 40px;
+  --space-64: 64px;
+  --space-80: 80px;
 
-     The middle term is a line rather than a plain vw, so the margin only starts
-     opening up once there is room to spare: 24px until about 700px wide, then
-     it climbs to its full 480px by about 1920. A bare vw would take the same
-     percentage off a laptop as off a monitor and crush the column in between. */
-  --gutter:      clamp(24px, 37.4vw - 238px, 480px);
-  --card-radius: 28px;
+  --col-when: 100px;   /* the date column */
+  --col-page: 752px;   /* widest the content ever gets */
+  --col-nav: 107px;    /* case study section nav */
+  --nav-inset: 58px;   /* ...which sits this far in from the screen edge */
 
-  /* The hero's reading size. It lives up here rather than on .hero because the
-     card copy is set from it too, so the two blocks cannot drift apart. */
-  --hero-text:   14px;
-
-  /* One curve for every move on the page: quick to leave, slow to arrive */
-  --ease-out:    cubic-bezier(.22, .68, .36, 1);
+  /* Every page starts its content at --pad-top, so moving between them never
+     shifts anything. The case study puts its back arrow at --pad-arrow and
+     then makes up the difference. */
+  --pad-top: clamp(64px, 14vw, 222px);
+  --pad-arrow: clamp(28px, 3.5vw, 50px);
+  --pad-bottom: clamp(96px, 16vw, 240px);
+  --pad-side: 24px;
 }
 
 *,
 *::before,
-*::after{ box-sizing: border-box; }
+*::after { box-sizing: border-box; }
 
-html{ scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; }
 
-body{
+body {
   margin: 0;
-  /* the washes are absolutely positioned against the document, so the body is
-     the thing they measure themselves against */
-  position: relative;
   background: var(--bg);
-  color: var(--ink);
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  color: var(--fg);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: var(--text);
   font-weight: 400;
+  line-height: var(--leading);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-img{ display: block; max-width: 100%; }
-
-a{ color: inherit; text-decoration: none; }
-
-
-/* ===== BACKGROUND =====================================================
-   The blob PNGs are colour painted on white, so they are composited with
-   multiply: the white burns away and only the tint lands on the off-white.
-   Screen, which the old dark build used, would wash the page out instead. */
-
-.page-bg{
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
+h1, h2, p, blockquote, figure {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
 
-.blob{
-  position: absolute;
-  top: var(--top);
-  left: var(--x);
-  width: var(--w);
-  aspect-ratio: 1;
-  opacity: var(--o, .1);
-  background-repeat: no-repeat;
-  background-size: contain;
-  mix-blend-mode: multiply;
-  /* saturation only. Nothing here moves, so there is no compositing cost
-     beyond the one paint */
-  filter: saturate(1.6);
+img { display: block; max-width: 100%; }
+
+.muted { color: var(--muted); }
+
+/* ---------- Page ---------- */
+
+/* The column sits centred with a lot of air above it, the way the frame reads
+   in Figma. clamp() keeps that air from swallowing a short screen. */
+.page {
+  max-width: var(--col-page);
+  margin: 0 auto;
+  padding: var(--pad-top) var(--pad-side) var(--pad-bottom);
 }
 
-/* Washes hug the edges the content leaves empty */
-.blob[data-side="right"]{
-  left: auto;
-  right: var(--x);
-}
+/* ---------- Intro ---------- */
 
-.blob--pink{  background-image: url('assets/blob-pink.png'); }
-.blob--green{ background-image: url('assets/blob-green.png'); }
-
-
-/* ===== HEADER =========================================================
-   Invisible on landing, half-transparent glass once the page has moved */
-
-.topbar{
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 50;
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  transition: background .35s ease, border-color .35s ease, backdrop-filter .35s ease;
-}
-
-.topbar.is-scrolled{
-  background: rgba(255, 255, 255, .18);
-  border-bottom-color: rgba(255, 255, 255, .35);
-  backdrop-filter: blur(20px) saturate(1.6);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
-}
-
-.topbar-inner{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 18px var(--gutter);
-}
-
-.brand{
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-mark{
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+/* Already cropped square to match the Figma frame, so cover is just insurance */
+.avatar {
+  width: 111px;
+  height: 111px;
+  border-radius: 16px;
   object-fit: cover;
-  flex: none;
+  margin-bottom: var(--space-24);
 }
 
-/* Same display face as the section labels, so the name reads as the one
-   serif note in an otherwise grotesk topbar. Serifs sit optically smaller
-   than Space Grotesk at the same size, so the size is nudged up. */
-.brand-name{
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: 19px;
-  font-weight: 400;
-  letter-spacing: 0;
+.name {
+  font-size: 16px;
+  margin-bottom: var(--space-8);
 }
 
-.topbar-actions{
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+.role { margin-bottom: var(--space-32); }
 
-.icon-btn{
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  color: var(--ink);
-  transition: background .2s ease, opacity .2s ease;
-}
-
-.icon-btn:hover{ background: rgba(255, 255, 255, .55); }
-
-.icon-btn svg{
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform .28s cubic-bezier(.22, .68, .36, 1);
-}
-
-/* Two different one-pixel moves: the envelope lifts as if being handed over,
-   the download arrow drops into its tray while the tray holds still. Both are
-   transform-only, so neither disturbs the 38px button box.
-   The :not(:has()) picks out the envelope without needing a class on it. */
-.icon-btn:hover svg:not(:has(.dl-arrow)){ transform: translateY(-1px); }
-
-.dl-arrow{ transition: transform .28s cubic-bezier(.22, .68, .36, 1); }
-.icon-btn:hover .dl-arrow{ transform: translateY(2px); }
-
-
-/* ===== LAYOUT ========================================================= */
-
-main,
-.site-footer{
-  position: relative;
-  z-index: 1;
-}
-
-
-/* ===== HERO =========================================================== */
-
-/* The lead line, the paragraph and the credentials all share one size, so the
-   block reads as a single spoken introduction rather than a headline stack */
-/* Top and bottom run off one value so the block always sits evenly. The topbar
-   is fixed, so it floats over the first 77px of the top padding: that height is
-   added back, leaving the same clear space under the bar as there is below the
-   credentials. */
-.hero{
-  --hero-space: clamp(180px, 25vh, 290px);
-  padding: calc(77px + var(--hero-space)) var(--gutter) var(--hero-space);
-}
-
-.hero-portrait{
-  width: 64px;
-  height: 64px;
-  margin: 0 0 36px;
-}
-
-.hero-title{
-  max-width: 88ch;
-  margin: 0;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 400;
-  font-size: var(--hero-text);
-  line-height: 1.35;
-  letter-spacing: -.01em;
-  color: var(--ink);
-}
-
-.hero-title strong{ font-weight: 500; }
-
-.hero-intro{
-  max-width: 88ch;
-  margin: 1.35em 0 0;
-  font-size: var(--hero-text);
-  line-height: 1.42;
-  letter-spacing: -.01em;
-  color: var(--ink);
-}
-
-
-/* ===== CASE STUDIES =================================================== */
-
-.work{
-  padding: 0 var(--gutter) clamp(90px, 14vh, 170px);
-}
-
-/* The one label style on the site. It names the block on the home page and the
-   section in a case study, so both read in the same quiet aside voice. */
-.section-label,
-.cs-label{
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(20px, 2vw, 24px);
-  color: var(--ink-muted);
-}
-
-.section-label{ margin: 0 0 30px; }
-
-.card-grid{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 34px;
-}
-
-
-/* --- Glass cards ---
-   Two backgrounds on one box: the tint fills the padding box, the highlight
-   fills the border box and shows only through the 1px transparent border.
-   That is what gives the edge a gradient rather than a flat stroke. */
-
-/* Registered so the edge angle can be transitioned. An unregistered custom
-   property is only a text token, so it would jump between values instead of
-   sweeping; browsers without @property just get the jump, which is invisible
-   here because the pointer sets it every frame anyway. */
-@property --edge-angle{
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 150deg;
-}
-
-/* The pane itself, split out from the card's layout so the case study pages can
-   be built from the same glass rather than a lookalike of it. Only the work
-   cards swing --edge-angle under the pointer; everywhere else it rests at 150deg
-   and the edge is simply lit from the top left. */
-.card,
-.glass{
-  --edge-angle: 150deg;
-  /* The pane's fill, named so the work cards can trade it for the paper tone
-     and hand the white to their hover panel instead */
-  --pane-fill: linear-gradient(160deg, rgba(255,255,255,.40), rgba(255,255,255,.26));
-  border: 1px solid transparent;
-  border-radius: var(--card-radius);
-  background:
-    var(--pane-fill) padding-box,
-    linear-gradient(var(--edge-angle),
-      var(--glass-edge) 0%,
-      rgba(255,255,255,.20) 42%,
-      rgba(255,255,255,.28) 62%,
-      var(--glass-edge) 100%) border-box;
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-}
-
-.card{
-  position: relative;
-  /* At rest the card is the paper the page is printed on, near enough to the
-     background that the row reads as one quiet block. The white is held back
-     for the hover panel, so arriving on a card is the bright moment. */
-  --pane-fill: linear-gradient(160deg, rgba(241,239,233,.88), rgba(241,239,233,.72));
-  /* keeps the cursor highlight inside the rounded corner */
-  overflow: hidden;
-  /* One number for the card's inset, because the hover panel has to line its
-     copy up with the logo sitting outside it */
-  --card-pad: clamp(28px, 4vw, 56px);
-  grid-column: span 1;
-  display: grid;
-  place-items: center;
-  min-height: clamp(300px, 30vw, 390px);
-  padding: var(--card-pad);
-}
-
-.card--wide{
-  --card-pad: clamp(28px, 5vw, 66px);
-  grid-column: span 2;
-  min-height: clamp(300px, 30vw, 380px);
-}
-
-/* Sized on width alone so height follows the artwork's own ratio. Constraining
-   both axes would clamp the box to a ratio the image does not have and letterbox
-   it inside. max-height is only a guard for narrow viewports */
-.card-media{
-  position: relative;
-  justify-self: center;
-  align-self: center;
-  width: clamp(200px, 90%, 420px);
-}
-
-/* The wide card's artwork is the layered request stack, which is close to twice
-   as wide as it is tall. It takes a bigger share of the card than the single
-   screenshots do, because most of that share is the spread of the floating
-   cards rather than the page itself */
-.card--wide .card-media{ width: clamp(240px, 82%, 720px); }
-
-.card-media img{
-  width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-
-/* --- The request stack ---
-   The Vertice artwork, rebuilt from the pieces the flat export was composed
-   from. Every layer is placed as a percentage of the stack, so the whole thing
-   scales as one picture at any card width and never needs a second export.
-
-   The ratio and the numbers below are read straight off the original
-   composition: the stack's box is the union of all five layers, which reaches
-   further left than the page (the task card) and further right and further
-   down than it (the comments panel). That is why the page does not start at
-   x: 0. Re-derive all six numbers together if a layer is ever re-exported. */
-
-.rq-stack{
-  position: relative;
-  aspect-ratio: 2241 / 1155;
-  /* Every distance the layers move is written in cqw, so the motion is a
-     fraction of the artwork rather than a number of screen pixels. The card is
-     drawn anywhere from 240px to 660px wide, and a 6px float that reads as a
-     hover at the big end reads as a jolt at the small one. */
-  container-type: inline-size;
-}
-
-.rq-layer{
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--w);
-}
-
-/* The layer imgs are the only ones in a card whose height is set by their own
-   ratio inside an absolutely positioned box, so the shared max-height guard
-   above would fight them */
-.rq-layer img{ max-height: none; }
-
-.rq-layer--base{     --x: 20.21%; --y: 0;       --w: 64.26%; z-index: 1; }
-.rq-layer--tasks{    --x: 0;      --y: 35.41%;  --w: 26.60%; z-index: 2; }
-.rq-layer--offer{    --x: 27.44%; --y: 79.48%;  --w: 26.60%; z-index: 2; }
-.rq-layer--contacts{ --x: 79.07%; --y: 10.13%;  --w: 15.80%; z-index: 2; }
-.rq-layer--comments{ --x: 77.51%; --y: 55.15%;  --w: 22.49%; z-index: 2; }
-
-
-/* --- Company mark ---
-   The card's resting identity, and the only words on it until the pointer
-   arrives. It sits above the hover panel, so the card never goes anonymous
-   mid-fade.
-
-   Sized per mark, on the letters rather than on the box. Widths are useless
-   here (the wordmarks are wildly different ratios) but so is a shared box
-   height: Atlassian is all caps filling its file edge to edge, while Vertice is
-   lowercase sitting beside a full-height check. One box height for both drew
-   13.5px of Atlassian against 8px of Vertice. Each height below is instead set
-   so the tallest letterform lands at ~13.5px, which is what the eye reads as
-   "the same size". Re-derive the number if a wordmark file is ever replaced. */
-
-.card-logo{
-  position: absolute;
-  z-index: 3;
-  top: var(--card-pad);
-  left: var(--card-pad);
-  width: auto;
-  opacity: .62;
-}
-
-/* Caps run the full height of the file, so box height is very nearly cap height. */
-.card-logo--atlassian{ height: 17px; }
-
-/* The check is full height and the word is lowercase and short, so roughly a
-   third of this box is symbol and shoulder rather than word. */
-.card-logo--vertice{ height: 22px; }
-
-/* The one company without a wordmark file, drawn in the page's own type.
-   Space Grotesk puts its ascender at .7em, so 19px lands on the same 13.5px,
-   and line-height 1 leaves so little half-leading that the baseline falls
-   within half a pixel of Atlassian's in the row the two share. */
-.card-logo--text{
-  margin: 0;
-  height: auto;
-  font-size: 19px;
-  font-weight: 500;
-  letter-spacing: -.01em;
-  line-height: 1;
-  opacity: .78;
-}
-
-
-/* --- Hover panel ---
-   Everything else about the project, held back until the pointer is on the
-   card. It is faded rather than removed so the copy stays in the accessibility
-   tree.
-
-   It is a flat white pane rather than a scrim with a clear end: the artwork
-   leaves as the panel arrives, so there is nothing underneath left to read
-   through, and a fade-out would only show the paper tone at one edge.
-
-   The top inset clears the logo, so the title starts below it rather than
-   landing on top of it. */
-
-.card-panel{
-  position: absolute;
-  z-index: 2;
-  inset: 0;
+.bio {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
-  padding: var(--card-pad);
-  padding-top: calc(var(--card-pad) + 40px);
-  background: linear-gradient(160deg,
-    rgba(255, 255, 255, .94),
-    rgba(255, 255, 255, .80));
-  opacity: 0;
-  transition: opacity .38s var(--ease-out);
+  gap: var(--space-16);
+  max-width: 606px;
 }
 
-.card-panel-top{ display: grid; gap: 14px; }
-
-/* The one display note on the card, in the same italic serif as the section
-   label above it. The copy underneath is deliberately the hero's size and
-   weight, so the card reads in the same voice as the introduction. */
-.card-title{
-  margin: 0;
-  max-width: 17ch;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(23px, 2.4vw, 32px);
-  font-weight: 400;
-  line-height: 1.16;
-  letter-spacing: 0;
-}
-
-.card--wide .card-title{ max-width: 20ch; }
-
-.card--wide .card-line{ max-width: 42ch; }
-
-/* Stretched over the whole card, so the panel is a hit area rather than a
-   heading with a link in it. The card is the nearest positioned ancestor the
-   panel fills, so inset 0 lands on the card's own edges. */
-.card-title a::after{
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: var(--card-radius);
-}
-
-.card-line{
-  margin: 0;
-  /* Held short so it stops before the parked artwork rather than running onto
-     it. The wide card has room for a longer measure. */
-  max-width: 31ch;
-  font-size: var(--hero-text, 14px);
-  font-weight: 400;
-  line-height: 1.42;
-  letter-spacing: -.01em;
-  color: var(--ink);
-}
-
-.card-meta{
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin: 0;
-  font-size: var(--hero-text, 14px);
-  letter-spacing: -.01em;
-}
-
-/* Both halves of the meta line sit at the body weight: the title and the line
-   above are doing the work, and a bolder role only added a third voice to the
-   panel. The year keeps its lighter ink so the two still read apart. */
-.card-role{ font-weight: 400; }
-
-.card-year{ color: var(--ink-muted); }
-
-/* ===== MOTION =========================================================
-   One vocabulary for the whole page: things arrive by rising a dozen pixels
-   while they fade, everything rides --ease-out, and nothing travels further
-   than it has to.
-
-   All of it hangs off .js, set inline in the head. If the script never runs the
-   class never lands, the hidden start states never apply, and the page renders
-   finished. The reduced-motion block at the end of this file turns the lot off. */
-
-@keyframes rise{
-  from{ opacity: 0; transform: translateY(12px); }
-  to  { opacity: 1; transform: none; }
-}
-
-/* Scale up, tip the head, tip it back. The one openly cute beat on the page, so
-   it is spent on the portraits and nothing else */
-@keyframes hello{
-  0%  { opacity: 0; transform: scale(.82) rotate(0deg); }
-  55% { opacity: 1; transform: scale(1) rotate(7deg); }
-  100%{ opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-/* Lands on the blob's own --o rather than 1, so each wash keeps the weight it
-   was handed inline */
-@keyframes wash-in{
-  from{ opacity: 0; }
-  to  { opacity: var(--o, .1); }
-}
-
-
-/* --- On load ---
-   The background settles first and the content follows it in, so the page
-   reads as a room being lit rather than a list of elements appearing. */
-
-.js .blob{ animation: wash-in 1.2s ease-out both; }
-
-.js .blob:nth-child(2){ animation-delay: .08s; }
-.js .blob:nth-child(3){ animation-delay: .16s; }
-.js .blob:nth-child(4){ animation-delay: .24s; }
-.js .blob:nth-child(5){ animation-delay: .32s; }
-.js .blob:nth-child(6){ animation-delay: .40s; }
-.js .blob:nth-child(7){ animation-delay: .48s; }
-
-.js .brand-name,
-.js .topbar-actions,
-.js .hero-title,
-.js .hero-intro,
-.js .section-label{
-  animation: rise .7s var(--ease-out) both;
-}
-
-.js .brand-mark      { animation: hello .8s var(--ease-out) .10s both; }
-.js .brand-name      { animation-delay: .18s; }
-.js .topbar-actions  { animation-delay: .24s; }
-.js .hero-portrait   { animation: hello 1s  var(--ease-out) .30s both; }
-.js .hero-title      { animation-delay: .48s; }
-.js .hero-intro      { animation-delay: .57s; }
-.js .section-label   { animation-delay: .66s; }
-
-/* Echoes the load beat at a tenth of the size */
-.brand-mark{ transition: transform .3s var(--ease-out); }
-.brand:hover .brand-mark{ transform: rotate(7deg); }
-
-
-/* --- Cards ---
-   The reveal and the hover lift share the transform property, so both are
-   transitions rather than animations. An animation with fill: both would pin
-   transform at its end value and the hover would have nothing left to move. */
-
-.card{
-  transition:
-    opacity .6s var(--ease-out),
-    transform .4s var(--ease-out),
-    box-shadow .4s ease,
-    --edge-angle .5s ease;
-}
-
-.js .card{
-  opacity: 0;
-  transform: translateY(16px);
-}
-
-.js .card.is-in{
-  opacity: 1;
-  transform: none;
-}
-
-/* The move is applied to the media box rather than the image, so the artwork
-   travels as one object. Where it travels to is set per card variant: the two
-   sizes of card hold the artwork at very different widths, so one shared
-   percentage would drop it in a different place on each.
-
-   The fade is deliberately shorter than the move, and carries no delay on the
-   way back: leaving the card, the artwork is visible again well before it has
-   finished travelling, so it reads as sliding home rather than popping into
-   place. */
-.card-media{
-  transition:
-    transform .5s var(--ease-out),
-    opacity .22s var(--ease-out);
-}
-
-.card{       --media-parked: translate(62%, 54%) scale(.88); }
-.card--wide{ --media-parked: translate(74%, 42%) scale(.92); }
-
-@media (hover: hover){
-  .card:hover,
-  .js .card.is-in:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 20px 44px -26px rgba(51, 56, 47, .42);
-  }
-
-  /* The whole reveal: the artwork pulls into the bottom right corner and out
-     of sight, and the copy takes the whole card. Scoped to pointers that can
-     genuinely hover, so a phone that reports a sticky :hover after a tap never
-     runs it. There is no touch fallback by design: on a phone the cards are the
-     artwork and the company mark, and nothing else. */
-  .card:hover .card-media{
-    transform: var(--media-parked);
-    opacity: 0;
-  }
-  .card:hover .card-panel{ opacity: 1; }
-}
-
-/* Tabbing to a card has to show its copy too, or the panel would be reachable
-   by mouse only. These sit outside the hover query on purpose: a keyboard is
-   not a pointer. */
-.card:has(.card-title a:focus-visible) .card-media{
-  transform: var(--media-parked);
-  opacity: 0;
-}
-.card:has(.card-title a:focus-visible) .card-panel{ opacity: 1; }
-
-/* The stretched ::after means the focus ring would otherwise be drawn around
-   the words alone while the clickable thing is the whole card. Outlining the
-   card itself keeps the two in step. */
-.card:has(.card-title a:focus-visible){
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
-}
-
-.card-title a:focus-visible{ outline: none; }
-
-
-/* --- The request stack, moving ---
-   Two motions, deliberately kept on two different elements. The span arrives
-   once, when the card does; the img inside it drifts for as long as the card is
-   on screen. Put both on one element and the infinite animation would simply
-   overwrite the arrival's transform the moment it started, and the layer would
-   snap into place instead of settling into it.
-
-   The page itself never drifts. It is the ground the other four hover over, and
-   a floor that floats too reads as a wobble rather than as depth. */
-
-.js .rq-layer{
-  opacity: 0;
-  transform: translate3d(var(--ex, 0), var(--ey, 2cqw), 0) scale(.97);
-  transition:
-    opacity .7s var(--ease-out),
-    transform .9s var(--ease-out);
-  /* behind the card's own arrival, then one layer after another outward from
-     the page */
-  transition-delay: calc(var(--i, 0) * 110ms + 160ms);
-}
-
-.js .card.is-in .rq-layer{
-  opacity: 1;
-  transform: none;
-}
-
-/* Hovering does not only park the artwork, it takes the stack apart again, so
-   that leaving the card runs the arrival a second time rather than sliding a
-   finished picture back into place.
-
-   Nobody sees the taking apart: the card-media fade is .22s and the layers are
-   behind it long before they have finished scattering. What that fade does hide
-   is a stagger on the way out, which is why the delay is dropped to zero here.
-   Reset them one after another and a pointer that passes over the card without
-   stopping would leave half the stack still walking backwards as the rest of it
-   walked in.
-
-   The keyboard path is the same reveal reached without a pointer, so it takes
-   the stack apart on the same terms. It sits outside the hover query for the
-   same reason the rule it mirrors does. */
-@media (hover: hover){
-  .js .card.is-in:hover .rq-layer{
-    opacity: 0;
-    transform: translate3d(var(--ex, 0), var(--ey, 2cqw), 0) scale(.97);
-    transition-delay: 0s;
-  }
-}
-
-.js .card.is-in:has(.card-title a:focus-visible) .rq-layer{
-  opacity: 0;
-  transform: translate3d(var(--ex, 0), var(--ey, 2cqw), 0) scale(.97);
-  transition-delay: 0s;
-}
-
-/* Each layer comes in from roughly where it sits, so the composition spreads
-   out from the page rather than converging on it from one direction */
-.rq-layer--base{     --i: 0; --ex: 0;      --ey: 1.6cqw; }
-.rq-layer--tasks{    --i: 1; --ex: -4cqw;  --ey: 1.8cqw; }
-.rq-layer--offer{    --i: 2; --ex: -1cqw;  --ey: 4cqw; }
-.rq-layer--contacts{ --i: 3; --ex: 4cqw;   --ey: -2.6cqw; }
-.rq-layer--comments{ --i: 4; --ex: 4.6cqw; --ey: 1.8cqw; }
-
-/* alternate with a single keyframe means the loop is one long breath out and
-   back, with no seam where it restarts. The four durations are deliberately
-   coprime-ish and the delays negative, so the layers start out of phase and
-   never fall back into step: the composition should never look like it is
-   counting time. */
-.rq-layer img{
-  animation: rq-drift var(--dur, 15s) ease-in-out var(--phase, 0s) infinite
-             alternate both;
-}
-
-.rq-layer--base img{ animation: none; }
-
-.rq-layer--tasks img{    --dur: 13s; --phase: -3s; --fx: -2cqw;   --fy: -3.2cqw; --fr: -.9deg;  --fs: 1.02; }
-.rq-layer--offer img{    --dur: 16s; --phase: -7s; --fx: 1.6cqw;  --fy: 2.8cqw;  --fr: .75deg; --fs: .982; }
-.rq-layer--contacts img{ --dur: 11s; --phase: -1s; --fx: 2.5cqw;  --fy: -2.3cqw; --fr: 1.1deg; --fs: 1.024; }
-.rq-layer--comments img{ --dur: 19s; --phase: -5s; --fx: -1.6cqw; --fy: 2.5cqw;  --fr: -.65deg; --fs: .984; }
-
-/* The scale is what makes the travel read as breathing rather than sliding:
-   half the cards swell as they rise and the other half settle back as they
-   fall, so the stack looks like it has depth to move through. Two of the four
-   are deliberately going the other way at any moment. */
-@keyframes rq-drift{
-  to{
-    transform: translate3d(var(--fx), var(--fy), 0)
-               rotate(var(--fr))
-               scale(var(--fs, 1));
-  }
-}
-
-/* Nothing to watch, nothing to run. Script.js marks the stack live only while
-   it is in the viewport, and the hover reveal has already pulled the artwork
-   off the card by the time the pointer settles. */
-.js .rq-stack:not(.is-live) .rq-layer img,
-.card:hover .rq-layer img{ animation-play-state: paused; }
-
-/* Light rolling over the glass. The circle is a fixed size parked at the card's
-   top left corner and moved by transform alone, so following the pointer costs
-   a composite and never a repaint of the blurred pane underneath. Script.js
-   writes --gx/--gy, and the angle of the edge gradient with them. */
-.card::after{
-  content: "";
-  position: absolute;
-  /* above the hover panel, so the highlight still reads once the copy is up.
-     Without this the two only ever appear together and the light would be lost
-     under the scrim every time. */
-  z-index: 4;
-  top: 0;
-  left: 0;
-  width: 460px;
-  height: 460px;
-  margin: -230px 0 0 -230px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side,
-    rgba(255, 255, 255, .5),
-    rgba(255, 255, 255, 0));
-  opacity: 0;
-  pointer-events: none;
-  transform: translate3d(var(--gx, 0px), var(--gy, 0px), 0);
-  transition: opacity .45s ease;
-}
-
-.card.is-lit::after{ opacity: 1; }
-
-
-/* ===== CASE STUDY PAGES ===============================================
-   The same page as the home page, read rather than browsed: one off-white
-   field, the same two typefaces at the same sizes, the same glass, and the
-   same gutter on both edges. What changes is what sits inside it. A case study
-   is a column of copy with artwork breaking out around it, so the content is
-   laid on a two column grid: the section name parks in a narrow rail on the
-   left and stays with you as you read, the prose runs in a column beside it,
-   and the figures ignore both and take the full width. */
-
-.case-page{
-  /* Long form copy is set at the home page's reading size on purpose: the two
-     pages are one voice. Everything textual on the page is sized from here. */
-  --cs-text: var(--hero-text);
-
-  /* The left rail the section names sit in */
-  --cs-rail: clamp(130px, 15vw, 200px);
-
-  /* Frame inset on every piece of artwork, and the radius that leaves inside */
-  --frame-pad: clamp(8px, .9vw, 14px);
-}
-
-
-/* --- Masthead ---
-   Title and the three controls on one line, then the summary and the
-   credentials under it. The top padding carries the same 77px allowance for
-   the fixed topbar that the home page hero does. */
-
-.case-head{
-  padding: calc(77px + clamp(84px, 13vh, 140px)) var(--gutter) 0;
-}
-
-.case-head-top{
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: clamp(24px, 5vw, 64px);
-}
-
-.case-title{
-  margin: 0;
-  /* wide enough to hold the longer of the two titles on one line at the top of
-     the clamp, and to break it sensibly rather than raggedly below that */
-  max-width: 28ch;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(34px, 4.4vw, 58px);
-  line-height: 1.05;
-  letter-spacing: -.005em;
-}
-
-/* Previous, close, next, in the topbar's own buttons. The optical top of the
-   serif sits a little below the box, so the row is nudged down to meet it. */
-.case-nav{
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  flex: none;
-  margin-top: 6px;
-}
-
-/* The topbar's icons lift on hover because they are being handed to you. These
-   point somewhere, so they lean that way instead. */
-.case-nav .icon-btn:hover svg{ transform: none; }
-.case-nav .icon-btn[data-dir="prev"]:hover svg{ transform: translateX(-2px); }
-.case-nav .icon-btn[data-dir="next"]:hover svg{ transform: translateX(2px); }
-
-/* The one line summary, the same words the card on the home page shows on
-   hover. A step up from the body copy, because it is the deck. */
-.case-deck{
-  margin: clamp(18px, 2.2vw, 28px) 0 0;
-  max-width: 54ch;
-  font-size: clamp(15px, 1.1vw, 16.5px);
-  line-height: 1.45;
-  letter-spacing: -.01em;
-}
-
-.case-meta{
+/* Email me / Message me — black pills */
+.contact {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 16px;
-  margin: clamp(16px, 2vw, 26px) 0 0;
-  font-size: var(--cs-text);
-  letter-spacing: -.01em;
+  gap: var(--space-8);
+  margin-top: var(--space-32);
 }
 
-/* Same split as the card meta on the home page: the role is the fact, the rest
-   is context */
-.case-role{ font-weight: 500; }
-.case-fact{ color: var(--ink-muted); }
-
-
-/* --- Artwork ---
-   Every image on the page sits in the same glass frame, so a product
-   screenshot, a journey map and a workshop board all arrive as one kind of
-   object. The frame is padded and the picture inside carries the radius that
-   inset leaves behind. */
-
-.cs-frame{
-  padding: var(--frame-pad);
-  overflow: hidden;
-}
-
-.cs-frame img{
-  width: 100%;
-  height: auto;
-  border-radius: calc(var(--card-radius) - var(--frame-pad));
-}
-
-/* The hero is cropped rather than shown whole: a band of the product, cut off
-   where the page carries on. --hero-pos picks which band, per study. */
-.case-hero{
-  margin: clamp(40px, 5.5vw, 72px) var(--gutter) 0;
-}
-
-.case-hero img{
-  aspect-ratio: 2.45;
-  object-fit: cover;
-  object-position: var(--hero-pos, 50% 0%);
-}
-
-.cs-figure{
-  margin: clamp(44px, 6vw, 76px) 0 0;
-  padding: 0 var(--gutter);
-}
-
-/* Artwork keeps its own ceiling where the full width would mean blowing it up
-   past the size it was captured at. Anything shot at retina width goes without. */
-.cs-figure--mid .cs-frame,
-.cs-figure--mid figcaption{
-  max-width: 880px;
-  margin-inline: auto;
-}
-
-.cs-figure figcaption{
-  margin: 16px 2px 0;
-  max-width: 64ch;
-  font-size: 13px;
-  line-height: 1.5;
-  letter-spacing: -.005em;
-  color: var(--ink-muted);
-}
-
-
-/* --- Two up ---
-   Two shots read against each other, where the point is the difference between
-   them rather than either one on its own. Each keeps its own frame and its own
-   label.
-
-   The default is a pair of phones: equal columns, capped narrow, because at
-   full page width a phone is blown up well past the size it was shot at. Set
-   --pair-crop when they were captured to different shapes and both should be
-   cut to one. Use --matched below instead when the shapes differ for real, a
-   page beside a phone. */
-
-.cs-pair{
-  --pair-gap: clamp(14px, 2.4vw, 28px);
-  display: grid;
-  grid-template-columns: var(--pair-cols, repeat(2, minmax(0, 1fr)));
-  gap: var(--pair-gap);
-  max-width: var(--pair-max, 620px);
-  margin-inline: auto;
-}
-
-/* Column, so the label can be pushed to the foot of whichever item is taller.
-   Two shots of different shapes never land at exactly the same height, and a
-   label sitting a few pixels off its neighbour reads as a mistake. */
-.cs-pair-item{
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* The two shots were never captured to the same crop, so the pair is cut to one
-   shape and both are fitted from the top. What is being compared is the top of
-   the screen; whatever runs off the bottom was going to run off anyway. */
-.cs-pair img{
-  aspect-ratio: var(--pair-crop, auto);
-  object-fit: cover;
-  object-position: 50% 0;
-}
-
-.cs-pair-label{
-  margin: auto 2px 0;
-  padding-top: 12px;
-  font-size: 13px;
-  line-height: 1.5;
-  letter-spacing: -.005em;
-  color: var(--ink-muted);
-}
-
-/* Two shots of genuinely different shapes, a page and a phone. Sizing them by
-   column share only ever gets their heights close, because the frame's padding
-   is a fixed inset that costs the narrow one proportionally more. So the row
-   becomes flex, both pictures are drawn at one height, and each frame takes
-   whatever width that leaves it. */
-.cs-pair--matched{
-  display: flex;
-  justify-content: center;
-  container-type: inline-size;
-  max-width: none;
-}
-
-.cs-pair--matched .cs-pair-item{ min-width: 0; }
-
-/* One height for both, worked back from the row's own width: what is left of it
-   after the two frames' padding and the gap between them, divided by the two
-   shapes added together. The row fills its column and the pictures come out
-   level, at any width, without the padding throwing the taller one off.
-   --pair-ratios is the sum of the shots' width over height. */
-.cs-pair--matched img{
-  width: auto;
-  max-width: 100%;
-  height: calc((100cqw - 4 * var(--frame-pad) - var(--pair-gap)) / var(--pair-ratios, 2));
-}
-
-
-/* --- Before and after ---
-   Two shots of the same page stacked in one frame, with the top one clipped at
-   --pos. Everything the reader sees is decoration; the control underneath it
-   all is a range input, stretched over the frame and made invisible, which is
-   what supplies the drag, the click to jump and the arrow keys. */
-
-.cs-compare{ --pos: 50%; }
-
-.cs-compare-media{
-  position: relative;
-  border-radius: calc(var(--card-radius) - var(--frame-pad));
-  overflow: hidden;
-  /* the drag reads as a drag before anything has been pressed */
-  cursor: ew-resize;
-}
-
-/* the frame's radius is carried by the media box, so the pictures inside it
-   are square and simply get clipped */
-.cs-compare-media img{ border-radius: 0; }
-
-.cs-compare-base{
-  width: 100%;
-  height: auto;
-}
-
-.cs-compare-top{
-  position: absolute;
-  inset: 0;
-  /* only the part to the right of the handle survives, so the before shot
-     underneath shows through on the left */
-  clip-path: inset(0 0 0 var(--pos));
-}
-
-.cs-compare-top img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 0 0;
-}
-
-.cs-compare-line{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--pos);
-  width: 2px;
-  margin-left: -1px;
-  background: rgba(255, 255, 255, .92);
-  /* Both screenshots are a near-white product UI, so a white line alone would
-     disappear into them. The hairline either side is what makes it an edge. */
-  box-shadow: 0 0 0 1px rgba(51, 56, 47, .28);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.cs-compare-grip{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  margin: -19px 0 0 -19px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .86);
-  box-shadow: 0 2px 10px rgba(51, 56, 47, .18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--ink);
-}
-
-.cs-compare-grip svg{
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Ink rather than glass, and the one place on the site that inverts. Both
-   screenshots underneath are a white product UI with its own chrome in the
-   corners, so a pale label would land on top of it and read as part of it. */
-.cs-compare-tag{
-  position: absolute;
-  top: 12px;
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: rgba(51, 56, 47, .78);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  font-size: 11px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: #fff;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.cs-compare-tag--before{ left: 12px; }
-.cs-compare-tag--after{ right: 12px; }
-
-/* Invisible, but still the thing being operated: it sits above the pictures
-   and takes every pointer event in the frame. The thumb is a hairline so that
-   its centre lands on the pointer rather than half a thumb's width away. */
-.cs-compare-range{
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  opacity: 0;
-  background: none;
-  cursor: ew-resize;
-  /* On a touch screen this is a full width target sitting in the middle of the
-     read, so a vertical drag has to stay a page scroll and never become a
-     nudge of the handle */
-  touch-action: pan-y;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.cs-compare-range::-webkit-slider-thumb{
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1px;
-  height: 100%;
-}
-
-.cs-compare-range::-moz-range-thumb{
-  width: 1px;
-  height: 100%;
-  border: 0;
-  border-radius: 0;
-}
-
-/* The control is invisible, so the focus ring has to land on the handle the
-   reader is actually looking at */
-.cs-compare-range:focus-visible ~ .cs-compare-line{ background: var(--ink); }
-
-.cs-compare-range:focus-visible ~ .cs-compare-line .cs-compare-grip{
-  outline: 2px solid var(--ink);
-  outline-offset: 2px;
-}
-
-
-/* --- Carousel ---
-   A scroll snapping strip: the browser does the moving, so it still works
-   without the script. The arrows, the dots and the swapped caption are the
-   parts the script adds, and they only appear once it is there to drive them.
-
-   Nothing is laid over the artwork. Every control sits on the line under the
-   frame with the caption, next to the picture rather than on top of it, which
-   is also what lets a slide be looked at with no chrome in the way. */
-
-.cs-carousel-track{
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  border-radius: calc(var(--card-radius) - var(--frame-pad));
-  scrollbar-width: none;
-}
-
-.cs-carousel-track::-webkit-scrollbar{ display: none; }
-
-/* One box, held at whatever shape the set is closest to, and the pictures are
-   fitted into it rather than filling it. Boards that were captured at different
-   crops then arrive the same size, and the frame does not change height under
-   the reader as they move along it. --slide-ratio is set per carousel. */
-.cs-slide{
-  flex: 0 0 100%;
-  aspect-ratio: var(--slide-ratio, 10 / 7);
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-}
-
-.cs-slide img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 0;
-}
-
-/* The caption keeps the measure every other caption on the page has, and the
-   controls sit off the end of it */
-.cs-carousel-foot{
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 16px;
-}
-
-/* The captions run to two or three lines depending on the slide, and the page
-   under the reader should not shuffle as they move through them */
-.cs-carousel figcaption{
-  margin: 0 0 0 2px;
-  min-height: calc(1.5em * 3);
-}
-
-/* Arrows either side of the dots: one object rather than three, sitting on the
-   caption's line. Hidden without the script, which is what drives them. */
-.cs-carousel-controls{
-  display: none;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 2px;
-  margin: -8px -8px 0 0;
-}
-
-.js .cs-carousel-controls{ display: flex; }
-
-/* The same 38px round button as the masthead's, so paging through the artwork
-   is the same control as stepping between studies */
-.cs-carousel-btn{
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: none;
-  color: var(--ink);
-  cursor: pointer;
-  transition: background .2s ease, opacity .2s ease;
-}
-
-.cs-carousel-btn:hover{ background: rgba(255, 255, 255, .55); }
-
-/* At either end there is nothing to go to. The button holds its place so the
-   row cannot shift, and simply stops offering. */
-.cs-carousel-btn[disabled]{
-  opacity: .22;
-  pointer-events: none;
-}
-
-.cs-carousel-btn svg{
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform .28s var(--ease-out);
-}
-
-/* The same nudge the masthead arrows make, in the direction of travel */
-.cs-carousel-btn:hover svg{ transform: translateX(var(--nudge, 0)); }
-.cs-carousel-btn--prev{ --nudge: -2px; }
-.cs-carousel-btn--next{ --nudge: 2px; }
-
-.cs-carousel-dots{
-  display: flex;
-  flex: 0 0 auto;
-  gap: 2px;
-  padding: 0 4px;
-}
-
-/* A 7px mark inside a 22px target: small enough to stay quiet next to the
-   caption, big enough to hit with a thumb */
-.cs-carousel-dot{
-  position: relative;
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.cs-carousel-dot::before{
-  content: '';
-  position: absolute;
-  inset: 0;
-  width: 7px;
-  height: 7px;
-  margin: auto;
-  border-radius: 50%;
-  background: var(--ink-muted);
-  opacity: .28;
-  transition: opacity .2s ease, transform .2s ease;
-}
-
-.cs-carousel-dot:hover::before{ opacity: .55; }
-
-.cs-carousel-dot[aria-current='true']::before{
-  opacity: .85;
-  transform: scale(1.3);
-}
-
-
-/* --- Sections --- */
-
-.cs-section{
-  display: grid;
-  grid-template-columns: var(--cs-rail) minmax(0, 62ch);
-  gap: clamp(18px, 4vw, 60px);
-  padding: 0 var(--gutter);
-  margin: clamp(72px, 10vh, 122px) 0 0;
-}
-
-/* For blocks that need the room: the numbers, and anything else that would
-   look starved in a 62ch column. The prose inside keeps its own measure. */
-.cs-section--wide{ grid-template-columns: var(--cs-rail) minmax(0, 1fr); }
-.cs-section--wide .cs-body p{ max-width: 62ch; }
-
-/* Picking a section back up after a figure has interrupted it. The rail is left
-   empty rather than repeating the name, and the gap closes, so the two halves
-   read as one section with a picture in the middle of it. */
-.cs-section--continued{ margin-top: clamp(44px, 6vw, 76px); }
-.cs-section--continued .cs-body{ grid-column: 2; }
-
-/* Stays with the copy it names, so you always know which part of the story you
-   are in. align-self keeps the rail from stretching, which sticky needs. */
-.cs-label{
-  position: sticky;
-  top: 96px;
-  align-self: start;
-  margin: 0;
-}
-
-.cs-body{ min-width: 0; }
-
-.cs-body p{
-  margin: 0 0 1.5em;
-  font-size: var(--cs-text);
-  line-height: 1.68;
-  letter-spacing: -.005em;
-}
-
-.cs-body > :last-child{ margin-bottom: 0; }
-
-/* The only subhead on the page, and it is a weight rather than a size: the
-   serif is spent on the title, the section names and the numbers, so a heading
-   inside the prose stays in the reading face and simply firms up. */
-.cs-body h3{
-  margin: 2.8em 0 .9em;
-  font-size: var(--cs-text);
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: -.01em;
-}
-
-.cs-body h3:first-child{ margin-top: 0; }
-
-.cs-list{
-  margin: 0 0 1.5em;
-  padding: 0;
-  list-style: none;
-}
-
-.cs-list li{
-  position: relative;
-  margin: 0 0 .8em;
-  padding-left: 20px;
-  font-size: var(--cs-text);
-  line-height: 1.62;
-  letter-spacing: -.005em;
-}
-
-.cs-list li:last-child{ margin-bottom: 0; }
-
-.cs-list li strong{ font-weight: 500; }
-
-.cs-list li::before{
-  content: '';
-  position: absolute;
-  left: 2px;
-  top: .66em;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--ink-muted);
-  opacity: .5;
-}
-
-/* An aside rather than a paragraph: the rule holds it off the column so it
-   reads as a note in the margin without leaving the column */
-.cs-note{
-  margin: 0 0 1.5em;
-  padding: 2px 0 2px 20px;
-  border-left: 1px solid rgba(51, 56, 47, .18);
-  font-size: var(--cs-text);
-  line-height: 1.6;
-  letter-spacing: -.005em;
-  color: var(--ink-muted);
-}
-
-/* the rule and the space around it are the separation, so the paragraphs inside
-   do not add their own */
-.cs-note p{ margin: 0; }
-
-
-/* --- Numbers ---
-   The one loud moment in the read. Set in the display serif at the size the
-   title is, because this is the other thing worth saying out loud. */
-
-.cs-stats{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(26px, 4vw, 44px);
-  margin: 0 0 2.4em;
-  padding: clamp(28px, 3.6vw, 48px);
-}
-
-/* the grid gap is the spacing, so the paragraph the number lives in has none */
-.cs-stat{ margin: 0; }
-
-.cs-stat-num{
-  display: block;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(38px, 4.4vw, 58px);
-  line-height: 1;
-  letter-spacing: -.01em;
-}
-
-.cs-stat-label{
-  display: block;
-  max-width: 22ch;
-  margin-top: 12px;
-  font-size: 13px;
-  line-height: 1.45;
-  letter-spacing: -.005em;
-  color: var(--ink-muted);
-}
-
-
-/* --- Ask --- */
-
-.cs-cta{
-  margin: clamp(76px, 10vh, 124px) var(--gutter) 0;
-  padding: clamp(34px, 4.4vw, 60px) clamp(28px, 4vw, 56px);
-  text-align: center;
-}
-
-.cs-cta p{
-  max-width: 40ch;
-  margin: 0 auto;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(22px, 2.5vw, 32px);
-  line-height: 1.22;
-  letter-spacing: 0;
-}
-
-/* The only filled control on the site. Ink on the off-white, so it belongs to
-   the same palette as everything else and still stops the eye. */
-.btn{
+.pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: clamp(22px, 2.6vw, 32px);
-  padding: 13px 22px;
+  gap: var(--space-8);
+  padding: 8px 16px;
+  border: 0;
   border-radius: 999px;
-  background: var(--ink);
+  background: var(--fg);
   color: var(--bg);
-  font-size: var(--cs-text);
-  font-weight: 500;
-  letter-spacing: -.01em;
-  transition: transform .3s var(--ease-out), box-shadow .3s ease;
+  font: inherit;
+  font-size: 12px;
+  line-height: var(--leading);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 200ms ease, color 200ms ease, transform 120ms ease;
 }
 
-.btn svg{
-  width: 15px;
-  height: 15px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform .3s var(--ease-out);
+.pill:hover { background: #222; }
+.pill:active { transform: scale(0.97); }
+
+/* Copy confirmed — the pill inverts so success is unmistakable */
+.pill.is-copied {
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--fg);
 }
 
-.btn:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px -20px rgba(51, 56, 47, .9);
+.ic { display: block; flex: none; }
+
+/* Both labels share one grid cell, and so do both icons, so the pill is
+   already as wide as its widest state and never resizes when they swap. */
+.swap,
+.icons { display: grid; }
+
+.swap > *,
+.icons > * {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 160ms ease, transform 240ms cubic-bezier(.2, .8, .2, 1);
 }
 
-.btn:hover svg{ transform: translateX(3px); }
+.swap-a,
+.ic-copy { opacity: 1; }
 
+.swap-b { transform: translateY(4px); }
 
-/* --- On to the next one ---
-   The same lift as a work card, because it is the same promise: a pane you can
-   click that takes you to a project. */
+.is-copied .swap-a { opacity: 0; transform: translateY(-4px); }
+.is-copied .ic-copy { opacity: 0; }
+.is-copied .swap-b { opacity: 1; transform: none; }
+.is-copied .ic-check { opacity: 1; }
 
-.cs-next{
+/* The tick draws itself on rather than appearing */
+.ic-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.is-copied .ic-check path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 320ms cubic-bezier(.2, .8, .2, 1) 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill,
+  .swap > *,
+  .icons > *,
+  .ic-check path { transition-duration: 1ms !important; }
+  .pill:active { transform: none !important; }
+}
+
+/* ---------- Sections ---------- */
+
+.section { margin-top: var(--space-80); }
+
+.section-title { margin-bottom: var(--space-32); }
+
+.rows {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin: clamp(22px, 3vw, 34px) var(--gutter) 0;
-  padding: clamp(24px, 3vw, 34px) clamp(26px, 3.4vw, 44px);
+  flex-direction: column;
+  gap: var(--space-40);
 }
 
-.cs-next-label{
-  display: block;
-  font-size: 13px;
-  letter-spacing: -.005em;
-  color: var(--ink-muted);
+/* date | entry */
+.row {
+  display: flex;
+  gap: var(--space-16);
+  align-items: flex-start;
 }
 
-.cs-next-title{
-  display: block;
-  margin-top: 6px;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(20px, 2.2vw, 28px);
-  line-height: 1.15;
-}
-
-.cs-next svg{
-  width: 20px;
-  height: 20px;
+.when {
   flex: none;
-  fill: none;
+  width: var(--col-when);
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+/* A whole row can read as secondary — the ski season does */
+.row--muted .entry { color: var(--muted); }
+
+/* Work screenshots — drop an <img> in here when the shots are ready */
+.shot {
+  width: 200px;
+  height: 120px;
+  border-radius: 8px;
+  background: #ebebeb;
+}
+
+/* ---------- Dotted underline (company names) ----------
+   One stroked line with a round cap and a near-zero dash reads as dots. On
+   hover the dash grows while the gap shrinks, so they stretch and merge into a
+   solid rule — a real morph rather than a crossfade. No viewBox, so the dash
+   stays the same size whatever the word's length. */
+
+.u {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 3px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.u svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 8px;
+  overflow: visible;
+  pointer-events: none;
+  color: #bbb;
+  transition: color 200ms ease;
+}
+
+.u svg line {
   stroke: currentColor;
   stroke-width: 1.5;
   stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform .4s var(--ease-out);
+  stroke-dasharray: 0.01 3;
+  transition: stroke-dasharray 260ms cubic-bezier(.4, 0, .2, 1);
 }
 
-.cs-next:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 20px 44px -26px rgba(51, 56, 47, .42);
+.u:hover svg { color: var(--fg); }
+.u:hover svg line { stroke-dasharray: 3 0.01; }
+
+@media (prefers-reduced-motion: reduce) {
+  .u svg,
+  .u svg line { transition-duration: 1ms; }
 }
 
-.cs-next:hover svg{ transform: translateX(4px); }
+/* ---------- Photo + text rows (A bit of me, Nice words) ---------- */
 
-.cs-next:focus-visible{
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
+.card-row {
+  display: flex;
+  gap: var(--space-36);
+  align-items: flex-start;
 }
 
-/* The page ends on the next study rather than on the footer, so the footer
-   only needs its own breathing room above it */
-.case-page .site-footer{ padding-top: clamp(80px, 12vh, 140px); }
-
-
-/* --- Motion ---
-   The masthead arrives on load in the same order the home page's does, and
-   everything below it rises as it is reached. Same keyframes, same curve. */
-
-.js .case-title,
-.js .case-nav,
-.js .case-deck,
-.js .case-meta{
-  animation: rise .7s var(--ease-out) both;
+.card-photo {
+  flex: none;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #ebebeb;
 }
 
-.js .case-title{ animation-delay: .30s; }
-.js .case-nav  { animation-delay: .38s; }
-.js .case-deck { animation-delay: .40s; }
-.js .case-meta { animation-delay: .48s; }
-
-/* Everything past the fold. Script.js adds .is-in as each one is reached; the
-   class is only ever added, so nothing can disappear again on the way back up. */
-.reveal{
-  transition:
-    opacity .7s var(--ease-out),
-    transform .7s var(--ease-out);
-}
-
-.js .reveal{
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-.js .reveal.is-in{
-  opacity: 1;
-  transform: none;
-}
-
-/* The next study both arrives and lifts, and transition is one property: left
-   to the rule above it would inherit the reveal's timing and lose the shadow
-   entirely, so it carries the whole list itself. */
-.cs-next{
-  transition:
-    opacity .7s var(--ease-out),
-    transform .4s var(--ease-out),
-    box-shadow .4s ease;
-}
-
-
-/* ===== FOOTER ========================================================= */
-
-.site-footer{
-  padding: 0 var(--gutter) 42px;
-  text-align: center;
-}
-
-.site-footer p{
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  min-width: 0;
   margin: 0;
-  font-size: 12.5px;
-  color: var(--ink-muted);
 }
 
+/* ---------- Divider ---------- */
 
-/* ===== RESPONSIVE ===================================================== */
-
-/* The rail runs out of room before the page does, so the section names go back
-   above their copy while the gutter is still wide */
-@media (max-width: 900px){
-  .cs-section,
-  .cs-section--wide{
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  /* nothing to stay beside once it is stacked */
-  .cs-label{ position: static; }
-
-  /* there is no second column left to sit in */
-  .cs-section--continued .cs-body{ grid-column: 1; }
-
-  .case-hero img{ aspect-ratio: 1.9; }
+.divider {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-80);
 }
 
-@media (max-width: 620px){
-  /* Beside a title that now runs to three lines the controls would squeeze it
-     into a column, so they go above it and read as a toolbar instead. The
-     negative margin pulls the 38px buttons back so the first glyph lines up
-     with the copy rather than the button's edge. */
-  .case-head-top{
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 18px;
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 640px) {
+  /* The date stops being a column and becomes a line above the entry */
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
   }
 
-  .case-nav{
-    margin: 0 -9px;
-    justify-content: flex-start;
-  }
+  .when { width: auto; }
 
-  .case-title{ max-width: none; }
-
-  /* a 2.45 band of a screenshot is unreadable this narrow, so the hero is given
-     back most of its height */
-  .case-hero img{ aspect-ratio: 1.3; }
-
-  .cs-next{ align-items: flex-end; }
+  .card-row { gap: var(--space-16); }
 }
 
-@media (max-width: 760px){
-  /* Three numbers this wide would each be a column of wrapped label, so they
-     become a list and keep their size */
-  .cs-stats{ grid-template-columns: 1fr; gap: 26px; }
+/* ==========================================================================
+   Case study
+   Same column as the homepage, so the text edge never moves between pages.
+   The section nav is pulled out into the left margin and left there.
+   ========================================================================== */
 
-  /* No room for a caption and the controls side by side, so they stack. The
-     controls lead, because at this width the track is swiped rather than
-     clicked and they are mainly there to say that it can be. */
-  .cs-carousel-foot{
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 10px;
-  }
+.case-page {
+  max-width: var(--col-page);
+  margin: 0 auto;
+  padding: var(--pad-arrow) var(--pad-side) var(--pad-bottom);
 
-  .cs-carousel-controls{ margin: -8px -8px 0 -8px; }
-
-  /* the dots take the middle, the arrows the two ends */
-  .cs-carousel-dots{
-    flex: 1 1 auto;
-    justify-content: center;
-  }
-
-  /* In this column the captions wrap to a different number of lines whatever
-     is reserved for them, so holding three back only adds dead space */
-  .cs-carousel figcaption{ min-height: 0; }
-
-  .cs-compare-tag{
-    top: 8px;
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-
-  .cs-compare-tag--before{ left: 8px; }
-  .cs-compare-tag--after{ right: 8px; }
-
-  .card-grid{ grid-template-columns: 1fr; gap: 22px; }
-  .card,
-  .card--wide{ grid-column: span 1; }
-
-  /* The wide card is no wider than the others here, so its artwork takes the
-     full column. The stack is close to twice as wide as it is tall, so even at
-     full width it is a short thing in a card sized for the near-square
-     screenshots beside it: the card gives some of that height back. */
-  .card--wide .card-media{ width: 100%; }
-  .card--wide{ min-height: clamp(230px, 56vw, 300px); }
-
-  /* narrower viewport, so the washes need to be wider to still read */
-  .blob{ width: calc(var(--w) * 1.9); }
+  /* How far left of this centred column the screen edge sits. Pulling the nav
+     and the arrow out by this much parks them --nav-inset from the edge while
+     the body text stays put on the homepage's edge. */
+  --nav-pull: calc(
+    var(--nav-inset) - (100vw - var(--col-page)) / 2 - var(--pad-side)
+  );
 }
 
-/* Below this the two phones are too narrow to read anything in, so the
-   comparison is made by scrolling rather than side by side */
-@media (max-width: 520px){
-  .cs-pair{ grid-template-columns: 1fr; max-width: 320px; }
-
-  /* Stacked, there is no pair left to match: each shot goes back to filling
-     the column at its own height */
-  .cs-pair--matched{ flex-direction: column; align-items: center; }
-  .cs-pair--matched img{ width: 100%; height: auto; }
+/* Rides out to the edge alongside the nav, the way it does in the design.
+   flex, not inline-block — an inline box would add baseline descender space
+   under the icon and push everything below it off the homepage's rhythm. */
+.back {
+  display: flex;
+  width: fit-content;
+  color: var(--fg);
+  margin-left: var(--nav-pull);
+  margin-bottom: calc(var(--pad-top) - var(--pad-arrow) - 24px);
 }
 
+/* The grid starts at the screen edge; the gutter then absorbs whatever is left
+   so column two lands flush with the container — i.e. with the homepage */
+.case {
+  display: grid;
+  grid-template-columns: var(--col-nav) minmax(0, 1fr);
+  column-gap: calc(
+    (100vw - var(--col-page)) / 2 + var(--pad-side)
+      - var(--nav-inset) - var(--col-nav)
+  );
+  margin-left: var(--nav-pull);
+  align-items: start;
+}
 
-@media (prefers-reduced-motion: reduce){
-  html{ scroll-behavior: auto; }
-  .topbar{ transition: none; }
+/* ---------- Section nav ---------- */
 
-  /* Nothing arrives, nothing lifts, nothing follows the pointer. Every rule
-     here is the finished state the animation would have ended on, so the page
-     looks identical once it has settled either way. */
-  .js .blob,
-  .js .brand-mark,
-  .js .brand-name,
-  .js .topbar-actions,
-  .js .hero-portrait,
-  .js .hero-title,
-  .js .hero-intro,
-  .js .section-label,
-  .js .case-title,
-  .js .case-nav,
-  .js .case-deck,
-  .js .case-meta,
-  /* The stack is still the whole composition, just held still */
-  .rq-layer img{ animation: none; }
+.case-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  position: sticky;
+  top: var(--pad-arrow);
+}
 
-  .js .rq-layer{ opacity: 1; transform: none; transition: none; }
+.case-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
 
-  .js .card,
-  .js .reveal{ opacity: 1; transform: none; }
+.case-nav a.is-current { color: var(--fg); }
 
-  .card,
-  .card-media,
-  .card-panel,
-  .brand-mark,
-  .icon-btn svg,
-  .dl-arrow,
-  .reveal,
-  .cs-next,
-  .cs-next svg,
-  .cs-carousel-btn,
-  .cs-carousel-btn svg,
-  .cs-carousel-dot::before,
-  .btn,
-  .btn svg{ transition: none; }
+/* ---------- Body ---------- */
 
-  .card:hover,
-  .js .card.is-in:hover,
-  .cs-next:hover,
-  .btn:hover{ transform: none; box-shadow: none; }
+.case-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-80);
+  max-width: 665px;
+}
 
-  .cs-next:hover svg,
-  .cs-carousel-btn:hover svg,
-  .btn:hover svg{ transform: none; }
+.case-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  max-width: 284px;
+}
 
-  /* The artwork still moves out of the copy's way, because that is a change of
-     state rather than decoration and the panel would sit on top of it
-     otherwise. Killing the transition above is what makes it a cut. */
+.case-title { font-size: 16px; }
 
-  .brand:hover .brand-mark,
-  .icon-btn:hover svg:not(:has(.dl-arrow)),
-  .icon-btn:hover .dl-arrow{ transform: none; }
+/* The meta rows reuse .row / .when from the intro, just packed tighter */
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
 
-  .card::after{ display: none; }
+/* Values stay on one line and run past the 284px head if they need to, the way
+   they do in the design */
+.meta .entry p { white-space: nowrap; }
+
+.case-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  max-width: 607px;
+}
+
+/* Images are allowed to run wider than the 607px measure of the text */
+.case-section:has(.shot-pair) { max-width: 100%; }
+.case-section:has(.shot-pair) > h2,
+.case-section:has(.shot-pair) > p { max-width: 607px; }
+
+/* ---------- Image placeholders ---------- */
+
+.shot-wide,
+.shot-narrow {
+  height: 281px;
+  border-radius: 8px;
+  background: #d9d9d9;
+}
+
+.shot-wide {
+  width: 459px;
+  max-width: 100%;
+}
+
+.shot-pair {
+  display: flex;
+  gap: 29px;
+  width: 100%;
+}
+
+/* 459 : 177, the split from the design, kept proportional as the page narrows */
+.shot-pair .shot-wide { flex: 459 1 0; width: auto; }
+.shot-pair .shot-narrow { flex: 177 1 0; }
+
+/* ---------- Narrow screens ---------- */
+
+/* Below this the margins are too tight to hold the nav (752 + 2 x 147), so it
+   comes back inside and lies down above the content */
+@media (max-width: 1100px) {
+  .back { margin-left: 0; }
+
+  .case {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    margin-left: 0;
+    row-gap: var(--space-64);
+  }
+
+  .case-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-12) var(--space-16);
+  }
+}
+
+@media (max-width: 640px) {
+  .shot-pair {
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .shot-pair .shot-wide,
+  .shot-pair .shot-narrow {
+    flex: none;
+    width: 100%;
+    height: 220px;
+  }
 }
