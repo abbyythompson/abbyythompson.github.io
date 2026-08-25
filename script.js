@@ -188,7 +188,8 @@ function openLightbox(thumb) {
   lightbox.style.pointerEvents = '';
   if (lightbox.open) lightbox.close();
 
-  lightboxImg.src = thumb.currentSrc || thumb.src;
+  // data-full lets a small thumbnail open at full size
+  lightboxImg.src = thumb.dataset.full || thumb.currentSrc || thumb.src;
   lightboxImg.alt = thumb.alt || '';
   lightbox.showModal();
   soundOpen();

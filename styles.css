@@ -213,11 +213,13 @@ img { display: block; max-width: 100%; }
 /* A whole row can read as secondary — the ski season does */
 .row--muted .entry { color: var(--muted); }
 
-/* Work screenshots — drop an <img> in here when the shots are ready */
+/* Work screenshots. object-fit matters as soon as one of these is an <img>:
+   the default is fill, which squashes the shot to the slot's ratio. */
 .shot {
   width: 200px;
   height: 120px;
   border-radius: 8px;
+  object-fit: cover;
   background: #ebebeb;
 }
 
@@ -488,6 +490,7 @@ html:has(.lightbox[open]) { overflow: hidden; }
 .shot-narrow {
   height: 281px;
   border-radius: 8px;
+  object-fit: cover;
   background: #d9d9d9;
 }
 
