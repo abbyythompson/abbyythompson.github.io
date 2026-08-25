@@ -213,6 +213,12 @@ img { display: block; max-width: 100%; }
 /* A whole row can read as secondary — the ski season does */
 .row--muted .entry { color: var(--muted); }
 
+/* The dotted underline invites a click, so the titles have to say they are
+   not links yet */
+.work-title .u { cursor: not-allowed; }
+
+.soon { margin-left: var(--space-8); }
+
 /* Work screenshots. object-fit matters as soon as one of these is an <img>:
    the default is fill, which squashes the shot to the slot's ratio. */
 .shot {
