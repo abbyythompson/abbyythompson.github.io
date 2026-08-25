@@ -42,12 +42,49 @@ function tone(freq, dur, gain, delay = 0) {
   osc.stop(t0 + dur + 0.02);
 }
 
+// A tone that slides from one frequency to another as it decays
+function glide(from, to, dur, gain) {
+  const c = audio();
+  if (!c) return;
+  const t0 = c.currentTime;
+  const osc = c.createOscillator(), amp = c.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(from, t0);
+  osc.frequency.exponentialRampToValueAtTime(to, t0 + dur);
+  amp.gain.setValueAtTime(0.0001, t0);
+  amp.gain.linearRampToValueAtTime(gain, t0 + 0.008);
+  amp.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  osc.connect(amp).connect(c.destination);
+  osc.start(t0); osc.stop(t0 + dur + 0.02);
+}
+
+// A dry filtered noise transient — a click with no pitch to it
+function burst(cutoff, dur, gain) {
+  const c = audio();
+  if (!c) return;
+  const t0 = c.currentTime;
+  const n = Math.max(1, Math.floor(c.sampleRate * dur));
+  const buf = c.createBuffer(1, n, c.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+  const src = c.createBufferSource(); src.buffer = buf;
+  const f = c.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = cutoff;
+  const g = c.createGain(); g.gain.value = gain;
+  src.connect(f).connect(g).connect(c.destination);
+  src.start(t0); src.stop(t0 + dur + 0.01);
+}
+
 const soundPress = () => tone(220, 0.025, 0.05);
 
 const soundConfirm = () => {
   tone(660, 0.06, 0.06);
   tone(990, 0.07, 0.05, 0.055);
 };
+
+// The lightbox gets weight rather than pitch — a low thump with a tick on top
+// for definition, since laptop speakers roll off below about 100 Hz.
+const soundOpen = () => { glide(90, 45, 0.22, 0.18); burst(4000, 0.008, 0.035); };
+const soundClose = () => { glide(70, 38, 0.16, 0.13); burst(3500, 0.006, 0.025); };
 
 /* ---------- copy ---------- */
 
@@ -106,3 +143,103 @@ document.querySelectorAll('.pill--copy').forEach(btn => {
     }, 1800);
   });
 });
+
+/* ---------- lightbox ----------
+   Any image marked [data-zoom] opens full screen. Built on <dialog> so focus
+   trapping, making the page behind inert, and Esc-to-close come from the
+   browser instead of being reimplemented. The image flies from its thumbnail
+   to its final size rather than appearing, which keeps the two connected. */
+
+const OPEN_MS = 280;
+const CLOSE_MS = 200;
+const EASE = 'cubic-bezier(.2, .8, .2, 1)';
+const stillEnough = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+const lightbox = document.createElement('dialog');
+lightbox.className = 'lightbox';
+lightbox.innerHTML =
+  '<button class="lightbox-close" type="button" aria-label="Close">' +
+  '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+  'stroke-width="1.75" stroke-linecap="round" aria-hidden="true">' +
+  '<path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
+  '<div class="lightbox-inner"><img alt=""></div>';
+document.body.appendChild(lightbox);
+
+const lightboxImg = lightbox.querySelector('img');
+let closeAnim = null;   // the flight home, if one is still running
+
+// Work out the transform that would put `el` exactly where `from` is
+function flipFrom(el, from) {
+  const to = el.getBoundingClientRect();
+  if (!to.width || !from.width) return null;
+  return {
+    transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ` +
+               `${from.top + from.height / 2 - (to.top + to.height / 2)}px) ` +
+               `scale(${Math.max(from.width / to.width, from.height / to.height)})`,
+  };
+}
+
+function openLightbox(thumb) {
+  // A close may still be in flight. Take it over, or its finished callback
+  // fires a moment later and closes the lightbox we are about to open.
+  if (closeAnim) { closeAnim = null; }
+  lightboxImg.getAnimations().forEach(a => a.cancel());
+  lightbox.classList.remove('is-closing');
+  lightbox.style.pointerEvents = '';
+  if (lightbox.open) lightbox.close();
+
+  lightboxImg.src = thumb.currentSrc || thumb.src;
+  lightboxImg.alt = thumb.alt || '';
+  lightbox.showModal();
+  soundOpen();
+
+  if (stillEnough.matches) return;
+  const start = flipFrom(lightboxImg, thumb.getBoundingClientRect());
+  if (!start) return;
+  lightboxImg.animate([{ ...start, opacity: 0.4 }, { transform: 'none', opacity: 1 }],
+    { duration: OPEN_MS, easing: EASE });
+}
+
+function closeLightbox() {
+  if (!lightbox.open) return;
+  soundClose();
+
+  // <dialog> closes instantly, so the fade has to finish first
+  if (stillEnough.matches) { lightbox.close(); return; }
+
+  // No flight home — it just fades and settles back a touch. fill: 'forwards'
+  // holds the faded state until the dialog actually closes, otherwise the
+  // image snaps back to full opacity for a frame in between.
+  const anim = lightboxImg.animate(
+    [{ transform: 'none', opacity: 1 }, { transform: 'scale(0.97)', opacity: 0 }],
+    { duration: CLOSE_MS, easing: 'ease-out', fill: 'forwards' });
+
+  closeAnim = anim;
+  lightbox.classList.add('is-closing');
+  lightbox.style.pointerEvents = 'none';
+
+  anim.finished.finally(() => {
+    if (closeAnim !== anim) return;   // a re-open took this over
+    closeAnim = null;
+    lightbox.classList.remove('is-closing');
+    lightbox.style.pointerEvents = '';
+    lightbox.close();
+    anim.cancel();          // drop the held transform before the next open
+  });
+}
+
+// The work screenshots, here and in the case studies. Written as a selector on
+// the slot classes so an <img> dropped into one is zoomable with no extra
+// markup; data-zoom is there to opt anything else in by hand.
+document.querySelectorAll('img.shot, img.shot-wide, img.shot-narrow, img[data-zoom]').forEach(img => {
+  img.addEventListener('click', () => openLightbox(img));
+});
+
+lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+lightboxImg.addEventListener('click', closeLightbox);
+
+// A click that lands on the dialog itself is a click on the backdrop
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+// Esc fires cancel; take it over so the image flies back rather than vanishing
+lightbox.addEventListener('cancel', e => { e.preventDefault(); closeLightbox(); });
