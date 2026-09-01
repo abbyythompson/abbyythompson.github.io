@@ -25,7 +25,16 @@
   --col-when: 100px;   /* the date column */
   --col-page: 752px;   /* widest the content ever gets */
   --col-nav: 107px;    /* case study section nav */
-  --nav-inset: 58px;   /* ...which sits this far in from the screen edge */
+
+  /* How far in from the screen edge that nav sits. It starts 58px in, then
+     walks toward the page's own margin as the screen narrows, always keeping
+     --space-40 of air between itself and the text. */
+  --nav-inset: clamp(
+    var(--pad-side),
+    (100vw - var(--col-page)) / 2 + var(--pad-side)
+      - var(--col-nav) - var(--space-40),
+    58px
+  );
 
   /* Every page starts its content at --pad-top, so moving between them never
      shifts anything. The case study puts its back arrow at --pad-arrow and
@@ -394,15 +403,25 @@ html:has(.lightbox[open]) { overflow: hidden; }
    ========================================================================== */
 
 .case-page {
-  max-width: var(--col-page);
+  /* How wide this column actually gets. It holds the homepage's 752 for as
+     long as the margins can still park the nav beside it. Once the nav has
+     walked as far in as it goes, the column starts giving ground instead, so
+     the two stay side by side a good way further down. */
+  --case-w: min(
+    var(--col-page),
+    100vw - 2 * (var(--nav-inset) + var(--col-nav) + var(--space-40)
+      - var(--pad-side))
+  );
+
+  max-width: var(--case-w);
   margin: 0 auto;
   padding: var(--pad-arrow) var(--pad-side) var(--pad-bottom);
 
   /* How far left of this centred column the screen edge sits. Pulling the nav
      and the arrow out by this much parks them --nav-inset from the edge while
-     the body text stays put on the homepage's edge. */
+     the body text stays put on the column's edge. */
   --nav-pull: calc(
-    var(--nav-inset) - (100vw - var(--col-page)) / 2 - var(--pad-side)
+    var(--nav-inset) - (100vw - var(--case-w)) / 2 - var(--pad-side)
   );
 }
 
@@ -423,7 +442,7 @@ html:has(.lightbox[open]) { overflow: hidden; }
   display: grid;
   grid-template-columns: var(--col-nav) minmax(0, 1fr);
   column-gap: calc(
-    (100vw - var(--col-page)) / 2 + var(--pad-side)
+    (100vw - var(--case-w)) / 2 + var(--pad-side)
       - var(--nav-inset) - var(--col-nav)
   );
   margin-left: var(--nav-pull);
@@ -509,16 +528,23 @@ html:has(.lightbox[open]) { overflow: hidden; }
   width: 100%;
 }
 
-/* 459 : 177, the split from the design, kept proportional as the page narrows */
-.shot-pair .shot-wide { flex: 459 1 0; width: auto; }
-.shot-pair .shot-narrow { flex: 177 1 0; }
+/* 459 : 177, the split from the design, kept proportional as the page narrows.
+   min-width: 0 because an <img> in one of these slots brings an aspect ratio
+   with it, and a flex item's automatic minimum size would otherwise refuse to
+   shrink it past the width that ratio implies at 281px tall. */
+.shot-pair .shot-wide { flex: 459 1 0; width: auto; min-width: 0; }
+.shot-pair .shot-narrow { flex: 177 1 0; min-width: 0; }
 
 /* ---------- Narrow screens ---------- */
 
-/* Below this the margins are too tight to hold the nav (752 + 2 x 147), so it
-   comes back inside and lies down above the content */
-@media (max-width: 1100px) {
+/* The column shrinks rather than the nav flipping, right down to the point
+   where it can no longer hold a screenshot at its full 459px. Past that the
+   squeezing has stopped buying anything, so the nav comes back inside and lies
+   down above the content, and the column returns to the homepage's. */
+@media (max-width: 800px) {
   .back { margin-left: 0; }
+
+  .case-page { --case-w: var(--col-page); }
 
   .case {
     grid-template-columns: minmax(0, 1fr);
