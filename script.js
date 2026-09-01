@@ -253,3 +253,52 @@ lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightb
 
 // Esc fires cancel; take it over so the image flies back rather than vanishing
 lightbox.addEventListener('cancel', e => { e.preventDefault(); closeLightbox(); });
+
+/* ---------- Case study section nav ----------
+   The nav has to say where you are, not just where you last clicked. The
+   current section is the last one whose top has crossed a line a third of the
+   way down the screen; at the very bottom of the page it is always the last
+   one, since a short closing section may never reach that line. */
+
+const caseNav = document.querySelector('.case-nav');
+
+if (caseNav) {
+  const items = [...caseNav.querySelectorAll('a[href^="#"]')]
+    .map(link => ({ link, section: document.querySelector(link.getAttribute('href')) }))
+    .filter(item => item.section);
+
+  let queued = false;
+
+  function markCurrent() {
+    queued = false;
+
+    const line = window.innerHeight / 3;
+    const scroller = document.documentElement;
+    const atBottom = window.scrollY + window.innerHeight >= scroller.scrollHeight - 2;
+
+    let current = items[0];
+    if (atBottom) {
+      current = items[items.length - 1];
+    } else {
+      for (const item of items) {
+        if (item.section.getBoundingClientRect().top <= line) current = item;
+      }
+    }
+
+    items.forEach(item => item.link.classList.toggle('is-current', item === current));
+  }
+
+  // Scroll fires far more often than the page can repaint, so the work waits
+  // for the next frame rather than running per event
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(markCurrent);
+  };
+
+  if (items.length) {
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    markCurrent();
+  }
+}

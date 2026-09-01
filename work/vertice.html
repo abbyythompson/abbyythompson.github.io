@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertice - Abby Thompson</title>
+<meta name="description" content="Rebuilding the Vertice request page around real user research. CSAT up 32%, time to complete down 27%.">
+
+<link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/abby/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../images/abby/favicon-16.png">
+<link rel="apple-touch-icon" href="../images/abby/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="case-page">
+
+  <a class="back" href="../index.html" aria-label="Back to home">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+  </a>
+
+  <div class="case">
+
+    <!-- Section nav. The current item starts on the first section and is moved
+         from there by the scroll spy in script.js. -->
+    <nav class="case-nav" aria-label="Sections">
+      <a class="is-current" href="#about">About</a>
+      <a href="#outcome">Outcome</a>
+      <a href="#problem">Problem</a>
+      <a href="#research">Research</a>
+      <a href="#product-system">Product System</a>
+      <a href="#role">Role</a>
+      <a href="#learnings">Learnings</a>
+    </nav>
+
+    <main class="case-body">
+
+      <!-- Title + meta -->
+      <header class="case-head">
+        <h1 class="case-title">Vertice</h1>
+        <div class="meta">
+          <div class="row">
+            <p class="muted when">Period</p>
+            <div class="entry"><p>August &ndash; November 2025</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Type</p>
+            <div class="entry"><p>Full time</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Services</p>
+            <div class="entry"><p>Product Design thinking</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Website</p>
+            <div class="entry"><p><a class="u" href="https://www.vertice.one" target="_blank" rel="noopener noreferrer">vertice.one<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="case-section" id="about">
+        <h2>About</h2>
+        <p>Vertice helps companies buy and renew their software at the best price, saving them millions. The platform sits on two objects: contracts, and requests to buy something new. The request page carries both renewals and brand new software requests through the workflow, which makes it the page most people spend their day in. I led its redesign, from discovery through to shipping.</p>
+      </section>
+
+      <section class="case-section" id="outcome">
+        <h2>Outcome</h2>
+        <p>CSAT rose 32%, the time to complete a request fell 27%, and task completion improved by 41%. Internal teams moved faster with clearer ownership and less back and forth. External users could finally see where their request had got to, which cut the support tickets asking exactly that.</p>
+        <!-- A pair: the wide shot carries the narrow one alongside it -->
+        <div class="shot-pair">
+          <img class="shot-wide" src="../images/Vertice/req-base.webp" width="1440" height="940"
+               alt="The redesigned request page, with active tasks, the most recent offer and the comments panel all in view">
+          <img class="shot-narrow" src="../images/Vertice/req-comments.webp" width="504" height="518"
+               alt="The comments panel, split into a customer thread and an internal one">
+        </div>
+      </section>
+
+      <section class="case-section" id="problem">
+        <h2>Problem</h2>
+        <p>The original page led with the workflow canvas: a diagram of the whole process that filled the screen and pushed the actual work below the fold. Whatever you had come to do, approve a task, read the latest offer, answer a question, you scrolled past the map to reach it. It served renewals and new requests equally badly, and it was putting platform adoption and CSAT at risk.</p>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/before.webp" width="1467" height="1024" loading="lazy" decoding="async"
+             alt="The original request page: a large workflow canvas fills the screen, with active tasks and comments pushed below the fold">
+      </section>
+
+      <section class="case-section" id="research">
+        <h2>Research</h2>
+        <p>I picked the initiative up in my second week and started by interviewing dozens of people on both sides of it: procurement, legal and finance inside customer teams, and Customer Success, Sales and Data inside ours. Product and Engineering helped me size what came back.</p>
+        <p>The clearest finding was that this is not one page. It carries a brand new process, a generic request, a request with a vendor attached, and a renewal, and each one arrives with different expectations of the header, the tabs and the breadcrumb. I drew all four out and designed against the set rather than against a single happy path.</p>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/differing-requests.webp" width="1000" height="700" loading="lazy" decoding="async"
+             alt="Header, breadcrumb and tab patterns drawn out for a new process, a generic request, a request with a vendor and a renewal">
+      </section>
+
+      <section class="case-section" id="product-system">
+        <h2>Product System</h2>
+        <p>I audited the existing UI first, and found the same idea drawn several different ways: every offer and contract card in the product had its own headings, borders, collapsed state and preview. I pulled them onto one identity and built the widget as a flexible component, so the request page and the rest of the platform now assemble from the same blocks. Usage guidelines went out with it, so designers and engineers could keep building from it without coming back to ask.</p>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/widgets-aligned.webp" width="1000" height="700" loading="lazy" decoding="async"
+             alt="Every offer and contract widget in the product, lined up and pulled onto one set of rules">
+        <p>Task cards were worked through against the workflow sitting behind them: what is active, what is overdue, and what the reader is meant to do next. Comments were tried as an overlay and as a resizable panel, at both screen sizes and both comment volumes, before we committed to one.</p>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/task-card-design.webp" width="1000" height="700" loading="lazy" decoding="async"
+             alt="A board of task card explorations, each variant shown against the workflow it belongs to">
+      </section>
+
+      <section class="case-section" id="role">
+        <h2>Role</h2>
+        <p>I took ownership of the initiative within two weeks of joining, and ran it with 3 Product Managers and 3 engineering squads alongside Customer Success, Sales and Data. Defining the problem and agreeing what success looked like came first, so we were all measuring the same thing by the time anything was drawn.</p>
+        <p>We were time constrained and the redesign had to reach users in pieces rather than all at once, so I broke it into milestones. The first was the page header and the layout, the frame everything else sits in. Settling the structure early meant engineering could start building while the individual components were still being designed, and each one then dropped into a page that already held its shape.</p>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/layout-first.webp" width="1467" height="1024" loading="lazy" decoding="async"
+             alt="The new page header and layout in place, with the existing components still sitting in their slots as placeholders">
+      </section>
+
+      <section class="case-section" id="learnings">
+        <h2>Learnings</h2>
+        <p>Every decision started from what the user was trying to get done, then had to survive what was buildable in the time we had. Where the ideal pattern was not shippable, the job was to find the version that kept the goal intact and could still go out.</p>
+        <p>Agreeing the frame before the furniture is the part I would reach for again first. It kept three squads moving in parallel, and it meant no component was ever designed in isolation from the page it had to live in. Next is the contract page, extending the same patterns so the two halves of the product finally match.</p>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="../script.js" defer></script>
+
+</body>
+</html>

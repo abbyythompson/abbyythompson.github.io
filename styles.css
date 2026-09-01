@@ -213,9 +213,10 @@ img { display: block; max-width: 100%; }
 /* A whole row can read as secondary — the ski season does */
 .row--muted .entry { color: var(--muted); }
 
-/* The dotted underline invites a click, so the titles have to say they are
-   not links yet */
-.work-title .u { cursor: not-allowed; }
+/* The dotted underline invites a click, so the titles that are not links yet
+   have to say so. Once a study ships the title becomes an <a> and this stops
+   applying to it. */
+.work-title span.u { cursor: not-allowed; }
 
 .soon { margin-left: var(--space-8); }
 
