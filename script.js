@@ -147,8 +147,8 @@ document.querySelectorAll('.pill--copy').forEach(btn => {
 /* ---------- lightbox ----------
    Any image marked [data-zoom] opens full screen. Built on <dialog> so focus
    trapping, making the page behind inert, and Esc-to-close come from the
-   browser instead of being reimplemented. The image flies from its thumbnail
-   to its final size rather than appearing, which keeps the two connected. */
+   browser instead of being reimplemented. The image settles up from a little
+   under full size rather than appearing, so the open has some give to it. */
 
 const OPEN_MS = 280;
 const CLOSE_MS = 200;
@@ -166,18 +166,11 @@ lightbox.innerHTML =
 document.body.appendChild(lightbox);
 
 const lightboxImg = lightbox.querySelector('img');
-let closeAnim = null;   // the flight home, if one is still running
+let closeAnim = null;   // the fade out, if one is still running
+let openId = 0;         // bumped per open, so a slow decode can't land late
 
-// Work out the transform that would put `el` exactly where `from` is
-function flipFrom(el, from) {
-  const to = el.getBoundingClientRect();
-  if (!to.width || !from.width) return null;
-  return {
-    transform: `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ` +
-               `${from.top + from.height / 2 - (to.top + to.height / 2)}px) ` +
-               `scale(${Math.max(from.width / to.width, from.height / to.height)})`,
-  };
-}
+// How small the image starts before it settles into place
+const OPEN_SCALE = 0.8;
 
 function openLightbox(thumb) {
   // A close may still be in flight. Take it over, or its finished callback
@@ -191,14 +184,30 @@ function openLightbox(thumb) {
   // data-full lets a small thumbnail open at full size
   lightboxImg.src = thumb.dataset.full || thumb.currentSrc || thumb.src;
   lightboxImg.alt = thumb.alt || '';
+
+  // One <img> serves every shot, and setting src does not wipe what is on
+  // screen: the browser keeps painting the last picture until the new one
+  // decodes. Opening cold would flash the shot before it, so hold the image
+  // back and let the new one bring itself in.
+  const id = ++openId;
+  lightboxImg.style.visibility = 'hidden';
+
   lightbox.showModal();
   soundOpen();
 
-  if (stillEnough.matches) return;
-  const start = flipFrom(lightboxImg, thumb.getBoundingClientRect());
-  if (!start) return;
-  lightboxImg.animate([{ ...start, opacity: 0.4 }, { transform: 'none', opacity: 1 }],
-    { duration: OPEN_MS, easing: EASE });
+  const reveal = () => {
+    if (id !== openId) return;   // a newer open owns the image now
+    lightboxImg.style.visibility = '';
+    if (stillEnough.matches) return;
+    lightboxImg.animate(
+      [{ transform: `scale(${OPEN_SCALE})`, opacity: 0.4 }, { transform: 'none', opacity: 1 }],
+      { duration: OPEN_MS, easing: EASE });
+  };
+
+  // decode() settles on the next microtask for anything already cached, so a
+  // reopen still feels instant. It rejects on a broken image; show it anyway
+  // and let the usual broken-image handling take over.
+  lightboxImg.decode().then(reveal, reveal);
 }
 
 function closeLightbox() {
@@ -208,9 +217,9 @@ function closeLightbox() {
   // <dialog> closes instantly, so the fade has to finish first
   if (stillEnough.matches) { lightbox.close(); return; }
 
-  // No flight home — it just fades and settles back a touch. fill: 'forwards'
-  // holds the faded state until the dialog actually closes, otherwise the
-  // image snaps back to full opacity for a frame in between.
+  // It just fades and settles back a touch. fill: 'forwards' holds the faded
+  // state until the dialog actually closes, otherwise the image snaps back to
+  // full opacity for a frame in between.
   const anim = lightboxImg.animate(
     [{ transform: 'none', opacity: 1 }, { transform: 'scale(0.97)', opacity: 0 }],
     { duration: CLOSE_MS, easing: 'ease-out', fill: 'forwards' });
