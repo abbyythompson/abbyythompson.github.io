@@ -475,7 +475,9 @@ html:has(.lightbox[open]) { overflow: hidden; }
 .case-nav {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  /* The same step as the meta rows across the page from it, off the same
+     token so the two lists cannot drift apart */
+  gap: var(--space-8);
   position: sticky;
   top: var(--pad-arrow);
 }
@@ -519,11 +521,12 @@ html:has(.case-page) { scroll-behavior: smooth; }
 
 .case-title { font-size: 16px; }
 
-/* The meta rows reuse .row / .when from the intro, just packed tighter */
+/* The meta rows reuse .row / .when from the intro, just packed tighter. The
+   gap matches the section nav beside them. */
 .meta {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-8);
 }
 
 /* Values stay on one line and run past the 284px head if they need to, the way
@@ -608,11 +611,14 @@ html:has(.case-page) { scroll-behavior: smooth; }
     row-gap: var(--space-64);
   }
 
+  /* Lying down, it needs more air across than down: 8 between wrapped lines,
+     the same step it has as a column, and 12 between items on a line, which is
+     the least that still reads as a gap between two words. */
   .case-nav {
     position: static;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--space-12) var(--space-16);
+    gap: var(--space-8) var(--space-12);
   }
 }
 
