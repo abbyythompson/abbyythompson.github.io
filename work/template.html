@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vertice - Abby Thompson</title>
-<meta name="description" content="Case study template.">
+<title>Case study - Abby Thompson</title>
+<meta name="description" content="One line on what the work was and what it did.">
 
 <link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="../images/abby/favicon-32.png">
@@ -27,8 +27,10 @@
 
   <div class="case">
 
-    <!-- Section nav. Which item reads as current is hard-coded for now — the
-         scroll-spy that moves it belongs with the rest of the behaviour. -->
+    <!-- Section nav. Every href here has to match a section id below: the
+         scroll spy in script.js pairs them up, and an item whose section it
+         cannot find is quietly dropped. is-current only sets the starting
+         item; from there the spy moves it. -->
     <nav class="case-nav" aria-label="Sections">
       <a class="is-current" href="#about">About</a>
       <a href="#outcome">Outcome</a>
@@ -72,7 +74,13 @@
       <section class="case-section" id="outcome">
         <h2>Outcome</h2>
         <p>London based Product Designer who has spent the best part of a decade designing and building experiences for start ups through to the biggest companies on the planet.</p>
-        <!-- A pair — the wide shot carries the narrow one alongside it -->
+        <!-- Three ways to show work, all of them zoomable and all of them
+             opening the lightbox as the set they belong to.
+
+             One shot on its own:      <img class="shot-wide" src="..." ...>
+             A pair, for two shots of different shapes that belong side by
+             side: the wide one carries the narrow one alongside it.
+             Two or more shots that share a shape: a carousel. -->
         <div class="shot-pair">
           <div class="shot-wide"></div>
           <div class="shot-narrow"></div>
@@ -95,6 +103,25 @@
         <h2>Product System</h2>
         <p>London based Product Designer who has spent the best part of a decade designing and building experiences for start ups through to the biggest companies on the planet.</p>
         <div class="shot-wide"></div>
+
+        <!-- A carousel, for two or more shots that share a shape. It shows one
+             of them with a quarter of the next past its edge, and the whole
+             set is walked through in the lightbox. The dots are built by the
+             script, so all this needs is the list.
+
+             --shot-ratio is the slot every shot is cropped into: set it to
+             the shots' own ratio and nothing is lost. The width is already the
+             same as a shot on its own, from --col-shot.
+
+        <figure class="carousel" style="--shot-ratio: 10 / 7">
+          <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/..." width="1000" height="700" loading="lazy" decoding="async"
+                     alt="What this one shows"></li>
+            <li><img class="carousel-shot" src="../images/..." width="1000" height="700" loading="lazy" decoding="async"
+                     alt="What this one shows"></li>
+          </ul>
+        </figure>
+        -->
       </section>
 
       <section class="case-section" id="role">
@@ -110,6 +137,8 @@
     </main>
   </div>
 </div>
+
+<script src="../script.js" defer></script>
 
 </body>
 </html>
