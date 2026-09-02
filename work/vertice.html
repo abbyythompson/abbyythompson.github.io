@@ -27,8 +27,10 @@
 
   <div class="case">
 
-    <!-- Section nav. The current item starts on the first section and is moved
-         from there by the scroll spy in script.js. -->
+    <!-- Section nav. Every href here has to match a section id below: the
+         scroll spy in script.js pairs them up, and an item whose section it
+         cannot find is quietly dropped. is-current only sets the starting
+         item; from there the spy moves it. -->
     <nav class="case-nav" aria-label="Sections">
       <a class="is-current" href="#about">About</a>
       <a href="#outcome">Outcome</a>
@@ -102,8 +104,16 @@
         <img class="shot-wide" src="../images/Vertice-RequestImg/widgets-aligned.webp" width="1000" height="700" loading="lazy" decoding="async"
              alt="Every offer and contract widget in the product, lined up and pulled onto one set of rules">
         <p>Task cards were worked through against the workflow sitting behind them: what is active, what is overdue, and what the reader is meant to do next. Comments were tried as an overlay and as a resizable panel, at both screen sizes and both comment volumes, before we committed to one.</p>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/task-card-design.webp" width="1000" height="700" loading="lazy" decoding="async"
-             alt="A board of task card explorations, each variant shown against the workflow it belongs to">
+        <!-- Both boards in one slot, which is the same width as a shot on
+             its own. The ratio is these boards' own, so nothing is cropped. -->
+        <figure class="carousel" style="--shot-ratio: 10 / 7">
+          <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/Vertice-RequestImg/task-card-design.webp" width="1000" height="700" loading="lazy" decoding="async"
+                     alt="A board of task card explorations, each variant shown against the workflow it belongs to"></li>
+            <li><img class="carousel-shot" src="../images/Vertice-RequestImg/comments-section.webp" width="1000" height="700" loading="lazy" decoding="async"
+                     alt="Comments drawn as an overlay and as a resizable panel, at both screen sizes and both comment volumes"></li>
+          </ul>
+        </figure>
       </section>
 
       <section class="case-section" id="role">
