@@ -26,6 +26,12 @@
   --col-page: 752px;   /* widest the content ever gets */
   --col-nav: 107px;    /* case study section nav */
 
+  /* How wide a shot slot is in a case study, whether it holds one shot or a
+     carousel, so a section with both keeps one left edge and one right edge.
+     A carousel spends the last of it on the quarter of the next shot showing
+     past the edge, which puts its shot back at the 459 from the design. */
+  --col-shot: 588px;
+
   /* How far in from the screen edge that nav sits. It starts 58px in, then
      walks toward the page's own margin as the screen narrows, always keeping
      --space-40 of air between itself and the text. */
@@ -321,6 +327,13 @@ img.shot, img.shot-wide, img.shot-narrow, img[data-zoom] { cursor: zoom-in; }
   border: 0;
   background: none;
   overflow: hidden;
+  /* Stepping the set means clicking the same spot over and over, and two of
+     those in quick succession is a double click, which the browser answers by
+     selecting whatever is under it. There is nothing in here to read, so it
+     can refuse. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Frosted rather than dimmed — the page stays present behind the glass */
@@ -346,6 +359,8 @@ img.shot, img.shot-wide, img.shot-narrow, img[data-zoom] { cursor: zoom-in; }
   height: auto;
   border-radius: 8px;
   object-fit: contain;
+  /* A single shot closes on a click, so it says so. A set that can be stepped
+     through takes this over with a cursor of its own, below. */
   cursor: zoom-out;
   /* Lifts the image off a background that is now nearly the same white */
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
@@ -361,6 +376,8 @@ img.shot, img.shot-wide, img.shot-narrow, img[data-zoom] { cursor: zoom-in; }
   border-radius: 999px;
   background: none;
   color: var(--fg);
+  /* The dialog around it is cursor: none while a set is open. This is set on
+     the button itself, which beats what it would otherwise inherit. */
   cursor: pointer;
 }
 
@@ -449,7 +466,11 @@ html:has(.lightbox[open]) { overflow: hidden; }
   align-items: start;
 }
 
-/* ---------- Section nav ---------- */
+/* ---------- Section nav ----------
+   Two things move here. Pressing an item glides the page to its section rather
+   than cutting to it, so you keep your bearings and can see how far you went,
+   and the item that reads as current fades in and out rather than snapping,
+   which matters because the scroll spy hands it over mid-scroll. */
 
 .case-nav {
   display: flex;
@@ -462,9 +483,23 @@ html:has(.lightbox[open]) { overflow: hidden; }
 .case-nav a {
   color: var(--muted);
   text-decoration: none;
+  transition: color 260ms ease;
 }
 
 .case-nav a.is-current { color: var(--fg); }
+
+/* Scoped to the case study, so nothing else on the site has its scrolling
+   taken over by this */
+html:has(.case-page) { scroll-behavior: smooth; }
+
+/* Where a section comes to rest: level with the top of the nav beside it,
+   rather than jammed against the top of the window */
+.case-section { scroll-margin-top: var(--pad-arrow); }
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.case-page) { scroll-behavior: auto; }
+  .case-nav a { transition-duration: 1ms; }
+}
 
 /* ---------- Body ---------- */
 
@@ -503,23 +538,34 @@ html:has(.lightbox[open]) { overflow: hidden; }
 }
 
 /* Images are allowed to run wider than the 607px measure of the text */
-.case-section:has(.shot-pair) { max-width: 100%; }
+.case-section:has(.shot-pair),
+.case-section:has(.carousel) { max-width: 100%; }
+
 .case-section:has(.shot-pair) > h2,
-.case-section:has(.shot-pair) > p { max-width: 607px; }
+.case-section:has(.shot-pair) > p,
+.case-section:has(.carousel) > h2,
+.case-section:has(.carousel) > p { max-width: 607px; }
 
 /* ---------- Image placeholders ---------- */
 
 .shot-wide,
 .shot-narrow {
-  height: 281px;
   border-radius: 8px;
   object-fit: cover;
   background: #d9d9d9;
 }
 
+.shot-narrow { height: 281px; }
+
+/* A ratio rather than a height, so the slot keeps the proportion it has in the
+   design at any width. height: auto because the width and height attributes on
+   an <img> set a height of their own, and aspect-ratio only gets to work one
+   out when there isn't one. */
 .shot-wide {
-  width: 459px;
+  width: var(--col-shot);
   max-width: 100%;
+  height: auto;
+  aspect-ratio: 459 / 281;
 }
 
 .shot-pair {
@@ -532,7 +578,16 @@ html:has(.lightbox[open]) { overflow: hidden; }
    min-width: 0 because an <img> in one of these slots brings an aspect ratio
    with it, and a flex item's automatic minimum size would otherwise refuse to
    shrink it past the width that ratio implies at 281px tall. */
-.shot-pair .shot-wide { flex: 459 1 0; width: auto; min-width: 0; }
+.shot-pair .shot-wide {
+  flex: 459 1 0;
+  width: auto;
+  /* Back to a fixed height in here, so it stays level with the narrow shot
+     beside it rather than shrinking away from it as the page narrows */
+  height: 281px;
+  aspect-ratio: auto;
+  min-width: 0;
+}
+
 .shot-pair .shot-narrow { flex: 177 1 0; min-width: 0; }
 
 /* ---------- Narrow screens ---------- */
@@ -573,4 +628,187 @@ html:has(.lightbox[open]) { overflow: hidden; }
     width: 100%;
     height: 220px;
   }
+}
+
+/* ==========================================================================
+   Carousel
+   A set of shots sharing one slot. Only the current one is shown, the rest are
+   stacked behind it, and a row of dots underneath says how many there are and
+   which one this is.
+
+   Nothing on the page moves the set. A case study is not somewhere to browse
+   the work, it is somewhere to notice there is more of it: the shot opens into
+   the lightbox and the set is walked through there, at full size. Coming back
+   leaves the slot on whichever shot you finished on.
+   ========================================================================== */
+
+.carousel {
+  --shot-ratio: 16 / 10;   /* the slot every shot is cropped into */
+  --shot-width: 78%;       /* what is left over is a quarter of the next */
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  width: 100%;
+  max-width: var(--col-shot);
+  margin: 0;
+  overflow: hidden;        /* where the next shot is cut off */
+}
+
+/* A row that runs wider than the slot, moved by transform rather than by
+   being scrolled, since nothing on the page is meant to be draggable. It is
+   never animated: the only thing that moves it is the lightbox closing, and
+   sliding the set back to the start behind a dialog that is already fading
+   out is two things happening at once for no reason. */
+.carousel-track {
+  display: flex;
+  gap: var(--space-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* Same as the lightbox: a row of images that exists to be clicked, and
+     nothing in it anyone would want to select */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The current shot keeps most of the width and the next one takes what is
+   left, so a quarter of it is always showing at the edge, saying the set
+   carries on. A page that never gets its JavaScript sees exactly this, just
+   without the dots and without it ever moving. */
+.carousel-track > li {
+  flex: 0 0 var(--shot-width);
+  min-width: 0;
+}
+
+.carousel-shot {
+  width: 100%;
+  /* The width and height attributes on the <img> reserve the right space
+     before it loads, but they also set a height, and aspect-ratio only gets to
+     work out a height when there isn't one. This hands it back. */
+  height: auto;
+  aspect-ratio: var(--shot-ratio);
+  object-fit: cover;
+  border-radius: 8px;
+  background: #d9d9d9;
+  cursor: zoom-in;
+}
+
+/* Centred under the shot, and the only thing under it. Nothing to press:
+   they are a count you read at a glance, so they are hidden from a screen
+   reader, which is told the number outright instead. */
+/* Centred on the slot rather than on the current shot. The shot moves: it sits
+   left with the next one peeking in on the right, until the end of the set,
+   where it sits right with the one before peeking in on the left. The slot is
+   the only thing under here that holds still. */
+.carousel-dots {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: var(--leading);   /* the same air a line of text would take */
+}
+
+.carousel-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #e4e4e4;
+  transition: background-color 240ms ease;
+}
+
+.carousel-dots span.is-current { background: var(--fg); }
+
+/* The slot is the only thing here a keyboard can reach, since it is the only
+   way in to the lightbox without a pointer */
+.carousel-track:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;   /* inside, since the slot crops whatever leaves it */
+  border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-dots span { transition-duration: 1ms; }
+}
+
+
+/* ---------- Lightbox navigation ----------
+   Nothing parked over the corners of the work. The lightbox is its own
+   control: the pointer becomes an arrow head that flips depending on which
+   half of the screen it is on, and a click on that half steps the set. Dots
+   along the bottom say where in the set you are, the same row that sits under
+   a carousel on the page. */
+
+/* The arrow replaces the pointer, so the pointer has to go, over the whole
+   lightbox rather than only over the shot: both halves are live */
+@media (hover: hover) and (pointer: fine) {
+  .lightbox.is-walkable,
+  .lightbox.is-walkable img { cursor: none; }
+}
+
+/* The Mac's own resize cursor, standing in for the pointer: two heads, black
+   inside a white border, so it holds its shape over a dark screenshot and a
+   pale one alike. The shadow is what keeps the white edge off a white
+   background, which is why the system cursors carry one too. Nothing here
+   moves. A cursor that animates is a cursor that lags. */
+.lightbox-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--x, 0), var(--y, 0)) translate(-50%, -50%);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.lightbox-cursor.is-on { opacity: 1; }
+
+.lightbox-cursor path {
+  stroke-linejoin: round;   /* what rounds the three corners off */
+}
+
+/* The white border, laid down first and left showing around the body */
+.lightbox-cursor .edge {
+  fill: var(--bg);
+  stroke: var(--bg);
+  stroke-width: 4;
+}
+
+/* Inset by half the difference in stroke, which is what the border ends up
+   measuring: a pixel and a half at this size */
+.lightbox-cursor .body {
+  fill: var(--fg);
+  stroke: var(--fg);
+  stroke-width: 1;
+}
+
+/* At either end of the set, the head that has nowhere to go fades out */
+.lightbox-cursor[data-spent="prev"] .head-prev,
+.lightbox-cursor[data-spent="next"] .head-next { opacity: 0.35; }
+
+.lightbox-dots {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* The dots are hidden from a screen reader, so the position is said here */
+.lightbox-said {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

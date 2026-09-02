@@ -58,11 +58,11 @@ function glide(from, to, dur, gain) {
   osc.start(t0); osc.stop(t0 + dur + 0.02);
 }
 
-// A dry filtered noise transient — a click with no pitch to it
-function burst(cutoff, dur, gain) {
+// A dry filtered noise transient, a click with no pitch to it
+function burst(cutoff, dur, gain, delay = 0) {
   const c = audio();
   if (!c) return;
-  const t0 = c.currentTime;
+  const t0 = c.currentTime + delay;
   const n = Math.max(1, Math.floor(c.sampleRate * dur));
   const buf = c.createBuffer(1, n, c.sampleRate);
   const d = buf.getChannelData(0);
@@ -81,10 +81,21 @@ const soundConfirm = () => {
   tone(990, 0.07, 0.05, 0.055);
 };
 
-// The lightbox gets weight rather than pitch — a low thump with a tick on top
+// The lightbox gets weight rather than pitch: a low thump with a tick on top
 // for definition, since laptop speakers roll off below about 100 Hz.
 const soundOpen = () => { glide(90, 45, 0.22, 0.18); burst(4000, 0.008, 0.035); };
 const soundClose = () => { glide(70, 38, 0.16, 0.13); burst(3500, 0.006, 0.025); };
+
+/* Stepping across the set: a camera shutter. Two hard ticks close enough
+   together to read as one mechanism rather than as two sounds, and quieter
+   than the lightbox open, since this one fires over and over where the open
+   fires once. Both ticks drop in pitch on the way back, so the sound says
+   which way you went and not only that you went. */
+
+const soundStep = back => {
+  burst(back ? 2000 : 3000, 0.012, 0.055);
+  burst(back ? 1500 : 2300, 0.02, 0.035, 0.032);
+};
 
 /* ---------- copy ---------- */
 
@@ -148,12 +159,36 @@ document.querySelectorAll('.pill--copy').forEach(btn => {
    Any image marked [data-zoom] opens full screen. Built on <dialog> so focus
    trapping, making the page behind inert, and Esc-to-close come from the
    browser instead of being reimplemented. The image settles up from a little
-   under full size rather than appearing, so the open has some give to it. */
+   under full size rather than appearing, so the open has some give to it.
+
+   A shot opens as part of the set it belongs to rather than on its own, so a
+   carousel or a pair can be walked through at full size by clicking the halves
+   of the screen, with the arrow keys, or with a swipe. */
 
 const OPEN_MS = 280;
 const CLOSE_MS = 200;
+const STEP_MS = 220;
 const EASE = 'cubic-bezier(.2, .8, .2, 1)';
 const stillEnough = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+/* The Mac's resize cursor: both heads at once, pointing away from each other
+   with a gap down the middle. Each is the one triangle drawn twice: a fat
+   stroke laying down the silhouette and rounding the three corners, then a
+   thinner one inset on top of it in the other colour. That is how the system
+   draws its own, and it is the only way to get a solid body, an even border
+   and round corners out of a single path. */
+
+const HEADS = {
+  prev: 'M10 3 3 7 10 11Z',
+  next: 'M16 3 23 7 16 11Z',
+};
+
+const resizeCursor =
+  '<svg viewBox="0 0 26 14" width="26" height="14" aria-hidden="true">' +
+  Object.entries(HEADS).map(([side, d]) =>
+    `<g class="head-${side}"><path class="edge" d="${d}"/>` +
+    `<path class="body" d="${d}"/></g>`).join('') +
+  '</svg>';
 
 const lightbox = document.createElement('dialog');
 lightbox.className = 'lightbox';
@@ -162,46 +197,85 @@ lightbox.innerHTML =
   '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
   'stroke-width="1.75" stroke-linecap="round" aria-hidden="true">' +
   '<path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
-  '<div class="lightbox-inner"><img alt=""></div>';
+  '<div class="lightbox-inner"><img alt=""></div>' +
+  '<div class="lightbox-dots carousel-dots" aria-hidden="true"></div>' +
+  '<p class="lightbox-said" aria-live="polite"></p>' +
+  `<div class="lightbox-cursor">${resizeCursor}</div>`;
 document.body.appendChild(lightbox);
 
 const lightboxImg = lightbox.querySelector('img');
+// A click that moves a few pixels starts dragging the picture out otherwise,
+// which puts a ghost of it under the pointer mid-step
+lightboxImg.draggable = false;
+const lightboxDots = lightbox.querySelector('.lightbox-dots');
+const lightboxSaid = lightbox.querySelector('.lightbox-said');
+const lightboxCursor = lightbox.querySelector('.lightbox-cursor');
+
 let closeAnim = null;   // the fade out, if one is still running
-let openId = 0;         // bumped per open, so a slow decode can't land late
+let openId = 0;         // bumped per shown image, so a slow decode can't land late
+let shots = [];         // the set currently open
+let at = 0;             // where in that set we are
+let onLeave = null;     // told the closing index, so a carousel can follow
 
 // How small the image starts before it settles into place
 const OPEN_SCALE = 0.8;
 
-function openLightbox(thumb) {
-  // A close may still be in flight. Take it over, or its finished callback
-  // fires a moment later and closes the lightbox we are about to open.
-  if (closeAnim) { closeAnim = null; }
-  lightboxImg.getAnimations().forEach(a => a.cancel());
-  lightbox.classList.remove('is-closing');
-  lightbox.style.pointerEvents = '';
-  if (lightbox.open) lightbox.close();
+const fullSrc = img => img.dataset.full || img.currentSrc || img.src;
 
-  // data-full lets a small thumbnail open at full size
-  lightboxImg.src = thumb.dataset.full || thumb.currentSrc || thumb.src;
-  lightboxImg.alt = thumb.alt || '';
+// The neighbours are the next thing anyone is going to ask for, so fetch them
+// while the current one is being looked at and the step lands instantly.
+function warm(i) {
+  [i - 1, i + 1].forEach(n => {
+    if (!shots[n]) return;
+    const pre = new Image();
+    pre.src = fullSrc(shots[n]);
+  });
+}
+
+// dir is -1, 0 or 1: which way we arrived, so the image can come in from the
+// side it was stepped from. 0 is the opening, which scales up instead.
+function show(i, dir) {
+  at = i;
+  const img = shots[i];
+
+  lightboxImg.src = fullSrc(img);
+  lightboxImg.alt = img.alt || '';
+
+  // A dot per shot, the same row that sits under a carousel on the page. One
+  // shot is not a set, so it gets nothing.
+  const many = shots.length > 1;
+  lightbox.classList.toggle('is-walkable', many);
+
+  if (lightboxDots.children.length !== (many ? shots.length : 0)) {
+    lightboxDots.replaceChildren();
+    if (many) shots.forEach(() => lightboxDots.appendChild(document.createElement('span')));
+  }
+
+  [...lightboxDots.children].forEach((pip, n) => pip.classList.toggle('is-current', n === i));
+
+  // The dots are decoration, so the position is said outright as well
+  lightboxSaid.textContent = many ? `Image ${i + 1} of ${shots.length}` : '';
+  dressCursor();
 
   // One <img> serves every shot, and setting src does not wipe what is on
   // screen: the browser keeps painting the last picture until the new one
-  // decodes. Opening cold would flash the shot before it, so hold the image
-  // back and let the new one bring itself in.
+  // decodes. Showing it cold would flash the shot before it, so hold the
+  // image back and let the new one bring itself in.
   const id = ++openId;
   lightboxImg.style.visibility = 'hidden';
 
-  lightbox.showModal();
-  soundOpen();
-
   const reveal = () => {
-    if (id !== openId) return;   // a newer open owns the image now
+    if (id !== openId) return;   // a newer step owns the image now
     lightboxImg.style.visibility = '';
+    warm(i);
     if (stillEnough.matches) return;
-    lightboxImg.animate(
-      [{ transform: `scale(${OPEN_SCALE})`, opacity: 0.4 }, { transform: 'none', opacity: 1 }],
-      { duration: OPEN_MS, easing: EASE });
+
+    const from = dir
+      ? { transform: `translateX(${dir * 32}px)`, opacity: 0 }
+      : { transform: `scale(${OPEN_SCALE})`, opacity: 0.4 };
+
+    lightboxImg.animate([from, { transform: 'none', opacity: 1 }],
+      { duration: dir ? STEP_MS : OPEN_MS, easing: EASE });
   };
 
   // decode() settles on the next microtask for anything already cached, so a
@@ -210,9 +284,38 @@ function openLightbox(thumb) {
   lightboxImg.decode().then(reveal, reveal);
 }
 
+function step(by) {
+  const next = at + by;
+  if (next < 0 || next >= shots.length) return;   // an end stays silent
+  soundStep(by < 0);
+  show(next, Math.sign(by));
+}
+
+function openLightbox(set, index, leave) {
+  // A close may still be in flight. Take it over, or its finished callback
+  // fires a moment later and closes the lightbox we are about to open.
+  if (closeAnim) { closeAnim = null; }
+  lightboxImg.getAnimations().forEach(a => a.cancel());
+  lightbox.classList.remove('is-closing');
+  lightbox.style.pointerEvents = '';
+  if (lightbox.open) lightbox.close();
+
+  shots = set;
+  onLeave = leave || null;
+
+  lightbox.showModal();
+  soundOpen();
+  show(index, 0);
+}
+
 function closeLightbox() {
   if (!lightbox.open) return;
   soundClose();
+  dropCursor();
+
+  // Whatever it was opened from follows you out, so the carousel is left on
+  // the shot you were last looking at rather than the one you clicked
+  if (onLeave) onLeave(at);
 
   // <dialog> closes instantly, so the fade has to finish first
   if (stillEnough.matches) { lightbox.close(); return; }
@@ -238,21 +341,223 @@ function closeLightbox() {
   });
 }
 
-// The work screenshots, here and in the case studies. Written as a selector on
-// the slot classes so an <img> dropped into one is zoomable with no extra
-// markup; data-zoom is there to opt anything else in by hand.
-document.querySelectorAll('img.shot, img.shot-wide, img.shot-narrow, img[data-zoom]').forEach(img => {
-  img.addEventListener('click', () => openLightbox(img));
+lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+
+/* A set you can step through is its own control. The pointer turns into a
+   resize cursor and a click on either half of the screen moves the set, so
+   nothing there closes on a click: the cross in the corner is the way out, and
+   the arrow can stay everywhere else without a click ever ending the thing you
+   are looking at by accident. Esc still works, since a modal with no keyboard
+   way out is a trap.
+
+   A single shot has no halves and nothing to step to, so it keeps what it
+   always had: the zoom-out pointer, and a click on the shot to close. Same on
+   a touch screen, where there is no pointer to follow and the halves are a
+   pointer's idea: there the set is swiped and the shot is tapped to close. */
+
+const noPointer = window.matchMedia('(hover: none), (pointer: coarse)');
+
+// Halves of the screen rather than of the shot, since the whole of it is live
+const halfAt = x => (x < window.innerWidth / 2 ? 'prev' : 'next');
+
+// Whether that half has anywhere left to go
+const usedUp = half =>
+  (half === 'prev' && at === 0) || (half === 'next' && at === shots.length - 1);
+
+// Both heads are always there, so the one with nowhere left to go fades rather
+// than the whole cursor. It is the one liberty taken with the system's
+// version, and without it the ends of a set are silent.
+function dressCursor() {
+  lightboxCursor.dataset.spent = usedUp('prev') ? 'prev' : usedUp('next') ? 'next' : '';
+}
+
+function walkable() {
+  return shots.length > 1 && !noPointer.matches;
+}
+
+let cursorFrame = 0;
+
+function moveCursor(x, y) {
+  lightboxCursor.style.setProperty('--x', `${x}px`);
+  lightboxCursor.style.setProperty('--y', `${y}px`);
+}
+
+// Over the cross the pointer goes back to being a pointer, since that is the
+// one thing here that is a button
+const onCross = e => !!(e.target.closest && e.target.closest('.lightbox-close'));
+
+lightbox.addEventListener('pointermove', e => {
+  if (e.pointerType === 'touch' || !walkable() || onCross(e)) {
+    lightboxCursor.classList.remove('is-on');
+    return;
+  }
+
+  if (cursorFrame) return;
+  // Pointer moves arrive faster than the screen can redraw
+  const { clientX, clientY } = e;
+  cursorFrame = requestAnimationFrame(() => {
+    cursorFrame = 0;
+    moveCursor(clientX, clientY);
+    lightboxCursor.classList.add('is-on');
+  });
 });
 
-lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-lightboxImg.addEventListener('click', closeLightbox);
+const dropCursor = () => lightboxCursor.classList.remove('is-on');
 
-// A click that lands on the dialog itself is a click on the backdrop
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+lightbox.addEventListener('pointerleave', dropCursor);
+window.addEventListener('blur', dropCursor);
+
+lightbox.addEventListener('click', e => {
+  if (onCross(e)) return;   // the cross has its own listener
+
+  // With nowhere to step, the shot closes on a click the way it always did.
+  // The shot itself, not the dialog around it, so the backdrop stays inert.
+  if (!walkable()) {
+    if (e.target === lightboxImg) closeLightbox();
+    return;
+  }
+
+  const half = halfAt(e.clientX);
+  if (!usedUp(half)) step(half === 'next' ? 1 : -1);
+});
 
 // Esc fires cancel; take it over so the image flies back rather than vanishing
 lightbox.addEventListener('cancel', e => { e.preventDefault(); closeLightbox(); });
+
+lightbox.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+});
+
+// Swiping is how anyone on a phone will expect to move, and halves of an
+// image are a pointer's idea. Only a mostly horizontal drag counts, so a
+// scroll on a tall shot is left alone.
+let touch = null;
+
+lightbox.addEventListener('touchstart', e => {
+  touch = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+}, { passive: true });
+
+lightbox.addEventListener('touchend', e => {
+  if (!touch) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touch.x;
+  const dy = t.clientY - touch.y;
+  touch = null;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+/* ---------- What counts as a set ----------
+   The work screenshots, here and in the case studies. Written as a selector on
+   the slot classes so an <img> dropped into one is zoomable with no extra
+   markup; data-zoom is there to opt anything else in by hand.
+
+   A shot opens with whatever it is grouped with in the page: everything inside
+   one carousel, one pair, or one [data-gallery]. Anything standing on its own
+   opens as a set of one, with no dots and nowhere to step. */
+
+const SHOTS = 'img.shot, img.shot-wide, img.shot-narrow, img.carousel-shot, img[data-zoom]';
+const GROUPS = '.carousel-track, .shot-pair, [data-gallery]';
+
+function zoomable(img) {
+  const group = img.closest(GROUPS);
+  if (!group) return { set: [img], index: 0, group: null };
+  const set = [...group.querySelectorAll(SHOTS)];
+  return { set, index: set.indexOf(img), group };
+}
+
+document.querySelectorAll(SHOTS).forEach(img => {
+  img.addEventListener('click', () => {
+    const { set, index, group } = zoomable(img);
+    // A carousel hands over a way to be scrolled to wherever you end up
+    openLightbox(set, Math.max(0, index), group && group.followTo);
+  });
+});
+
+/* ---------- Carousels ----------
+   A set of shots in one slot, with a quarter of the next one showing at the
+   edge and dots underneath saying how many there are. The page writes a <ul>
+   of images and the dots are built here, so the markup stays a list of images
+   and a page that never gets its JavaScript still shows the first shot and its
+   neighbour.
+
+   Nothing on the page moves the set, on purpose. Either shot opens into the
+   lightbox, at itself, and the whole set is walked through there, where the
+   work is big enough to be worth walking through. */
+
+document.querySelectorAll('.carousel').forEach(root => {
+  const track = root.querySelector('.carousel-track');
+  if (!track) return;
+
+  const slides = [...track.children];
+  const pics = slides.map(li => li.querySelector('img'));
+
+  // A set of one is just an image. Leave it alone rather than putting a single
+  // dot under it.
+  if (slides.length < 2) return;
+
+  let index = -1;
+
+  /* --- the dots underneath --- */
+
+  const dots = document.createElement('div');
+  dots.className = 'carousel-dots';
+  dots.setAttribute('aria-hidden', 'true');
+
+  const pips = slides.map(() => dots.appendChild(document.createElement('span')));
+
+  root.appendChild(dots);
+
+  /* --- showing one of them --- */
+
+  // How far along the row the current shot has to sit. The step between two
+  // slides carries the gap with it, so it is measured rather than worked out,
+  // and the end is clamped so the row never pulls a hole in behind itself:
+  // on the last shot it is the one before that peeks in from the left instead.
+  function place() {
+    const step = slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : 0;
+    const span = step * (slides.length - 1) + slides[0].clientWidth;
+    const far = Math.max(0, span - track.clientWidth);
+
+    track.style.transform = `translateX(${-Math.min(index * step, far)}px)`;
+  }
+
+  function show(i) {
+    const to = Math.max(0, Math.min(slides.length - 1, i));
+    if (to === index) return;
+    index = to;
+
+    place();
+    pips.forEach((pip, n) => pip.classList.toggle('is-current', n === index));
+
+    // The dots are decoration; this is the same thing said out loud
+    track.setAttribute('aria-label', `Image ${index + 1} of ${slides.length}`);
+  }
+
+  // The widths are all proportions of the column, so the offset that lands on
+  // them has to be worked out again when the column changes size
+  window.addEventListener('resize', place);
+
+  // Handed to the lightbox, which calls it on the way out with the shot you
+  // finished on. The slot is not where you keep your place though: it goes
+  // back to the start, so what anyone scrolling past arrives at is always the
+  // first shot with the second one showing beside it.
+  track.followTo = () => show(0);
+
+  /* --- keyboard ---
+     The shots themselves are not focusable, so without this there is no way in
+     to the lightbox at all without a pointer. */
+
+  track.tabIndex = 0;
+  track.setAttribute('role', 'group');
+  track.setAttribute('aria-roledescription', 'image set');
+
+  track.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pics[index].click(); }
+  });
+
+  show(0);
+});
 
 /* ---------- Case study section nav ----------
    The nav has to say where you are, not just where you last clicked. The
