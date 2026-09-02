@@ -74,17 +74,10 @@
       <section class="case-section" id="outcome">
         <h2>Outcome</h2>
         <p>London based Product Designer who has spent the best part of a decade designing and building experiences for start ups through to the biggest companies on the planet.</p>
-        <!-- Three ways to show work, all of them zoomable and all of them
-             opening the lightbox as the set they belong to.
-
-             One shot on its own:      <img class="shot-wide" src="..." ...>
-             A pair, for two shots of different shapes that belong side by
-             side: the wide one carries the narrow one alongside it.
-             Two or more shots that share a shape: a carousel. -->
-        <div class="shot-pair">
-          <div class="shot-wide"></div>
-          <div class="shot-narrow"></div>
-        </div>
+        <!-- Two ways to show work, both zoomable, both opening the lightbox
+             as the set they belong to: one shot on its own, as below, or two
+             and up in a carousel, as further down. -->
+        <div class="shot-wide"></div>
       </section>
 
       <section class="case-section" id="problem">
@@ -104,24 +97,22 @@
         <p>London based Product Designer who has spent the best part of a decade designing and building experiences for start ups through to the biggest companies on the planet.</p>
         <div class="shot-wide"></div>
 
-        <!-- A carousel, for two or more shots that share a shape. It shows one
-             of them with a quarter of the next past its edge, and the whole
-             set is walked through in the lightbox. The dots are built by the
-             script, so all this needs is the list.
+        <!-- A carousel, for two or more shots. It shows one of them with a
+             quarter of the next past its edge, and the whole set is walked
+             through in the lightbox. The dots are built by the script, so all
+             it needs is the list, shaped like this:
 
-             --shot-ratio is the slot every shot is cropped into: set it to
-             the shots' own ratio and nothing is lost. The width is already the
-             same as a shot on its own, from --col-shot.
+               figure.carousel   style="--shot-ratio: 10 / 7; --shot-crop: top"
+                 ul.carousel-track
+                   li > img.carousel-shot   src width height alt, and
+                   li > img.carousel-shot   loading="lazy" decoding="async"
 
-        <figure class="carousel" style="--shot-ratio: 10 / 7">
-          <ul class="carousel-track">
-            <li><img class="carousel-shot" src="../images/..." width="1000" height="700" loading="lazy" decoding="async"
-                     alt="What this one shows"></li>
-            <li><img class="carousel-shot" src="../images/..." width="1000" height="700" loading="lazy" decoding="async"
-                     alt="What this one shows"></li>
-          </ul>
-        </figure>
-        -->
+             --shot-ratio is the slot every shot is cropped into. Set it to the
+             shots' own ratio and nothing is lost; set it to the ratio of the
+             one that matters most and the rest give ground.
+             --shot-crop is where a shot gives that ground from, centre unless
+             you say otherwise. A screenshot usually wants to keep its head.
+             The width needs nothing: it is already a shot's width, --col-shot. -->
       </section>
 
       <section class="case-section" id="role">

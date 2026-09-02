@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vertice - Abby Thompson</title>
-<meta name="description" content="Rebuilding the Vertice request page around real user research. CSAT up 32%, time to complete down 27%.">
+<meta name="description" content="Reimagining the procurement process at Vertice, from first time onboarding through to compliant approvals.">
 
 <link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="../images/abby/favicon-32.png">
@@ -33,11 +33,11 @@
          item; from there the spy moves it. -->
     <nav class="case-nav" aria-label="Sections">
       <a class="is-current" href="#about">About</a>
-      <a href="#outcome">Outcome</a>
+      <a href="#users">Users</a>
+      <a href="#outcomes">Outcomes</a>
       <a href="#problem">Problem</a>
+      <a href="#struggles">Struggles</a>
       <a href="#research">Research</a>
-      <a href="#product-system">Product System</a>
-      <a href="#role">Role</a>
       <a href="#learnings">Learnings</a>
     </nav>
 
@@ -49,85 +49,99 @@
         <div class="meta">
           <div class="row">
             <p class="muted when">Period</p>
-            <div class="entry"><p>August &ndash; November 2025</p></div>
+            <div class="entry"><p>2025 &ndash; Present</p></div>
           </div>
           <div class="row">
-            <p class="muted when">Type</p>
-            <div class="entry"><p>Full time</p></div>
+            <p class="muted when">Role</p>
+            <div class="entry"><p>Senior Product Designer</p></div>
           </div>
           <div class="row">
-            <p class="muted when">Services</p>
-            <div class="entry"><p>Product Design thinking</p></div>
+            <p class="muted when">Team</p>
+            <div class="entry"><p>Across 3 engineering teams &amp; 3 product managers</p></div>
           </div>
           <div class="row">
-            <p class="muted when">Website</p>
-            <div class="entry"><p><a class="u" href="https://www.vertice.one" target="_blank" rel="noopener noreferrer">vertice.one<svg aria-hidden="true"><line x1="0" x2="100%" y1="4" y2="4"/></svg></a></p></div>
+            <p class="muted when">Responsibility</p>
+            <div class="entry"><p>End to end: research to development</p></div>
           </div>
         </div>
       </header>
 
       <section class="case-section" id="about">
         <h2>About</h2>
-        <p>Vertice helps companies buy and renew their software at the best price, saving them millions. The platform sits on two objects: contracts, and requests to buy something new. The request page carries both renewals and brand new software requests through the workflow, which makes it the page most people spend their day in. I led its redesign, from discovery through to shipping.</p>
+        <p>Vertice helps companies buy and renew software at the best price, saving them millions. The platform enables users to track software and request new purchases or renewals. Since its creation, the system has been inflexible and not user-centric, which is where I came in. Designing the flow from first time onboarding to compliant approval processes.</p>
       </section>
 
-      <section class="case-section" id="outcome">
-        <h2>Outcome</h2>
-        <p>CSAT rose 32%, the time to complete a request fell 27%, and task completion improved by 41%. Internal teams moved faster with clearer ownership and less back and forth. External users could finally see where their request had got to, which cut the support tickets asking exactly that.</p>
-        <!-- A pair: the wide shot carries the narrow one alongside it -->
-        <div class="shot-pair">
-          <img class="shot-wide" src="../images/Vertice/req-base.webp" width="1440" height="940"
-               alt="The redesigned request page, with active tasks, the most recent offer and the comments panel all in view">
-          <img class="shot-narrow" src="../images/Vertice/req-comments.webp" width="504" height="518"
-               alt="The comments panel, split into a customer thread and an internal one">
-        </div>
+      <section class="case-section" id="users">
+        <h2>Users</h2>
+        <p>We have two main user groups in the overarching procurement process.</p>
+        <ul>
+          <li>Vertice-supported negotiation &rarr; internal procurement manager and external client</li>
+          <li>Vertice as a platform &rarr; external procurement manager</li>
+        </ul>
       </section>
 
-      <section class="case-section" id="problem">
-        <h2>Problem</h2>
-        <p>The original page led with the workflow canvas: a diagram of the whole process that filled the screen and pushed the actual work below the fold. Whatever you had come to do, approve a task, read the latest offer, answer a question, you scrolled past the map to reach it. It served renewals and new requests equally badly, and it was putting platform adoption and CSAT at risk.</p>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/before.webp" width="1467" height="1024" loading="lazy" decoding="async"
-             alt="The original request page: a large workflow canvas fills the screen, with active tasks and comments pushed below the fold">
-      </section>
-
-      <section class="case-section" id="research">
-        <h2>Research</h2>
-        <p>I picked the initiative up in my second week and started by interviewing dozens of people on both sides of it: procurement, legal and finance inside customer teams, and Customer Success, Sales and Data inside ours. Product and Engineering helped me size what came back.</p>
-        <p>The clearest finding was that this is not one page. It carries a brand new process, a generic request, a request with a vendor attached, and a renewal, and each one arrives with different expectations of the header, the tabs and the breadcrumb. I drew all four out and designed against the set rather than against a single happy path.</p>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/differing-requests.webp" width="1000" height="700" loading="lazy" decoding="async"
-             alt="Header, breadcrumb and tab patterns drawn out for a new process, a generic request, a request with a vendor and a renewal">
-      </section>
-
-      <section class="case-section" id="product-system">
-        <h2>Product System</h2>
-        <p>I audited the existing UI first, and found the same idea drawn several different ways: every offer and contract card in the product had its own headings, borders, collapsed state and preview. I pulled them onto one identity and built the widget as a flexible component, so the request page and the rest of the platform now assemble from the same blocks. Usage guidelines went out with it, so designers and engineers could keep building from it without coming back to ask.</p>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/widgets-aligned.webp" width="1000" height="700" loading="lazy" decoding="async"
-             alt="Every offer and contract widget in the product, lined up and pulled onto one set of rules">
-        <p>Task cards were worked through against the workflow sitting behind them: what is active, what is overdue, and what the reader is meant to do next. Comments were tried as an overlay and as a resizable panel, at both screen sizes and both comment volumes, before we committed to one.</p>
-        <!-- Both boards in one slot, which is the same width as a shot on
-             its own. The ratio is these boards' own, so nothing is cropped. -->
-        <figure class="carousel" style="--shot-ratio: 10 / 7">
+      <section class="case-section" id="outcomes">
+        <h2>Outcomes / Features</h2>
+        <ul>
+          <li>Onboarding</li>
+          <li>Global search across the platform, with intuitive navigation</li>
+          <li>Aligning the request page with our users&rsquo; goals and what they want to achieve
+            <ul>
+              <li>Then moving towards a flexible requisition model where the user starts with a business, category or employee need and follows a flexible route</li>
+            </ul>
+          </li>
+          <li>Negotiation process with AI involvement</li>
+          <li>Developing a flexible approvals process</li>
+        </ul>
+        <!-- The slot is cut to the wide shot's own ratio, so the page itself
+             is never cropped. The comments shot is nearly square and has to
+             give something up to share that slot, so it gives up its bottom
+             and keeps its header and first thread. -->
+        <figure class="carousel" style="--shot-ratio: 1440 / 940; --shot-crop: top">
           <ul class="carousel-track">
-            <li><img class="carousel-shot" src="../images/Vertice-RequestImg/task-card-design.webp" width="1000" height="700" loading="lazy" decoding="async"
-                     alt="A board of task card explorations, each variant shown against the workflow it belongs to"></li>
-            <li><img class="carousel-shot" src="../images/Vertice-RequestImg/comments-section.webp" width="1000" height="700" loading="lazy" decoding="async"
-                     alt="Comments drawn as an overlay and as a resizable panel, at both screen sizes and both comment volumes"></li>
+            <li><img class="carousel-shot" src="../images/Vertice/req-base.webp" width="1440" height="940"
+                     alt="The redesigned request page, with active tasks, the most recent offer and the comments panel all in view"></li>
+            <li><img class="carousel-shot" src="../images/Vertice/req-comments.webp" width="504" height="518" loading="lazy" decoding="async"
+                     alt="The comments panel, split into a customer thread and an internal one"></li>
           </ul>
         </figure>
       </section>
 
-      <section class="case-section" id="role">
-        <h2>Role</h2>
-        <p>I took ownership of the initiative within two weeks of joining, and ran it with 3 Product Managers and 3 engineering squads alongside Customer Success, Sales and Data. Defining the problem and agreeing what success looked like came first, so we were all measuring the same thing by the time anything was drawn.</p>
-        <p>We were time constrained and the redesign had to reach users in pieces rather than all at once, so I broke it into milestones. The first was the page header and the layout, the frame everything else sits in. Settling the structure early meant engineering could start building while the individual components were still being designed, and each one then dropped into a page that already held its shape.</p>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/layout-first.webp" width="1467" height="1024" loading="lazy" decoding="async"
-             alt="The new page header and layout in place, with the existing components still sitting in their slots as placeholders">
+      <section class="case-section" id="problem">
+        <h2>Problem</h2>
+        <p>Our platform struggled to be user-centric and was too inflexible for many use cases. As a result, tracking in the platform was difficult. Users couldn&rsquo;t do their job effectively, and the platform didn&rsquo;t mirror the real-world flow, which made adoption a struggle.</p>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/before.webp" width="1467" height="1024" loading="lazy" decoding="async"
+             alt="The original request page: a large workflow canvas fills the screen, with active tasks and comments pushed below the fold">
+      </section>
+
+      <section class="case-section" id="struggles">
+        <h2>Struggles</h2>
+        <ul>
+          <li>As we transformed our product, engineering created a brilliant system, but it came with challenges</li>
+          <li>Aligning the design with how engineering developed the system, and making it work within those constraints</li>
+          <li>At times the work spanned 80 engineers, with teams moving faster than design could cover, so part of the job was reworking AI-generated screens that had gone in ahead of a design pass</li>
+        </ul>
+      </section>
+
+      <section class="case-section" id="research">
+        <h2>Research</h2>
+        <ul>
+          <li>Posthog, for user statistics, expanding on the search functionality to decrease time to value</li>
+          <li>User interviews with procurement managers inside and outside the company, to increase confidence in decision making and intuition for quick decisions</li>
+          <li>AI prototyping for quick feedback on features like the negotiation agent, helping validate the feeling of the platform</li>
+        </ul>
+        <img class="shot-wide" src="../images/Vertice-RequestImg/differing-requests.webp" width="1000" height="700" loading="lazy" decoding="async"
+             alt="Header, breadcrumb and tab patterns drawn out for a new process, a generic request, a request with a vendor and a renewal">
       </section>
 
       <section class="case-section" id="learnings">
         <h2>Learnings</h2>
-        <p>Every decision started from what the user was trying to get done, then had to survive what was buildable in the time we had. Where the ideal pattern was not shippable, the job was to find the version that kept the goal intact and could still go out.</p>
-        <p>Agreeing the frame before the furniture is the part I would reach for again first. It kept three squads moving in parallel, and it meant no component was ever designed in isolation from the page it had to live in. Next is the contract page, extending the same patterns so the two halves of the product finally match.</p>
+        <ul>
+          <li>Flexibility beats rigidity. It&rsquo;s good for compliance and easy to draw up a rigid flow programmatically, but our users need forgiveness and flexibility. Building a flexible process improved the user experience 10-fold and made it much easier to track the entire process.</li>
+          <li>Learning the AI design process. With AI prototyping, it&rsquo;s important that everything is clearly laid out. We need a clear vision of the user problem we&rsquo;re trying to solve and what details we need to cover.</li>
+          <li>Making sure we cover each user use case and permissions is important in procurement, given data sensitivity.</li>
+          <li>Staying close to engineering is important, to make sure they have guidance when there isn&rsquo;t enough design capacity to support them.</li>
+        </ul>
       </section>
 
     </main>

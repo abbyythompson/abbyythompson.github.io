@@ -192,6 +192,8 @@ const resizeCursor =
 
 const lightbox = document.createElement('dialog');
 lightbox.className = 'lightbox';
+// Otherwise a screen reader announces it as an unnamed dialog
+lightbox.setAttribute('aria-label', 'Image viewer');
 lightbox.innerHTML =
   '<button class="lightbox-close" type="button" aria-label="Close">' +
   '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
@@ -453,11 +455,11 @@ lightbox.addEventListener('touchend', e => {
    markup; data-zoom is there to opt anything else in by hand.
 
    A shot opens with whatever it is grouped with in the page: everything inside
-   one carousel, one pair, or one [data-gallery]. Anything standing on its own
-   opens as a set of one, with no dots and nowhere to step. */
+   one carousel, or one [data-gallery]. Anything standing on its own opens as a
+   set of one, with no dots and nowhere to step. */
 
-const SHOTS = 'img.shot, img.shot-wide, img.shot-narrow, img.carousel-shot, img[data-zoom]';
-const GROUPS = '.carousel-track, .shot-pair, [data-gallery]';
+const SHOTS = 'img.shot, img.shot-wide, img.carousel-shot, img[data-zoom]';
+const GROUPS = '.carousel-track, [data-gallery]';
 
 function zoomable(img) {
   const group = img.closest(GROUPS);

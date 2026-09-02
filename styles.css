@@ -316,7 +316,7 @@ img { display: block; max-width: 100%; }
    Built on <dialog> so the browser handles the focus trap, the inert page
    behind, and Esc to close, rather than reimplementing all three. */
 
-img.shot, img.shot-wide, img.shot-narrow, img[data-zoom] { cursor: zoom-in; }
+img.shot, img.shot-wide, img[data-zoom] { cursor: zoom-in; }
 
 .lightbox {
   width: 100vw;
@@ -540,25 +540,51 @@ html:has(.case-page) { scroll-behavior: smooth; }
   max-width: 607px;
 }
 
-/* Images are allowed to run wider than the 607px measure of the text */
-.case-section:has(.shot-pair),
-.case-section:has(.carousel) { max-width: 100%; }
+/* Lists of prose. The marker hangs in the margin so the text keeps the same
+   left edge as the paragraphs above and below it, and it is drawn rather than
+   left to the browser so it matches the dots under a carousel.
 
-.case-section:has(.shot-pair) > h2,
-.case-section:has(.shot-pair) > p,
-.case-section:has(.carousel) > h2,
-.case-section:has(.carousel) > p { max-width: 607px; }
-
-/* ---------- Image placeholders ---------- */
-
-.shot-wide,
-.shot-narrow {
-  border-radius: 8px;
-  object-fit: cover;
-  background: #d9d9d9;
+   Scoped to a list the section owns directly. A carousel's track is a <ul>
+   too, and it lives inside a <figure>, so this cannot reach it: unscoped, it
+   beat .carousel-track on specificity and stood the whole set on end. */
+.case-section > ul,
+.case-section > ul ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.shot-narrow { height: 281px; }
+.case-section > ul li { position: relative; padding-left: 18px; }
+
+.case-section > ul li::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  /* Half a line down, less half the dot, puts it on the middle of the first
+     line however many lines the item runs to */
+  top: calc(var(--leading) / 2 - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #c4c4c4;
+}
+
+/* A list inside a list: the same dot, further in, and hollow, so the two
+   levels are told apart by more than their indent */
+.case-section > ul li ul {
+  margin-top: var(--space-8);
+  padding-left: var(--space-8);
+}
+
+.case-section > ul li li::before {
+  background: none;
+  box-shadow: inset 0 0 0 1px #c4c4c4;
+}
+
+/* ---------- Image placeholders ---------- */
 
 /* A ratio rather than a height, so the slot keeps the proportion it has in the
    design at any width. height: auto because the width and height attributes on
@@ -569,29 +595,10 @@ html:has(.case-page) { scroll-behavior: smooth; }
   max-width: 100%;
   height: auto;
   aspect-ratio: 459 / 281;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #d9d9d9;
 }
-
-.shot-pair {
-  display: flex;
-  gap: 29px;
-  width: 100%;
-}
-
-/* 459 : 177, the split from the design, kept proportional as the page narrows.
-   min-width: 0 because an <img> in one of these slots brings an aspect ratio
-   with it, and a flex item's automatic minimum size would otherwise refuse to
-   shrink it past the width that ratio implies at 281px tall. */
-.shot-pair .shot-wide {
-  flex: 459 1 0;
-  width: auto;
-  /* Back to a fixed height in here, so it stays level with the narrow shot
-     beside it rather than shrinking away from it as the page narrows */
-  height: 281px;
-  aspect-ratio: auto;
-  min-width: 0;
-}
-
-.shot-pair .shot-narrow { flex: 177 1 0; min-width: 0; }
 
 /* ---------- Narrow screens ---------- */
 
@@ -623,17 +630,11 @@ html:has(.case-page) { scroll-behavior: smooth; }
 }
 
 @media (max-width: 640px) {
-  .shot-pair {
-    flex-direction: column;
-    gap: var(--space-16);
-  }
+  /* nowrap was written for values like "Full time". A long one, a team or a
+     responsibility, would run into the margin at this width, so here they
+     wrap like anything else. */
+  .meta .entry p { white-space: normal; }
 
-  .shot-pair .shot-wide,
-  .shot-pair .shot-narrow {
-    flex: none;
-    width: 100%;
-    height: 220px;
-  }
 }
 
 /* ==========================================================================
@@ -650,6 +651,7 @@ html:has(.case-page) { scroll-behavior: smooth; }
 
 .carousel {
   --shot-ratio: 16 / 10;   /* the slot every shot is cropped into */
+  --shot-crop: center;     /* which part of a shot survives that crop */
   --shot-width: 78%;       /* what is left over is a quarter of the next */
 
   display: flex;
@@ -688,6 +690,11 @@ html:has(.case-page) { scroll-behavior: smooth; }
   min-width: 0;
 }
 
+/* A set of one has nothing to show past its edge, so it takes the whole slot
+   rather than leaving a quarter of it empty. The script leaves such a set
+   alone, dots and all, so the CSS has to be the thing that knows. */
+.carousel-track > li:only-child { flex-basis: 100%; }
+
 .carousel-shot {
   width: 100%;
   /* The width and height attributes on the <img> reserve the right space
@@ -696,6 +703,9 @@ html:has(.case-page) { scroll-behavior: smooth; }
   height: auto;
   aspect-ratio: var(--shot-ratio);
   object-fit: cover;
+  /* A set whose shots are different shapes has to crop some of them. Where
+     from is a decision, not a default: a screenshot usually keeps its head. */
+  object-position: var(--shot-crop);
   border-radius: 8px;
   background: #d9d9d9;
   cursor: zoom-in;
