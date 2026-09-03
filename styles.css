@@ -83,6 +83,13 @@ h1, h2, p, blockquote, figure {
 
 img { display: block; max-width: 100%; }
 
+/* Any author rule that sets display beats the browser's own
+   [hidden] { display: none }, whatever the specificity, because author styles
+   outrank the user agent's. The img rule above was doing exactly that to every
+   image on the site, so hiding one did nothing at all and the lightbox kept
+   painting the last shot underneath the one it had been asked to show. */
+[hidden] { display: none; }
+
 .muted { color: var(--muted); }
 
 /* ---------- Page ---------- */
