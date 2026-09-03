@@ -354,11 +354,11 @@ img.shot, img.shot-wide, img[data-zoom] { cursor: zoom-in; }
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Less room given away down the screen than across it. A shot is almost
-     always wider than it is tall, so the height is what limits how big it can
-     be, and 72px top and bottom was holding it a long way short of the screen
-     for no reason. Enough is kept to clear the cross and the dots. */
-  padding: clamp(20px, 3vh, 44px) clamp(24px, 6vw, 72px);
+  /* More room above and below than at the sides. A shot is wider than it is
+     tall, so the height is what decides how big it gets, and giving that away
+     generously is what leaves it sitting in air rather than filling the
+     screen. It also keeps the shot well clear of the cross and the dots. */
+  padding: clamp(28px, 8vh, 112px) clamp(24px, 6vw, 72px);
 }
 
 .lightbox img {
