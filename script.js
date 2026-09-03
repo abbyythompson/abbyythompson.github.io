@@ -278,6 +278,10 @@ function show(i, dir) {
   lightboxCycle.hidden = !cycling;
   lightboxImg.hidden = cycling;
 
+  // Emptied when it is not in use, so its frames are not still being animated
+  // out of sight for the rest of the time the lightbox is open
+  if (!cycling) lightboxCycle.replaceChildren();
+
   if (cycling) {
     lightboxCycle.replaceChildren(...framesOf(item).map(frame => {
       const copy = new Image();
@@ -357,6 +361,13 @@ function openLightbox(set, index, leave) {
   lightbox.showModal();
   soundOpen();
   show(index, 0);
+
+  // Straight to where the pointer already is, so there is never a moment with
+  // no cursor of either kind on screen
+  if (walkable() && pointerAt) {
+    moveCursor(pointerAt.x, pointerAt.y);
+    lightboxCursor.classList.add('is-on');
+  }
 }
 
 function closeLightbox() {
@@ -407,6 +418,22 @@ lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbo
    pointer's idea: there the set is swiped and the shot is tapped to close. */
 
 const noPointer = window.matchMedia('(hover: none), (pointer: coarse)');
+
+/* Where the pointer was last seen. The lightbox hides the real cursor so it
+   can draw its own, but it only ever drew it on the first move inside the
+   dialog, and opening it is a click, which involves no movement at all. So
+   the pointer simply vanished until you jiggled the mouse. This remembers the
+   position the click already told us about, and the open puts the arrow there
+   straight away. */
+let pointerAt = null;
+
+const rememberPointer = e => {
+  if (e.pointerType === 'touch') return;
+  pointerAt = { x: e.clientX, y: e.clientY };
+};
+
+document.addEventListener('pointermove', rememberPointer, { passive: true });
+document.addEventListener('pointerdown', rememberPointer, { passive: true });
 
 // Halves of the screen rather than of the shot, since the whole of it is live
 const halfAt = x => (x < window.innerWidth / 2 ? 'prev' : 'next');

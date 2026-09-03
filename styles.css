@@ -32,6 +32,11 @@
      past the edge, which puts its shot back at the 459 from the design. */
   --col-shot: 588px;
 
+  /* Browsers draw the default focus ring in the operating system's accent
+     colour, so it comes out orange, pink or green depending on whose machine
+     it is. Naming it here makes it the same blue for everyone. */
+  --focus: #1a73e8;
+
   /* How far in from the screen edge that nav sits. It starts 58px in, then
      walks toward the page's own margin as the screen narrows, always keeping
      --space-40 of air between itself and the text. */
@@ -349,7 +354,11 @@ img.shot, img.shot-wide, img[data-zoom] { cursor: zoom-in; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(24px, 6vw, 72px);
+  /* Less room given away down the screen than across it. A shot is almost
+     always wider than it is tall, so the height is what limits how big it can
+     be, and 72px top and bottom was holding it a long way short of the screen
+     for no reason. Enough is kept to clear the cross and the dots. */
+  padding: clamp(20px, 3vh, 44px) clamp(24px, 6vw, 72px);
 }
 
 .lightbox img {
@@ -364,6 +373,14 @@ img.shot, img.shot-wide, img[data-zoom] { cursor: zoom-in; }
   cursor: zoom-out;
   /* Lifts the image off a background that is now nearly the same white */
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+}
+
+/* The dialog puts focus straight on this when it opens, so the ring shows
+   every single time. Worth it being the colour we chose. */
+.lightbox-close:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 999px;
 }
 
 .lightbox-close {
@@ -739,7 +756,7 @@ html:has(.case-page) { scroll-behavior: smooth; }
 /* The slot is the only thing here a keyboard can reach, since it is the only
    way in to the lightbox without a pointer */
 .carousel-track:focus-visible {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--focus);
   outline-offset: -2px;   /* inside, since the slot crops whatever leaves it */
   border-radius: 10px;
 }
@@ -757,10 +774,16 @@ html:has(.case-page) { scroll-behavior: smooth; }
    a carousel on the page. */
 
 /* The arrow replaces the pointer, so the pointer has to go, over the whole
-   lightbox rather than only over the shot: both halves are live */
+   lightbox rather than only over the shot: both halves are live.
+
+   Only while the arrow is actually up, though. Hiding the real cursor
+   unconditionally meant that any moment the arrow was not showing left you
+   with no pointer at all, and opening the lightbox is exactly such a moment:
+   it is a click, so nothing has moved yet. Tied to the arrow like this, the
+   worst case is the ordinary pointer rather than none. */
 @media (hover: hover) and (pointer: fine) {
-  .lightbox.is-walkable,
-  .lightbox.is-walkable img { cursor: none; }
+  .lightbox.is-walkable:has(.lightbox-cursor.is-on),
+  .lightbox.is-walkable:has(.lightbox-cursor.is-on) img { cursor: none; }
 }
 
 /* The Mac's own resize cursor, standing in for the pointer: two heads, black
@@ -1027,6 +1050,12 @@ html:has(.case-page) { scroll-behavior: smooth; }
   max-width: 100%;
   max-height: 100%;
 }
+
+/* display: grid above is a class rule, and it beats the browser's own
+   [hidden] { display: none }. Without this the container stays on screen when
+   the script hides it, so a cycle opened once kept cross-fading in the corner
+   of every still shot opened after it. */
+.lightbox-cycle[hidden] { display: none; }
 
 .lightbox-cycle img {
   grid-area: 1 / 1;
