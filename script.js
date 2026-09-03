@@ -92,6 +92,12 @@ const soundClose = () => { glide(70, 38, 0.16, 0.13); burst(3500, 0.006, 0.025);
    fires once. Both ticks drop in pitch on the way back, so the sound says
    which way you went and not only that you went. */
 
+/* The back arrow answers the pointer before it is even pressed, so it has to
+   be the lightest thing here: half the volume of the press tick and gone in
+   60ms. It falls rather than rises, which is the opposite of the confirm and
+   the right shape for a retreat. */
+const soundBack = () => glide(540, 420, 0.06, 0.025);
+
 const soundStep = back => {
   burst(back ? 2000 : 3000, 0.012, 0.055);
   burst(back ? 1500 : 2300, 0.02, 0.035, 0.032);
@@ -129,6 +135,20 @@ document.querySelectorAll('.pill').forEach(el => {
 // play the confirm
 document.querySelectorAll('.pill[href]').forEach(el => {
   el.addEventListener('click', soundConfirm);
+});
+
+// Hover fires far more loosely than a click: a pointer crossing the corner of
+// the arrow, or shaking on its edge, is one arrival rather than several. A tap
+// is not a hover at all, and would only double up with the navigation.
+document.querySelectorAll('.back').forEach(back => {
+  let last = 0;
+
+  back.addEventListener('pointerenter', e => {
+    if (e.pointerType !== 'mouse') return;
+    if (performance.now() - last < 250) return;
+    last = performance.now();
+    soundBack();
+  });
 });
 
 document.querySelectorAll('.pill--copy').forEach(btn => {
@@ -199,13 +219,15 @@ lightbox.innerHTML =
   '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
   'stroke-width="1.75" stroke-linecap="round" aria-hidden="true">' +
   '<path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
-  '<div class="lightbox-inner"><img alt=""></div>' +
+  '<div class="lightbox-inner"><img alt="">' +
+  '<div class="lightbox-cycle" hidden></div></div>' +
   '<div class="lightbox-dots carousel-dots" aria-hidden="true"></div>' +
   '<p class="lightbox-said" aria-live="polite"></p>' +
   `<div class="lightbox-cursor">${resizeCursor}</div>`;
 document.body.appendChild(lightbox);
 
 const lightboxImg = lightbox.querySelector('img');
+const lightboxCycle = lightbox.querySelector('.lightbox-cycle');
 // A click that moves a few pixels starts dragging the picture out otherwise,
 // which puts a ghost of it under the pointer mid-step
 lightboxImg.draggable = false;
@@ -224,13 +246,22 @@ const OPEN_SCALE = 0.8;
 
 const fullSrc = img => img.dataset.full || img.currentSrc || img.src;
 
+// A cycle is one thing, not three. Everything below takes an item that is
+// either an <img> or a .cycle, and a cycle is played rather than stepped.
+const isCycle = item => item.classList.contains('cycle');
+const framesOf = item => [...item.querySelectorAll('img')];
+const leadOf = item => (isCycle(item) ? framesOf(item)[0] : item);
+
 // The neighbours are the next thing anyone is going to ask for, so fetch them
 // while the current one is being looked at and the step lands instantly.
 function warm(i) {
   [i - 1, i + 1].forEach(n => {
     if (!shots[n]) return;
-    const pre = new Image();
-    pre.src = fullSrc(shots[n]);
+    const next = shots[n];
+    (isCycle(next) ? framesOf(next) : [next]).forEach(img => {
+      const pre = new Image();
+      pre.src = fullSrc(img);
+    });
   });
 }
 
@@ -238,10 +269,26 @@ function warm(i) {
 // side it was stepped from. 0 is the opening, which scales up instead.
 function show(i, dir) {
   at = i;
-  const img = shots[i];
+  const item = shots[i];
+  const cycling = isCycle(item);
+  const lead = leadOf(item);
 
-  lightboxImg.src = fullSrc(img);
-  lightboxImg.alt = img.alt || '';
+  // A cycle is rebuilt from its frames so it plays here the way it plays on
+  // the page, off the same keyframes. A single shot uses the one <img>.
+  lightboxCycle.hidden = !cycling;
+  lightboxImg.hidden = cycling;
+
+  if (cycling) {
+    lightboxCycle.replaceChildren(...framesOf(item).map(frame => {
+      const copy = new Image();
+      copy.src = fullSrc(frame);
+      copy.alt = frame.alt || '';
+      return copy;
+    }));
+  } else {
+    lightboxImg.src = fullSrc(item);
+    lightboxImg.alt = item.alt || '';
+  }
 
   // A dot per shot, the same row that sits under a carousel on the page. One
   // shot is not a set, so it gets nothing.
@@ -263,12 +310,13 @@ function show(i, dir) {
   // screen: the browser keeps painting the last picture until the new one
   // decodes. Showing it cold would flash the shot before it, so hold the
   // image back and let the new one bring itself in.
+  const shown = cycling ? lightboxCycle : lightboxImg;
   const id = ++openId;
-  lightboxImg.style.visibility = 'hidden';
+  shown.style.visibility = 'hidden';
 
   const reveal = () => {
-    if (id !== openId) return;   // a newer step owns the image now
-    lightboxImg.style.visibility = '';
+    if (id !== openId) return;   // a newer step owns the frame now
+    shown.style.visibility = '';
     warm(i);
     if (stillEnough.matches) return;
 
@@ -276,14 +324,14 @@ function show(i, dir) {
       ? { transform: `translateX(${dir * 32}px)`, opacity: 0 }
       : { transform: `scale(${OPEN_SCALE})`, opacity: 0.4 };
 
-    lightboxImg.animate([from, { transform: 'none', opacity: 1 }],
+    shown.animate([from, { transform: 'none', opacity: 1 }],
       { duration: dir ? STEP_MS : OPEN_MS, easing: EASE });
   };
 
   // decode() settles on the next microtask for anything already cached, so a
   // reopen still feels instant. It rejects on a broken image; show it anyway
   // and let the usual broken-image handling take over.
-  lightboxImg.decode().then(reveal, reveal);
+  lead.decode().then(reveal, reveal);
 }
 
 function step(by) {
@@ -298,6 +346,7 @@ function openLightbox(set, index, leave) {
   // fires a moment later and closes the lightbox we are about to open.
   if (closeAnim) { closeAnim = null; }
   lightboxImg.getAnimations().forEach(a => a.cancel());
+  lightboxCycle.getAnimations().forEach(a => a.cancel());
   lightbox.classList.remove('is-closing');
   lightbox.style.pointerEvents = '';
   if (lightbox.open) lightbox.close();
@@ -325,7 +374,7 @@ function closeLightbox() {
   // It just fades and settles back a touch. fill: 'forwards' holds the faded
   // state until the dialog actually closes, otherwise the image snaps back to
   // full opacity for a frame in between.
-  const anim = lightboxImg.animate(
+  const anim = (lightboxCycle.hidden ? lightboxImg : lightboxCycle).animate(
     [{ transform: 'none', opacity: 1 }, { transform: 'scale(0.97)', opacity: 0 }],
     { duration: CLOSE_MS, easing: 'ease-out', fill: 'forwards' });
 
@@ -415,7 +464,7 @@ lightbox.addEventListener('click', e => {
   // With nowhere to step, the shot closes on a click the way it always did.
   // The shot itself, not the dialog around it, so the backdrop stays inert.
   if (!walkable()) {
-    if (e.target === lightboxImg) closeLightbox();
+    if (e.target === lightboxImg || lightboxCycle.contains(e.target)) closeLightbox();
     return;
   }
 
@@ -458,14 +507,22 @@ lightbox.addEventListener('touchend', e => {
    one carousel, or one [data-gallery]. Anything standing on its own opens as a
    set of one, with no dots and nowhere to step. */
 
-const SHOTS = 'img.shot, img.shot-wide, img.carousel-shot, img[data-zoom]';
+const SHOTS = 'img.shot, img.shot-wide, img.carousel-shot, img.cycle-shot, img[data-zoom]';
 const GROUPS = '.carousel-track, [data-gallery]';
 
 function zoomable(img) {
   const group = img.closest(GROUPS);
-  if (!group) return { set: [img], index: 0, group: null };
-  const set = [...group.querySelectorAll(SHOTS)];
-  return { set, index: set.indexOf(img), group };
+  const cycle = img.closest('.cycle');
+  const self = cycle || img;
+
+  if (!group) return { set: [self], index: 0, group: null };
+
+  // A cycle counts once, however many frames are inside it, so the set is what
+  // the page shows rather than every file behind it
+  const set = [...group.querySelectorAll('.cycle, ' + SHOTS)]
+    .filter(el => !(el.tagName === 'IMG' && el.closest('.cycle')));
+
+  return { set, index: set.indexOf(self), group };
 }
 
 document.querySelectorAll(SHOTS).forEach(img => {
@@ -475,6 +532,21 @@ document.querySelectorAll(SHOTS).forEach(img => {
     openLightbox(set, Math.max(0, index), group && group.followTo);
   });
 });
+
+/* ---------- Screen recordings ----------
+   A clip loops silently with no controls, which is what makes it read as a
+   moving picture rather than as something asking to be played. That is fine
+   right up until somebody has asked their computer for less movement, and a
+   looping video is exactly the movement they meant. So it does not start, and
+   it gets its controls back, which leaves it watchable on purpose. */
+
+if (stillEnough.matches) {
+  document.querySelectorAll('.clip video').forEach(clip => {
+    clip.autoplay = false;
+    clip.controls = true;
+    clip.pause();
+  });
+}
 
 /* ---------- Carousels ----------
    A set of shots in one slot, with a quarter of the next one showing at the

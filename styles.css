@@ -828,3 +828,255 @@ html:has(.case-page) { scroll-behavior: smooth; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* ==========================================================================
+   Landing
+   What a page does as it arrives: it resolves out of a blur rather than
+   sliding in. The site already blurs things, since the lightbox sits behind
+   frosted glass, so arriving this way is in its own language rather than the
+   fade-up every other portfolio uses.
+
+   All CSS, so there is nothing to wait for and no flash of the page before it
+   starts, and it ends on the same state the page would have had anyway. If the
+   stylesheet never loads there is simply no animation.
+
+   What takes part is the page's header, and nothing else. Animating the first
+   section but not the second treats two of the same thing differently, and the
+   reader notices: one paragraph arrives and the one below it is just there.
+   So the body is left alone entirely. Shots come in on scroll, further down,
+   and the words never move.
+   ========================================================================== */
+
+:root {
+  --land-step: 55ms;    /* between one block and the next */
+  --land-time: 620ms;   /* a blur needs room to read as a blur, not a smear */
+  --land-ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+@keyframes land {
+  from { opacity: 0; filter: blur(8px); transform: translateY(10px); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+
+.intro > *,
+.back,
+.case-nav,
+.case-head {
+  animation: land var(--land-time) var(--land-ease) backwards;
+}
+
+.intro > *:nth-child(2) { animation-delay: var(--land-step); }
+.intro > *:nth-child(3) { animation-delay: calc(var(--land-step) * 2); }
+.intro > *:nth-child(4) { animation-delay: calc(var(--land-step) * 3); }
+.intro > *:nth-child(5) { animation-delay: calc(var(--land-step) * 4); }
+
+.case-nav { animation-delay: var(--land-step); }
+.case-head { animation-delay: calc(var(--land-step) * 2); }
+
+/* Arriving is the one thing on this site you cannot opt out of by not
+   clicking, so it is the first thing to go when motion is unwelcome. */
+@media (prefers-reduced-motion: reduce) {
+  .intro > *,
+  .back,
+  .case-nav,
+  .case-head { animation: none !important; }
+}
+
+/* ---------- Coming in on scroll ----------
+   Shots only, never the words. A reveal on body copy fights the one thing the
+   reader came to do: you scroll down to read a line and the line is not there
+   yet. It also punishes anyone moving fast, using find in page, or jumping by
+   the section nav. A shot is different. Its space is already reserved by its
+   ratio, so nothing moves under you and nothing is withheld that you were
+   mid-sentence on.
+
+   Driven by the scroll position rather than by a script, so there is no
+   observer deciding what you may see, and a browser without scroll-driven
+   animations shows every shot as normal instead of showing none of them. */
+
+@keyframes shot-in {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+@supports (animation-timeline: view()) {
+  .carousel,
+  .cycle,
+  .clip,
+  img.shot-wide,
+  img.shot,
+  .card-photo {
+    animation: shot-in linear both;
+    animation-timeline: view();
+    /* Done by the time it is two thirds of the way in, so it is never still
+       arriving when you reach it, and anything you can see at all when the
+       page loads is already finished rather than sitting half faded under
+       the fold. */
+    animation-range: entry 5% entry 65%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel,
+  .cycle,
+  .clip,
+  img.shot-wide,
+  img.shot,
+  .card-photo { animation: none !important; }
+}
+
+/* ==========================================================================
+   Cycle
+   Frames of one thing, cross-fading on a loop: a GIF without being a GIF.
+   Three full colour images at a fraction of the weight, and every frame stays
+   a real image, so the lightbox can hold still on any of them.
+
+   It is not a carousel. A carousel is several shots that happen to share a
+   slot, so it shows a quarter of the next one and counts itself in dots. This
+   is one shot that moves, so it shows nothing else and says nothing.
+
+     <figure class="cycle" style="--shot-ratio: 1440 / 940">
+       <ul data-gallery>
+         <li><img class="cycle-shot" src="..." width="" height="" alt="">
+         <li><img class="cycle-shot" src="..." ...>
+         <li><img class="cycle-shot" src="..." ...>
+       </ul>
+     </figure>
+
+   No script and no timer: the browser runs it, throttles it when the tab is
+   in the background, and stops it entirely when motion is unwelcome.
+   ========================================================================== */
+
+.cycle {
+  --shot-ratio: 16 / 10;
+  --shot-crop: center;
+  --frame: 1.6s;        /* how long each one holds */
+
+  display: block;
+  width: 100%;
+  max-width: var(--col-shot);
+  margin: 0;
+}
+
+/* All of them in the one cell, so the slot is the size of a single frame */
+.cycle ul {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cycle li { grid-area: 1 / 1; }
+
+/* Every frame after the first is hidden until the animation says otherwise,
+   which is also what is left showing when the animation never runs */
+.cycle li + li { opacity: 0; }
+
+/* The click always lands on the first frame, whichever is on top at the time,
+   so the lightbox opens somewhere predictable rather than wherever the loop
+   happened to be */
+.cycle li + li { pointer-events: none; }
+
+.cycle-shot {
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--shot-ratio);
+  object-fit: cover;
+  object-position: var(--shot-crop);
+  border-radius: 8px;
+  background: #d9d9d9;
+  cursor: zoom-in;
+}
+
+/* The incoming frame fades in over the outgoing one, which stays fully opaque
+   underneath until it is completely covered, and only then drops out. Nothing
+   is ever half transparent over the background, so the picture never washes
+   pale mid change, which is what happens when two frames cross-fade through
+   each other at 50% each and let a quarter of the page show through.
+
+   z-index is what makes it work: the frame that is arriving is briefly lifted
+   above the rest, and drops back the moment it has arrived, ready to be
+   covered by the next one. */
+@keyframes cycle-three {
+  0% { opacity: 0; z-index: 2; }
+  5% { opacity: 1; z-index: 2; }
+  5.1% { z-index: 1; }
+  38.3% { opacity: 1; }        /* held until the next has fully covered it */
+  38.4% { opacity: 0; }
+  100% { opacity: 0; z-index: 1; }
+}
+
+.cycle li {
+  animation: cycle-three calc(var(--frame) * 3) infinite;
+}
+
+/* Negative delays, so each frame starts already part way through its turn
+   rather than the set waiting a full lap to get going */
+.cycle li:nth-child(2) { animation-delay: calc(var(--frame) * -2); }
+.cycle li:nth-child(3) { animation-delay: calc(var(--frame) * -1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cycle li { animation: none; }
+}
+
+/* A cycle opened in the lightbox. It plays there exactly as it plays on the
+   page, off the same keyframes, rather than being broken back into the frames
+   it is made of: three images that behave as one are one thing to look at. */
+.lightbox-cycle {
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.lightbox-cycle img {
+  grid-area: 1 / 1;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  animation: cycle-three calc(var(--frame, 1.6s) * 3) infinite;
+}
+
+.lightbox-cycle img + img { opacity: 0; }
+.lightbox-cycle img:nth-child(2) { animation-delay: calc(var(--frame, 1.6s) * -2); }
+.lightbox-cycle img:nth-child(3) { animation-delay: calc(var(--frame, 1.6s) * -1); }
+
+.lightbox.is-walkable .lightbox-cycle img { cursor: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-cycle img { animation: none; }
+}
+
+/* ---------- Clip ----------
+   A screen recording, in the same slot as any other shot. A video rather than
+   an animated image, because it is a fraction of the weight, keeps its colour,
+   and can be told to stop, which a GIF cannot.
+
+   It loops, has no controls and no sound, so it reads as a moving picture
+   rather than as something asking to be played. */
+
+.clip {
+  --shot-ratio: 5 / 4;
+
+  display: block;
+  width: 100%;
+  max-width: var(--col-shot);
+  margin: 0;
+}
+
+.clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--shot-ratio);
+  object-fit: cover;
+  border-radius: 8px;
+  background: #d9d9d9;
+}
+
+/* Under reduced motion the script stops it and hands over the controls, so it
+   can still be watched, just deliberately rather than at us */
+.clip video[controls] { cursor: pointer; }

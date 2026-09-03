@@ -33,10 +33,8 @@
          item; from there the spy moves it. -->
     <nav class="case-nav" aria-label="Sections">
       <a class="is-current" href="#about">About</a>
-      <a href="#users">Users</a>
       <a href="#outcomes">Outcomes</a>
       <a href="#problem">Problem</a>
-      <a href="#struggles">Struggles</a>
       <a href="#research">Research</a>
       <a href="#learnings">Learnings</a>
     </nav>
@@ -68,81 +66,67 @@
 
       <section class="case-section" id="about">
         <h2>About</h2>
-        <p>Vertice helps companies buy and renew software at the best price, saving them millions. The platform enables users to track software and request new purchases or renewals. Since its creation, the system has been inflexible and not user-centric, which is where I came in. Designing the flow from first time onboarding to compliant approval processes.</p>
-      </section>
-
-      <section class="case-section" id="users">
-        <h2>Users</h2>
-        <p>We have two main user groups in the overarching procurement process.</p>
-        <ul>
-          <li>Vertice-supported negotiation &rarr; internal procurement manager and external client</li>
-          <li>Vertice as a platform &rarr; external procurement manager</li>
-        </ul>
+        <p>Vertice helps companies buy and renew their software at the best price, saving them millions. The platform is where teams track what they already own and ask for what they need next. Since it was built it had been rigid, and organised around its own model rather than around the people using it. That is where I came in. I own the experience end to end, from someone&rsquo;s first time in the product through to an approval that satisfies compliance.</p>
       </section>
 
       <section class="case-section" id="outcomes">
-        <h2>Outcomes / Features</h2>
-        <ul>
-          <li>Onboarding</li>
-          <li>Global search across the platform, with intuitive navigation</li>
-          <li>Aligning the request page with our users&rsquo; goals and what they want to achieve
-            <ul>
-              <li>Then moving towards a flexible requisition model where the user starts with a business, category or employee need and follows a flexible route</li>
-            </ul>
-          </li>
-          <li>Negotiation process with AI involvement</li>
-          <li>Developing a flexible approvals process</li>
+        <h2>Outcomes</h2>
+        <p>The work runs across the platform rather than sitting in one corner of it. I designed first time onboarding, and a global search that reaches vendors, contracts and navigation from a single field, so people stop hunting through a menu for something they could simply ask for.</p>
+
+        <!-- All five shots are 5:4, so the slot is theirs and nothing is
+             cropped. -->
+        <figure class="carousel" style="--shot-ratio: 5 / 4">
+        <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/Vertice/homepage.webp" width="2500" height="2000" decoding="async"
+                     alt="The home screen greeting the user by name, with a box to type what they want to do and shortcuts to request a tool, amend, terminate or renew a contract, or request a benchmark"></li>
+            <li><img class="carousel-shot" src="../images/Vertice/navbar.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="The sidebar in three states: collapsed to top level items, with Vendors opened, and fully expanded showing the Procure, Pay and Insights sections"></li>
+            <li><img class="carousel-shot" src="../images/Vertice/quick-filters.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="The contracts list with its quick filters along the top, and beneath it the settings screen where those filters are chosen and put in order, so everyone sees them the same way"></li>
         </ul>
-        <!-- The slot is cut to the wide shot's own ratio, so the page itself
-             is never cropped. The comments shot is nearly square and has to
-             give something up to share that slot, so it gives up its bottom
-             and keeps its header and first thread. -->
-        <figure class="carousel" style="--shot-ratio: 1440 / 940; --shot-crop: top">
-          <ul class="carousel-track">
-            <li><img class="carousel-shot" src="../images/Vertice/req-base.webp" width="1440" height="940"
-                     alt="The redesigned request page, with active tasks, the most recent offer and the comments panel all in view"></li>
-            <li><img class="carousel-shot" src="../images/Vertice/req-comments.webp" width="504" height="518" loading="lazy" decoding="async"
-                     alt="The comments panel, split into a customer thread and an internal one"></li>
-          </ul>
+        </figure>
+        <p>I rebuilt the request page around what people are trying to achieve rather than around the objects sitting behind it, and took it from there towards a flexible requisition model: someone starts from a business, category or employee need and takes whichever route fits, instead of being marched down a single path. The negotiation process brings AI into the work itself, and approvals now bend to the shape of the company running them rather than putting every company through the same chain.</p>
+      
+        <!-- The recording composited into the panel the background was built
+             around. It loops, has no controls and says nothing: a moving
+             picture rather than a video player. -->
+        <figure class="clip">
+          <video src="../images/Vertice/negotiation.mp4" poster="../images/Vertice/negotiation-poster.webp"
+                 width="1500" height="1200" autoplay muted loop playsinline preload="metadata"
+                 aria-label="A negotiation in progress: the deal overview with an AI summary of where the offer stands, beside the offers panel and the latest offer on the table"></video>
         </figure>
       </section>
 
       <section class="case-section" id="problem">
         <h2>Problem</h2>
-        <p>Our platform struggled to be user-centric and was too inflexible for many use cases. As a result, tracking in the platform was difficult. Users couldn&rsquo;t do their job effectively, and the platform didn&rsquo;t mirror the real-world flow, which made adoption a struggle.</p>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/before.webp" width="1467" height="1024" loading="lazy" decoding="async"
-             alt="The original request page: a large workflow canvas fills the screen, with active tasks and comments pushed below the fold">
-      </section>
+        <p>The platform was inflexible, and it described its own data model rather than the way procurement actually works. Tracking anything was harder than it should have been, people could not get their job done without working around the product, and what they saw on screen never matched the process they were running in real life. Adoption struggled, which is the plainest signal a platform can give you that it has been built from the inside out.</p>
 
-      <section class="case-section" id="struggles">
-        <h2>Struggles</h2>
-        <ul>
-          <li>As we transformed our product, engineering created a brilliant system, but it came with challenges</li>
-          <li>Aligning the design with how engineering developed the system, and making it work within those constraints</li>
-          <li>At times the work spanned 80 engineers, with teams moving faster than design could cover, so part of the job was reworking AI-generated screens that had gone in ahead of a design pass</li>
-        </ul>
-      </section>
+</section>
 
       <section class="case-section" id="research">
         <h2>Research</h2>
-        <ul>
-          <li>Posthog, for user statistics, expanding on the search functionality to decrease time to value</li>
-          <li>User interviews with procurement managers inside and outside the company, to increase confidence in decision making and intuition for quick decisions</li>
-          <li>AI prototyping for quick feedback on features like the negotiation agent, helping validate the feeling of the platform</li>
-        </ul>
-        <img class="shot-wide" src="../images/Vertice-RequestImg/differing-requests.webp" width="1000" height="700" loading="lazy" decoding="async"
-             alt="Header, breadcrumb and tab patterns drawn out for a new process, a generic request, a request with a vendor and a renewal">
+        <p>Three sources, each answering something the others could not. PostHog told me what people actually did, and that is where the case for expanding search came from: the quickest way to cut time to value was to stop making people navigate for things they could ask for directly.</p>
+        <p>Interviews with procurement managers, inside the company and outside it, told me why they behaved that way, and gave me enough confidence to make quick decisions and stand behind them. AI prototyping closed the last gap, putting something working in front of people early on features like the negotiation agent, so we were responding to how it felt to use rather than to how it read on a slide.</p>
+
+<figure class="cycle" style="--shot-ratio: 5 / 4">
+    <ul>
+    <li><img class="cycle-shot" src="../images/Vertice/search-1.webp" width="2500" height="2000" loading="lazy" decoding="async"
+             alt="Global search open and empty, offering to create a request, upload a document or add users, and suggesting questions to ask Vertice AI"></li>
+    <li><img class="cycle-shot" src="../images/Vertice/search-2.webp" width="2500" height="2000" loading="lazy" decoding="async"
+             alt="Searching for a vendor name, with results grouped into vendors, contracts, documents and orders, and a link to all results in each"></li>
+    <li><img class="cycle-shot" src="../images/Vertice/search-3.webp" width="2500" height="2000" loading="lazy" decoding="async"
+             alt="Searching for a page name, which offers to navigate straight there and says plainly that no records match"></li>
+    </ul>
+        </figure>
       </section>
 
       <section class="case-section" id="learnings">
         <h2>Learnings</h2>
-        <ul>
-          <li>Flexibility beats rigidity. It&rsquo;s good for compliance and easy to draw up a rigid flow programmatically, but our users need forgiveness and flexibility. Building a flexible process improved the user experience 10-fold and made it much easier to track the entire process.</li>
-          <li>Learning the AI design process. With AI prototyping, it&rsquo;s important that everything is clearly laid out. We need a clear vision of the user problem we&rsquo;re trying to solve and what details we need to cover.</li>
-          <li>Making sure we cover each user use case and permissions is important in procurement, given data sensitivity.</li>
-          <li>Staying close to engineering is important, to make sure they have guidance when there isn&rsquo;t enough design capacity to support them.</li>
-        </ul>
-      </section>
+        <p>Flexibility beats rigidity, and it is worth the extra work. A rigid flow is easy to specify, easy to build and easy to defend to compliance, but people do not work in straight lines and they need room to change their minds. The flexible version improved the experience ten times over and, against expectation, made the whole process easier to track rather than harder.</p>
+        <p>Designing with AI asks for the problem to be stated more clearly than designing without it. A prototype comes back in minutes, but only ever as good as the definition it was given, so the thinking has to happen first: what the user problem actually is, and which details genuinely matter.</p>
+        <p>In procurement, use cases and permissions are the work rather than the edge cases. The data is sensitive enough that getting a permission wrong is not a rough edge to tidy up later, it is the whole problem.</p>
+        <p>And stay close to engineering. When there is more product being built than there is design to cover it, the most useful thing a designer can do is make sure the people building it have direction, rather than waiting to review what comes out.</p>
+</section>
 
     </main>
   </div>
