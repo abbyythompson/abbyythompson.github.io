@@ -1051,11 +1051,16 @@ html:has(.case-page) { scroll-behavior: smooth; }
 /* A cycle opened in the lightbox. It plays there exactly as it plays on the
    page, off the same keyframes, rather than being broken back into the frames
    it is made of: three images that behave as one are one thing to look at. */
+/* Stacked by position rather than in one grid cell. A grid row sizes itself
+   to its content, so max-height: 100% on the frames inside it was measured
+   against a row that was measuring itself against the frames: circular, and
+   nothing ended up limiting the height. They filled the width and ran off the
+   bottom of the screen. Against a box of a known size they behave exactly like
+   a single shot does. */
 .lightbox-cycle {
-  display: grid;
-  place-items: center;
-  max-width: 100%;
-  max-height: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 /* display: grid above is a class rule, and it beats the browser's own
@@ -1065,7 +1070,9 @@ html:has(.case-page) { scroll-behavior: smooth; }
 .lightbox-cycle[hidden] { display: none; }
 
 .lightbox-cycle img {
-  grid-area: 1 / 1;
+  position: absolute;
+  inset: 0;
+  margin: auto;          /* centres it in both directions */
   max-width: 100%;
   max-height: 100%;
   width: auto;
