@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CalSocial - Abby Thompson</title>
+<meta name="description" content="Helping a friend sharpen the design and UX of his social calendar app: the main screens, more actionable empty states, and a web RSVP that meets people where they are.">
+
+<link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/abby/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../images/abby/favicon-16.png">
+<link rel="apple-touch-icon" href="../images/abby/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="case-page">
+
+  <a class="back" href="../index.html" aria-label="Back to home">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+  </a>
+
+  <div class="case">
+
+    <!-- Section nav. Every href here has to match a section id below: the
+         scroll spy in script.js pairs them up, and an item whose section it
+         cannot find is quietly dropped. is-current only sets the starting
+         item; from there the spy moves it. -->
+    <nav class="case-nav" aria-label="Sections">
+      <a class="is-current" href="#about">About</a>
+      <a href="#outcomes">Outcomes</a>
+      <a href="#problem">Problem</a>
+      <a href="#learnings">Learnings</a>
+    </nav>
+
+    <main class="case-body">
+
+      <!-- Title + meta -->
+      <header class="case-head">
+        <h1 class="case-title">CalSocial</h1>
+        <div class="meta">
+          <div class="row">
+            <p class="muted when">Period</p>
+            <div class="entry"><p>2026 &ndash; Now</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Role</p>
+            <div class="entry"><p>Product design and UX</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Team</p>
+            <div class="entry"><p>The owner, and me on design</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Responsibility</p>
+            <div class="entry"><p>The main screens, empty states, and the RSVP web app</p></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="case-section" id="about">
+        <h2>About</h2>
+        <p>A friend of mine built CalSocial, and it is entirely his vision. I came on to help him get there, sharpening the design and the UX and opening it up to people who would never install an app just to see one plan.</p>
+      </section>
+
+      <section class="case-section" id="outcomes">
+        <h2>Outcomes</h2>
+        <p>I reworked the calendar and the event view, the two screens the app actually lives in. Every plan now carries a photo, its time and place, and the faces of who is going, so the list reads like something to look forward to rather than a table of rows. Empty states stopped being dead ends: an empty calendar suggests a first plan or offers to pull one in from the calendar you already keep, and the other quiet corners of the app point somewhere instead of just sitting blank.</p>
+
+        <figure class="carousel" style="--shot-ratio: 5 / 4">
+        <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/calsocial/phone-calendar.webp" width="2500" height="2000" decoding="async"
+                     alt="Two of the redesigned screens: the calendar as a list of upcoming plans, and an event with its cover photo, who is going, and who is hosting"></li>
+            <li><img class="carousel-shot" src="../images/calsocial/phone-empty-states.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="Empty states that point somewhere: a calendar with nothing on it suggesting a first plan, the circles screen, and a cleared notifications screen"></li>
+        </ul>
+        </figure>
+
+        <p>The other side of the job was reach, and it turned out to be the bigger lever. Every plan is now a web page too. Open the link from the chat, see the when, where and who, tap going or can&rsquo;t. No install, no calendar setup, no account until you want one. It meets people where they already are, and more of them turn up now that turning up costs nothing.</p>
+
+        <figure class="carousel" style="--shot-ratio: 5 / 4">
+        <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/calsocial/website-home.webp" width="2500" height="2000" decoding="async"
+                     alt="The CalSocial site: the line get plans out of the messy chat with your friends, messy chat on one side and tidy event cards on the other, and the app store badges"></li>
+            <li><img class="carousel-shot" src="../images/calsocial/website-rsvp.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="A plan on the web, shown on desktop and mobile: its cover photo, the when, where and who, and buttons to say I'm going or can't go"></li>
+        </ul>
+        </figure>
+      </section>
+
+      <section class="case-section" id="problem">
+        <h2>Problem</h2>
+        <p>Both of those went at the same root problem: CalSocial asked for more than the group chat it wanted to replace.</p>
+        <p>The plans lived in that chat. Someone floats an idea, a date gets half agreed, and it scrolls away under four hundred messages, address and all. The friends who had the app still drifted back to the thread, because opening it was a step and the chat was already open.</p>
+        <p>For everyone else the app was a closed door. To see a single plan you had to download it and wire it into your Google Calendar. Most people just did not, so the plan stayed in the chat and the app stayed empty.</p>
+      </section>
+
+      <section class="case-section" id="learnings">
+        <h2>Learnings</h2>
+        <p>Moving a product you do not own is a different craft. On my own work I just decide. Here the owner has final say on everything that ships and feels every pixel of it, so the job is as much about making the case as making the design. It is slower, and now and then it is frustrating, but learning to move something through someone else&rsquo;s conviction rather than around it has been the most useful part.</p>
+        <p>Designing for a friend group is a trap as much as a gift. They will use anything you put in front of them and tell you it is great, so the real signal is not what they say, it is whether the plan actually happened.</p>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="../script.js" defer></script>
+
+</body>
+</html>
