@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlassian - Abby Thompson</title>
+<meta name="description" content="Turning Atlassian's internal engineering health practice into Compass Goals: one feature that served the internal team from day one and shipped to customers.">
+
+<link rel="icon" href="../favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/abby/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../images/abby/favicon-16.png">
+<link rel="apple-touch-icon" href="../images/abby/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="case-page">
+
+  <a class="back" href="../index.html" aria-label="Back to home">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+  </a>
+
+  <div class="case">
+
+    <!-- Section nav. Every href here has to match a section id below: the
+         scroll spy in script.js pairs them up, and an item whose section it
+         cannot find is quietly dropped. is-current only sets the starting
+         item; from there the spy moves it. -->
+    <nav class="case-nav" aria-label="Sections">
+      <a class="is-current" href="#about">About</a>
+      <a href="#outcome">Outcome</a>
+      <a href="#problem">Problem</a>
+      <a href="#research">Research</a>
+      <a href="#learnings">Learnings</a>
+    </nav>
+
+    <main class="case-body">
+
+      <!-- Title + meta -->
+      <header class="case-head">
+        <h1 class="case-title">Atlassian</h1>
+        <div class="meta">
+          <div class="row">
+            <p class="muted when">Period</p>
+            <div class="entry"><p>2023 &ndash; 2024</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Role</p>
+            <div class="entry"><p>Product Designer</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Team</p>
+            <div class="entry"><p>A product manager and a 12 person engineering team</p></div>
+          </div>
+          <div class="row">
+            <p class="muted when">Responsibility</p>
+            <div class="entry"><p>Research, IA, interaction design and handoff</p></div>
+          </div>
+        </div>
+      </header>
+
+      <section class="case-section" id="about">
+        <h2>About</h2>
+        <p>Every engineering organisation has a version of this ritual. A central team decides that services should log properly, page the right on-call, or clear their vulnerabilities, then spends months chasing hundreds of other teams until the dashboards turn green. At Atlassian it was called engineering health goals, and it was one of the main ways the company kept its own software honest. It ran on Confluence pages and an internal tool. None of it touched Compass, the product Atlassian sells for exactly this job.</p>
+        <p>I was the designer asked to close that gap: take a practice the company had spent years refining and make it a feature, one that served the internal team from day one and shipped to customers as the same thing.</p>
+      </section>
+
+      <section class="case-section" id="outcome">
+        <h2>Outcome</h2>
+        <p>It landed. We put an M0 in front of Atlassian&rsquo;s own engineers, kept it deliberately small, create a goal, edit it, view it, and used the internal rollout to prove the idea before taking it wider.</p>
+        <p>The target was 200 teams engaging with a goal. We reached 276, near the 300 stretch and around 59% of every team it could apply to. Of the people who met the module, 58% went on to act inside Compass, nearly double the pull of comparable internal tools. Fifty to a hundred teams touched a goal every week, and views of the health details page more than doubled once goals started sending people there.</p>
+
+        <figure class="carousel" style="--shot-ratio: 5 / 4">
+        <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/Atlassian/outcome-1.webp" width="2500" height="2000" decoding="async"
+                     alt="The Goals feature in Compass, first of four screens"></li>
+            <li><img class="carousel-shot" src="../images/Atlassian/outcome-2.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="The Goals feature in Compass, second of four screens"></li>
+            <li><img class="carousel-shot" src="../images/Atlassian/outcome-3.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="The Goals feature in Compass, third of four screens"></li>
+            <li><img class="carousel-shot" src="../images/Atlassian/outcome-4.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="The Goals feature in Compass, fourth of four screens"></li>
+        </ul>
+        </figure>
+
+        <p>What shipped leaned hard on what Compass already had. A goal is Atlassian&rsquo;s own goal object, aimed at a scorecard, with the teams in scope attached, so it read as part of the product rather than a bolt-on. M0 went out, a fast round of research came back, and that feedback set the shape of M1.</p>
+      </section>
+
+      <section class="case-section" id="problem">
+        <h2>Problem</h2>
+        <p>The practice had three beats: understand the bar, set the bar, measure the bar. A driver team defined a standard and how it would roll out. Receiving teams did the work. Results gathered in the internal ops tool, or rolled up into a Confluence doc for a leader to read.</p>
+        <p>Every handoff lost something. A driver team could not see, in one place, how their goal was tracking across the org. A receiving team often did not know a goal applied to them, or what finished looked like for their service. Leaders asked where things stood and got a slide. The data existed. It was spread across enough surfaces that nobody quite trusted the picture.</p>
+
+        <img class="shot-wide" src="../images/Atlassian/problem.webp" width="2500" height="2000"
+             style="aspect-ratio: 5 / 4" decoding="async"
+             alt="The engineering health goals practice as it ran before Compass, spread across an internal ops tool and Confluence">
+
+        <p>This was never just a UI problem. It was taking something the company did well but informally, and giving it a spine that could scale without losing what made it work.</p>
+      </section>
+
+      <section class="case-section" id="research">
+        <h2>Research</h2>
+        <p>The internal team had been running this for years, so I started there. A series of workshops pulled apart their language, the stakeholders at each step, and the points where the process hurt most. That became the model everything else hung off.</p>
+
+        <figure class="carousel" style="--shot-ratio: 5 / 4">
+        <ul class="carousel-track">
+            <li><img class="carousel-shot" src="../images/Atlassian/research-1.webp" width="2500" height="2000" decoding="async"
+                     alt="Research artefact from the workshops with the internal team, first of three"></li>
+            <li><img class="carousel-shot" src="../images/Atlassian/research-2.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="Research artefact from the workshops with the internal team, second of three"></li>
+            <li><img class="carousel-shot" src="../images/Atlassian/research-3.webp" width="2500" height="2000" loading="lazy" decoding="async"
+                     alt="Research artefact from the workshops with the internal team, third of three"></li>
+        </ul>
+        </figure>
+
+        <p>Alongside it, the PM and I took apart how other tools frame the same idea, a standard pushed to many teams and tracked to done, to sort convention from the calls that were ours to make. Once M0 was in real hands, a short research pass told us what to fix first.</p>
+      </section>
+
+      <section class="case-section" id="learnings">
+        <h2>Learnings</h2>
+        <p>Productising an internal practice is mostly translation, and the danger is flattening it. The team had solved the hard part long ago. My job was to carry that across without tidying away the parts that looked messy but mattered. Hours in their workshops were worth more than any design done away from them.</p>
+        <p>Reusing the object model paid for itself. Anchoring goals to the scorecard and goal object Compass already had meant one feature could serve the internal team and customers at once, rather than two that drift apart.</p>
+        <p>And a thin M0 to a known audience beat a polished guess. Atlassian&rsquo;s own engineers gave us honest usage and honest feedback in weeks, and the numbers said the idea held before we spent a milestone on it.</p>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="../script.js" defer></script>
+
+</body>
+</html>
