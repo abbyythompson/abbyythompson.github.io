@@ -250,7 +250,6 @@ const fullSrc = img => img.dataset.full || img.currentSrc || img.src;
 // either an <img> or a .cycle, and a cycle is played rather than stepped.
 const isCycle = item => item.classList.contains('cycle');
 const framesOf = item => [...item.querySelectorAll('img')];
-const leadOf = item => (isCycle(item) ? framesOf(item)[0] : item);
 
 // The neighbours are the next thing anyone is going to ask for, so fetch them
 // while the current one is being looked at and the step lands instantly.
@@ -271,7 +270,6 @@ function show(i, dir) {
   at = i;
   const item = shots[i];
   const cycling = isCycle(item);
-  const lead = leadOf(item);
 
   // A cycle is rebuilt from its frames so it plays here the way it plays on
   // the page, off the same keyframes. A single shot uses the one <img>.
@@ -315,11 +313,18 @@ function show(i, dir) {
   // decodes. Showing it cold would flash the shot before it, so hold the
   // image back and let the new one bring itself in.
   const shown = cycling ? lightboxCycle : lightboxImg;
+  // Wait on the image the lightbox is about to paint, not the on-page one it
+  // was opened from. A carousel's last shot never gets scrolled into view, so
+  // its lazy <img> may never decode; gating the reveal on that left the
+  // lightbox stuck blank on that shot.
+  const decoder = cycling ? lightboxCycle.querySelector('img') : lightboxImg;
   const id = ++openId;
   shown.style.visibility = 'hidden';
 
+  let revealed = false;
   const reveal = () => {
-    if (id !== openId) return;   // a newer step owns the frame now
+    if (revealed || id !== openId) return;   // a newer step owns the frame now
+    revealed = true;
     shown.style.visibility = '';
     warm(i);
     if (stillEnough.matches) return;
@@ -333,9 +338,19 @@ function show(i, dir) {
   };
 
   // decode() settles on the next microtask for anything already cached, so a
-  // reopen still feels instant. It rejects on a broken image; show it anyway
+  // reopen still feels instant, and it is the cleanest cue that the pixels are
+  // ready. But on a shot the page never scrolled into view it has been seen to
+  // hang forever, which left the lightbox stuck blank on a carousel's last
+  // image, so load/error and an already-complete image count as ready too and
+  // whichever fires first wins. It rejects on a broken image; show it anyway
   // and let the usual broken-image handling take over.
-  lead.decode().then(reveal, reveal);
+  if (decoder.complete && decoder.naturalWidth) {
+    reveal();
+  } else {
+    decoder.addEventListener('load', reveal, { once: true });
+    decoder.addEventListener('error', reveal, { once: true });
+  }
+  decoder.decode().then(reveal, reveal);
 }
 
 function step(by) {
