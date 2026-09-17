@@ -66,13 +66,13 @@
 
       <section class="case-section" id="about">
         <h2>About</h2>
-        <p>Every engineering organisation has a version of this ritual. A central team decides that services should log properly, page the right on-call, or clear their vulnerabilities, then spends months chasing hundreds of other teams until the dashboards turn green. At Atlassian it was called engineering health goals, and it was one of the main ways the company kept its own software honest. It ran on Confluence pages and an internal tool. None of it touched Compass, the product Atlassian sells for exactly this job.</p>
-        <p>I was the designer asked to close that gap: take a practice the company had spent years refining and make it a feature, one that served the internal team from day one and shipped to customers as the same thing.</p>
+        <p>Every engineering organisation has a version of this ritual. A central team decides that services should log properly, page the right on-call, or clear their vulnerabilities, then spends months chasing hundreds of other teams until the dashboards turn green. At Atlassian it was called engineering health goals. It ran on Confluence pages and an internal tool, entirely disconnected from Compass, the product Atlassian sells to other companies for exactly this job.</p>
+        <p>I was the designer asked to close that gap: take a practice the company had spent years refining on itself and turn it into a feature that served the internal team from day one and shipped to customers as the same thing, not a simplified version built for a demo.</p>
       </section>
 
       <section class="case-section" id="outcomes">
         <h2>Outcomes</h2>
-        <p>It landed. We put an M0 in front of Atlassian&rsquo;s own engineers, kept it deliberately small, create a goal, edit it, view it, and used the internal rollout to prove the idea before taking it wider.</p>
+        <p>It landed. We put an M0 in front of Atlassian&rsquo;s own engineers first and used that internal rollout as a live test before taking it wider. The people on the earliest version were the same people who had run this process by hand for years, so their reaction was the sharpest signal we could get.</p>
         <p>The target was 200 teams engaging with a goal. We reached 276, near the 300 stretch and around 59% of every team it could apply to. Of the people who met the module, 58% went on to act inside Compass, nearly double the pull of comparable internal tools. Fifty to a hundred teams touched a goal every week, and views of the health details page more than doubled once goals started sending people there.</p>
 
         <figure class="carousel" style="--shot-ratio: 5 / 4">
@@ -88,24 +88,27 @@
         </ul>
         </figure>
 
-        <p>What shipped leaned hard on what Compass already had. A goal is Atlassian&rsquo;s own goal object, aimed at a scorecard, with the teams in scope attached, so it read as part of the product rather than a bolt-on from day one. I kept the first cut narrow on purpose, create, edit and view, so it could ship fast and earn its next move from how people actually used it rather than from a roadmap.</p>
+        <p>What shipped leaned hard on what Compass already had. A goal is Atlassian&rsquo;s own goal object, aimed at a scorecard, with the teams in scope attached, so it read as part of the product rather than a bolt-on. I kept the first cut to create, edit and view, so it could ship fast and earn its next move from real use rather than from a roadmap written before anyone had touched it.</p>
+        <p>Then it met real people. Creating a goal was the easy part: driver teams set one up and went straight back to a spreadsheet to see how it was landing across every team at once. The receiving side surfaced something we had not designed for. Teams did not want to argue with the bar, they wanted somewhere to say this one does not apply to us, and why. A deprecated service, a component nothing pages. With nowhere to record that, they sat red forever, and a permanently red team stops reading the goal at all.</p>
+        <p>Neither was a create flow problem, and the roadmap had been pointing squarely at the create flow. So M1 went after the feedback instead: a roll-up view giving driver teams the whole picture in one place, and a way to mark a service out of scope with a reason attached. The second was the call I argued hardest for, since letting teams opt out of a compliance goal sounds like a loophole. It did the opposite. Once red meant something real rather than something stale, driver teams trusted the number enough to act on it.</p>
+        <p>Going external changed the shape again. Most customers had no central driver team, just one engineering lead setting a bar for their own group, so a feature built around a driver and receiver split read as heavier than their problem. Goals had to work bottom up as well as top down: a team sets one for itself in minutes, and the same object still scales to an org-wide push. Sitting with those customers is what stopped us shipping Atlassian&rsquo;s org chart as a feature.</p>
       </section>
 
       <section class="case-section" id="problem">
         <h2>Problem</h2>
-        <p>The practice had three beats: understand the bar, set the bar, measure the bar. A driver team defined a standard and how it would roll out. Receiving teams did the work. Results gathered in the internal ops tool, or rolled up into a Confluence doc for a leader to read.</p>
-        <p>Every handoff lost something. A driver team could not see, in one place, how their goal was tracking across the org. A receiving team often did not know a goal applied to them, or what finished looked like for their service. Leaders asked where things stood and got a slide. The data existed. It was spread across enough surfaces that nobody quite trusted the picture.</p>
+        <p>The practice had three beats: understand the bar, set the bar, measure the bar. A driver team defined a standard and how it would roll out. Receiving teams did the work. Results gathered in the internal ops tool, or rolled up into a Confluence doc for a leader to read once a quarter, by which point the picture was already out of date.</p>
+        <p>Every handoff lost something. A driver team could not see, in one place, how their goal was tracking across the org, so they chased status by hand. A receiving team often did not know a goal applied to them, or what finished looked like for their service, so goals meant to drive action stalled on ambiguity. Leaders asked where things stood and got a slide. The data existed. It was spread across enough surfaces that nobody quite trusted the picture.</p>
 
         <img class="shot-wide" src="../images/Atlassian/problem.webp" width="2500" height="2000"
              style="aspect-ratio: 5 / 4" decoding="async"
              alt="The engineering health goals practice as it ran before Compass, spread across an internal ops tool and Confluence">
 
-        <p>This was never just a UI problem. It was taking something the company did well but informally, and giving it a spine that could scale without losing what made it work.</p>
+        <p>This was never just a UI problem. It was taking something the company did well but informally, held together by one team&rsquo;s discipline, and giving it a spine that could scale to hundreds of teams without losing the judgment that made it work.</p>
       </section>
 
       <section class="case-section" id="research">
         <h2>Research</h2>
-        <p>The internal team had been running this for years, so I started there. A series of workshops pulled apart their language, the stakeholders at each step, and the points where the process hurt most. That became the model everything else hung off.</p>
+        <p>The internal team had been running this for years, so I started there rather than at a whiteboard. Workshops pulled apart their language, the stakeholders at each step, and where the process hurt most: the goal you set and never revisit, the report nobody reads, the team that finds out too late. That became the model everything else hung off, before a single screen was drawn.</p>
 
         <figure class="carousel" style="--shot-ratio: 5 / 4">
         <ul class="carousel-track">
@@ -118,14 +121,14 @@
         </ul>
         </figure>
 
-        <p>Alongside it, the PM and I took apart how other tools frame the same idea, a standard pushed to many teams and tracked to done, so we could tell convention from the calls that were genuinely ours. Then M0 shipped, and a short round with teams using it for real set the priorities for M1.</p>
+        <p>Alongside it, the PM and I took apart how other tools frame the same idea, so we could tell convention from the calls that were genuinely ours. After M0 the research moved out of rooms and into real usage: internal teams first, then customers. The two rounds disagreed in useful ways, and between them they moved the roadmap further than any workshop did.</p>
       </section>
 
       <section class="case-section" id="learnings">
         <h2>Learnings</h2>
-        <p>Productising an internal practice is mostly translation, and the danger is flattening it. The team had solved the hard part long ago. My job was to carry that across without tidying away the parts that looked messy but mattered. Hours in their workshops were worth more than any design done away from them.</p>
+        <p>Productising an internal practice is mostly translation, and the danger is flattening it. The team had solved the hard part long before I arrived: what actually gets teams to change their behaviour, not just report on it. My job was to carry that across without tidying away the parts that looked messy but were load-bearing.</p>
         <p>Reusing the object model paid for itself. Anchoring goals to the scorecard and goal object Compass already had meant one feature could serve the internal team and customers at once, rather than two that drift apart.</p>
-        <p>And a thin M0 to a known audience beat a polished guess. Atlassian&rsquo;s own engineers gave us honest usage and honest feedback in weeks, and the numbers said the idea held before we spent a milestone on it.</p>
+        <p>And a thin M0 to a known audience beats a polished guess, as long as you remember that the audience is biased. Everything internal users told us was true of a company that had run this practice for years. It took going external to find out which of those truths were about the problem and which were just about Atlassian.</p>
       </section>
 
     </main>

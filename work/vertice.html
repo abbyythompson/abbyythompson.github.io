@@ -51,7 +51,7 @@
           </div>
           <div class="row">
             <p class="muted when">Role</p>
-            <div class="entry"><p>Senior Product Designer</p></div>
+            <div class="entry"><p>Product Designer</p></div>
           </div>
           <div class="row">
             <p class="muted when">Team</p>
@@ -66,14 +66,14 @@
 
       <section class="case-section" id="about">
         <h2>About</h2>
-        <p>Vertice helps companies buy and renew their software without overpaying, and it saves them millions doing it. The platform is where teams track what they already own and ask for what they need next. It was built rigid, and built around its own data model rather than the people using it, so getting anything done meant thinking like the database. I came in to change that. I own the experience end to end, from someone&rsquo;s first minutes in the product through to an approval that satisfies compliance.</p>
-        <p>Two groups meet in procurement and want opposite things from it. A procurement manager lives in the platform, running deals and renewals every day. Around them is everyone else, the engineer who needs a tool, the manager signing off the spend, who passes through once or twice a year and wants out fast. The product has to serve both without slowing either down.</p>
+        <p>Vertice helps companies buy and renew their software without overpaying, and saves them millions doing it. It is where procurement teams track what they own, benchmark what they should be paying, and request what they need next. When I joined it was built around its own data model rather than the people running deals through it, so getting anything done meant thinking like the database instead of like a buyer. I own the experience end to end, research through to development, from someone&rsquo;s first minutes in the product to an approval that satisfies compliance.</p>
+        <p>Two groups meet in procurement and want opposite things. A procurement manager lives in the platform every day and wants depth: filters, history, leverage in a negotiation. Everyone else, the engineer who needs one tool approved, the manager signing off the spend, passes through twice a year and wants out fast. Design for one and you lose the other. The job was knowing, screen by screen, which of the two I was serving.</p>
       </section>
 
       <section class="case-section" id="outcomes">
         <h2>Outcomes</h2>
-        <p>The work runs across the platform, not in one corner of it.</p>
-        <p>I designed first time onboarding, and a global search that reaches vendors, contracts and pages from a single field, so people stop hunting through a menu for something they could simply ask for.</p>
+        <p>The rigidity was never local to one screen, so the work runs across the platform. Fix onboarding without fixing requests and the drop-off just moves; fix requests without fixing approvals and compliance sits exactly where it started. The redesign had to move end to end, in the order a person meets the product.</p>
+        <p>It starts at first time onboarding: a new procurement manager gets to a working sense of the product in minutes, not a training session. From there, a global search reaches vendors, contracts and pages from a single field, so people stop hunting through a nested menu for something they could simply type. It is the change the research called for most clearly.</p>
 
         <!-- All three shots are 5:4, so the slot is theirs and nothing is
              cropped. -->
@@ -87,7 +87,7 @@
                      alt="The contracts list with its quick filters along the top, and beneath it the settings screen where those filters are chosen and put in order, so everyone sees them the same way"></li>
         </ul>
         </figure>
-        <p>Then the request page. I pulled it apart and rebuilt it around what people are trying to achieve rather than the objects sitting behind it, and pointed it towards a flexible requisition model: you start from a business, category or employee need and take whichever route fits, instead of being marched down a single path. The negotiation flow brings AI into the work itself rather than bolting it on the side. And approvals now bend to the shape of the company running them, instead of putting every company through the same chain.</p>
+        <p>Then the request page, the heart of the product and the one with the worst reputation inside it. I rebuilt it around what people are trying to achieve, a new vendor, a renewal, a benchmark, rather than the objects sitting behind it. That pointed to a flexible requisition model: start from a business need, a category or an employee request and take whichever route fits, instead of one path that assumes you already know what you want. Negotiation went into the work rather than beside it, a live summary of where an offer stands sitting next to the offer. And approvals now bend to the shape of each company, instead of forcing every one of them through the same chain.</p>
       
         <!-- The recording composited into the panel the background was built
              around. It loops, has no controls and says nothing: a moving
@@ -97,20 +97,22 @@
                  width="1500" height="1200" autoplay muted loop playsinline preload="metadata"
                  aria-label="A negotiation in progress: the deal overview with an AI summary of where the offer stands, beside the offers panel and the latest offer on the table"></video>
         </figure>
+
+        <p>Onboarding and search are live. The request, negotiation and approvals work is rolling out in stages, which is the honest shape of rebuilding a platform people are using the whole time: not one launch, but a steady replacement of the parts they touch most.</p>
       </section>
 
       <section class="case-section" id="problem">
         <h2>Problem</h2>
-        <p>The platform described its own data model, not the way procurement actually works. Tracking anything was harder than it should have been. People could not get their job done without working around the product, and what they saw on screen never matched the process they were running in real life. Adoption struggled, which is the plainest signal a platform can give you that it was built from the inside out.</p>
-        <p>It was also a moving target. Engineering was rebuilding the system underneath at speed, and building it well, but design had to land inside their constraints as they set them. At its widest the work spanned 80 engineers, teams shipping faster than one designer could cover, so part of the job was catching AI generated screens that had gone in ahead of a design pass and pulling them back into line.</p>
+        <p>The platform described its own data model, not the way procurement works, so a screen would ask for a contract ID before it asked what you were trying to do. People worked around the product rather than through it: side spreadsheets, Slack threads, whatever closed the deal faster than the tool in front of them. Adoption struggled, which is the plainest signal that something was built from the inside out.</p>
+        <p>It was also a moving target. Engineering was rebuilding the system underneath at speed, and building it well, but design had to land inside constraints still being set as we went. At its widest the work spanned 80 engineers, shipping faster than one designer could review, so part of the job turned protective: catching AI generated screens that went out ahead of a design pass and pulling them back into line.</p>
 </section>
 
       <section class="case-section" id="research">
         <h2>Research</h2>
-        <p>Three sources, each answering something the others could not.</p>
-        <p>PostHog told me what people actually did, and that is where the case for expanding search came from: the fastest way to cut time to value was to stop making people navigate for things they could ask for directly.</p>
-        <p>Interviews with procurement managers, inside the company and outside it, told me why they behaved that way, and gave me the confidence to make quick calls and stand behind them.</p>
-        <p>AI prototyping closed the last gap, putting something working in front of people early on features like the negotiation agent, so we were reacting to how it felt to use rather than to how it read on a slide.</p>
+        <p>None of that started as a hunch. Three sources, each answering what the others could not.</p>
+        <p>PostHog showed what people actually did. They dug through nested menus for things they already knew the name of, and abandoned the attempt more often than they should have. The fix was not a better menu, it was removing the need for one.</p>
+        <p>Interviews with procurement managers, inside the company and outside it, told me why. Analytics gives you the drop-off point; only a conversation tells you whether that is confusion, distrust or a genuinely missing feature. Those gave me the confidence to make quick calls on a moving deadline and defend them.</p>
+        <p>AI prototyping closed the last gap. For the negotiation agent I put something working in front of people early, so we reacted to how it felt to use rather than to how it read in a review. It changed real decisions: what the AI says and when, and how much control it hands back to the negotiator.</p>
 
 <figure class="cycle" style="--shot-ratio: 5 / 4">
     <ul>
@@ -126,10 +128,11 @@
 
       <section class="case-section" id="learnings">
         <h2>Learnings</h2>
-        <p>Flexibility beats rigidity, and it is worth the extra work. A rigid flow is easy to specify, easy to build and easy to defend to compliance, but people do not move in straight lines and they need room to change their minds. The flexible version improved the experience tenfold and, against expectation, made the whole process easier to track rather than harder.</p>
-        <p>Designing with AI demands a sharper brief than designing without it. A prototype comes back in minutes, but only ever as good as the definition it was given, so the thinking has to happen first: what the user problem actually is, and which details genuinely matter.</p>
-        <p>In procurement, use cases and permissions are the work, not the edge cases. The data is sensitive enough that a wrong permission is not a rough edge to tidy up later, it is the whole problem.</p>
-        <p>And stay close to engineering. When there is more product being built than there is design to cover, the most useful thing a designer can do is give the people building it direction, rather than waiting to review what they ship.</p>
+        <p>Across the rebuild so far, four things have held up.</p>
+        <p>Flexibility beats rigidity, and it is worth the extra work. A rigid flow is easy to specify, build and defend to compliance, but people do not move in straight lines. The flexible version improved the experience tenfold and, against expectation, made the process easier to track rather than harder.</p>
+        <p>Designing with AI demands a sharper brief. A prototype comes back in minutes, but only ever as good as the definition it was given, so the thinking has to happen first.</p>
+        <p>In procurement, permissions are the work, not the edge cases. The data is sensitive enough that a wrong one is not a rough edge to tidy up later, it is the whole problem.</p>
+        <p>And stay close to engineering. With more product being built than one designer can cover, the most useful thing I do is give direction early rather than review what ships. Which is the same lesson as the rest of this project in a different form: by the time you are looking at the screen, the model underneath it has already been decided.</p>
 </section>
 
     </main>
