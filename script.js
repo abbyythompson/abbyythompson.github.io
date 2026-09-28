@@ -541,15 +541,17 @@ lightbox.addEventListener('touchend', e => {
 }, { passive: true });
 
 /* ---------- What counts as a set ----------
-   The work screenshots, here and in the case studies. Written as a selector on
-   the slot classes so an <img> dropped into one is zoomable with no extra
-   markup; data-zoom is there to opt anything else in by hand.
+   The screenshots inside a case study. Written as a selector on the slot
+   classes so an <img> dropped into one is zoomable with no extra markup;
+   data-zoom is there to opt anything else in by hand. The homepage's own
+   work thumbnails (img.shot) sit outside this — they link straight to the
+   case study instead of zooming.
 
    A shot opens with whatever it is grouped with in the page: everything inside
    one carousel, or one [data-gallery]. Anything standing on its own opens as a
    set of one, with no dots and nowhere to step. */
 
-const SHOTS = 'img.shot, img.shot-wide, img.carousel-shot, img.cycle-shot, img[data-zoom]';
+const SHOTS = 'img.shot-wide, img.carousel-shot, img.cycle-shot, img[data-zoom]';
 const GROUPS = '.carousel-track, [data-gallery]';
 
 function zoomable(img) {

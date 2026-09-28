@@ -257,6 +257,18 @@ img { display: block; max-width: 100%; }
   background: #ebebeb;
 }
 
+/* The shot is a second way into the same case study as the description
+   line above it — no styling of its own, but hovering it plays that line's
+   dotted-underline morph, so the two read as one target rather than the
+   image getting a competing hover effect. */
+.shot-link {
+  display: block;
+  align-self: flex-start;
+}
+
+.entry:has(.shot-link:hover) .u svg { color: var(--fg); }
+.entry:has(.shot-link:hover) .u svg line { stroke-dasharray: 3 0.01; }
+
 /* ---------- Dotted underline (company names) ----------
    One stroked line with a round cap and a near-zero dash reads as dots. On
    hover the dash grows while the gap shrinks, so they stretch and merge into a
@@ -328,7 +340,7 @@ img { display: block; max-width: 100%; }
    Built on <dialog> so the browser handles the focus trap, the inert page
    behind, and Esc to close, rather than reimplementing all three. */
 
-img.shot, img.shot-wide, img[data-zoom] { cursor: zoom-in; }
+img.shot-wide, img[data-zoom] { cursor: zoom-in; }
 
 .lightbox {
   width: 100vw;
